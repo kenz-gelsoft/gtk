@@ -28,7 +28,9 @@
 #endif
 
 #include <sys/mman.h>
+#ifndef __HAIKU__
 #include <sys/syscall.h>
+#endif
 
 #include <glib.h>
 #include "gdkwayland.h"
@@ -627,8 +629,10 @@ _gdk_wayland_display_open (const gchar *display_name)
    * fail, logging a fatal error in the process.  Save ourselves from
    * that.
    */
+#ifndef __HAIKU__
   if (g_getenv ("XDG_RUNTIME_DIR") == NULL)
     return NULL;
+#endif
 
   wl_log_set_handler_client (log_handler);
 

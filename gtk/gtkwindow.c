@@ -4139,6 +4139,10 @@ gtk_window_supports_client_shadow (GtkWindow *window)
   screen = _gtk_window_get_screen (window);
   display = gdk_screen_get_display (screen);
 
+#ifdef __HAIKU__
+  return FALSE;
+#endif
+
 #ifdef GDK_WINDOWING_X11
   if (GDK_IS_X11_DISPLAY (display))
     {

@@ -199,6 +199,7 @@ gdk_gen_headers = [gdkenum_h, gdkmarshal_h, gdkconfig, gdkversionmacros]
 
 gdk_deps = [
   libm,
+  cc.find_library('bsd'),
   pixbuf_dep,
   cairo_dep,
   pango_dep,
