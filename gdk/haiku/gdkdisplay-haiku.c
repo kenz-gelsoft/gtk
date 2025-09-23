@@ -391,18 +391,18 @@ static void
 configure_monitor (GdkMonitor       *monitor,
                    GdkHaikuDisplay *display)
 {
-  GdkHaikuMonitor *quartz_monitor = GDK_QUARTZ_MONITOR (monitor);
-  CGSize disp_size = CGDisplayScreenSize (quartz_monitor->id);
+  GdkHaikuMonitor *haiku_monitor = GDK_QUARTZ_MONITOR (monitor);
+  CGSize disp_size = CGDisplayScreenSize (haiku_monitor->id);
   gint width = (int)trunc (disp_size.width);
   gint height = (int)trunc (disp_size.height);
-  CGRect disp_bounds = CGDisplayBounds (quartz_monitor->id);
+  CGRect disp_bounds = CGDisplayBounds (haiku_monitor->id);
   CGRect main_bounds = CGDisplayBounds (CGMainDisplayID());
   /* Change origin to Gdk coordinates. */
   disp_bounds.origin.x = disp_bounds.origin.x + display->geometry.origin.x;
   disp_bounds.origin.y =
     display->geometry.origin.y - main_bounds.size.height + disp_bounds.origin.y;
   GdkRectangle disp_geometry = cgrect_to_gdkrect (disp_bounds);
-  CGDisplayModeRef mode = CGDisplayCopyDisplayMode (quartz_monitor->id);
+  CGDisplayModeRef mode = CGDisplayCopyDisplayMode (haiku_monitor->id);
   gint refresh_rate = (int)trunc (CGDisplayModeGetRefreshRate (mode));
 
   monitor->width_mm = width;
@@ -530,19 +530,19 @@ display_reconfiguration_callback (CGDirectDisplayID            cg_display,
 static int
 gdk_haiku_display_get_n_monitors (GdkDisplay *display)
 {
-  GdkHaikuDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
-  return quartz_display->monitors->len;
+  GdkHaikuDisplay *haiku_display = GDK_QUARTZ_DISPLAY (display);
+  return haiku_display->monitors->len;
 }
 
 static GdkMonitor *
 gdk_haiku_display_get_monitor (GdkDisplay *display,
                                 int         monitor_num)
 {
-  GdkHaikuDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
+  GdkHaikuDisplay *haiku_display = GDK_QUARTZ_DISPLAY (display);
   int n_displays = gdk_haiku_display_get_n_monitors (display);
 
   if (monitor_num >= 0 && monitor_num < n_displays)
-    return g_ptr_array_index (quartz_display->monitors, monitor_num);
+    return g_ptr_array_index (haiku_display->monitors, monitor_num);
 
   return NULL;
 }
@@ -550,15 +550,15 @@ gdk_haiku_display_get_monitor (GdkDisplay *display,
 static GdkMonitor *
 gdk_haiku_display_get_primary_monitor (GdkDisplay *display)
 {
-  GdkHaikuDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
+  GdkHaikuDisplay *haiku_display = GDK_QUARTZ_DISPLAY (display);
   CGDirectDisplayID primary_id = CGMainDisplayID ();
   GdkMonitor *monitor = NULL;
   guint index;
 
-  if (g_ptr_array_find_with_equal_func (quartz_display->monitors,
+  if (g_ptr_array_find_with_equal_func (haiku_display->monitors,
                                         GINT_TO_POINTER (primary_id),
                                         same_monitor, &index))
-    monitor = g_ptr_array_index (quartz_display->monitors, index);
+    monitor = g_ptr_array_index (haiku_display->monitors, index);
 
   return monitor;
 }
@@ -592,15 +592,15 @@ gdk_haiku_display_get_monitor_at_window (GdkDisplay *display,
 
   if (screen)
   {
-    GdkHaikuDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
+    GdkHaikuDisplay *haiku_display = GDK_QUARTZ_DISPLAY (display);
     guint index;
     CGDirectDisplayID disp_id =
       [[[screen deviceDescription]
         objectForKey: @"NSScreenNumber"] unsignedIntValue];
-    if (g_ptr_array_find_with_equal_func (quartz_display->monitors,
+    if (g_ptr_array_find_with_equal_func (haiku_display->monitors,
                                           GINT_TO_POINTER (disp_id),
                                           same_monitor, &index))
-      monitor = g_ptr_array_index (quartz_display->monitors, index);
+      monitor = g_ptr_array_index (haiku_display->monitors, index);
   }
   if (!monitor)
     {
@@ -641,11 +641,11 @@ gdk_haiku_display_init (GdkHaikuDisplay *display)
 static void
 gdk_haiku_display_dispose (GObject *object)
 {
-  GdkHaikuDisplay *quartz_display = GDK_QUARTZ_DISPLAY (object);
+  GdkHaikuDisplay *haiku_display = GDK_QUARTZ_DISPLAY (object);
 
-  g_ptr_array_free (quartz_display->monitors, TRUE);
+  g_ptr_array_free (haiku_display->monitors, TRUE);
   CGDisplayRemoveReconfigurationCallback (display_reconfiguration_callback,
-                                          quartz_display);
+                                          haiku_display);
 
   G_OBJECT_CLASS (gdk_haiku_display_parent_class)->dispose (object);
 }

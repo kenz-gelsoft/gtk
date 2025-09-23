@@ -31,7 +31,7 @@ G_BEGIN_DECLS
 typedef struct _GdkWindowImplHaiku GdkWindowImplHaiku;
 typedef struct _GdkWindowImplHaikuClass GdkWindowImplHaikuClass;
 
-#define GDK_TYPE_WINDOW_IMPL_QUARTZ              (_gdk_window_impl_quartz_get_type ())
+#define GDK_TYPE_WINDOW_IMPL_QUARTZ              (_gdk_window_impl_haiku_get_type ())
 #define GDK_WINDOW_IMPL_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_WINDOW_IMPL_QUARTZ, GdkWindowImplHaiku))
 #define GDK_WINDOW_IMPL_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_WINDOW_IMPL_QUARTZ, GdkWindowImplHaikuClass))
 #define GDK_IS_WINDOW_IMPL_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_WINDOW_IMPL_QUARTZ))
@@ -80,7 +80,7 @@ struct _GdkWindowImplHaikuClass
                                      CGContextRef         cg_context);
 };
 
-GType _gdk_window_impl_quartz_get_type (void);
+GType _gdk_window_impl_haiku_get_type (void);
 
 CGContextRef gdk_haiku_window_get_context     (GdkWindowImplHaiku *window,
                                                 gboolean             antialias);
@@ -93,7 +93,7 @@ void         gdk_haiku_window_release_context (GdkWindowImplHaiku *window,
 typedef struct _GdkRootWindowImplHaiku GdkRootWindowImplHaiku;
 typedef struct _GdkRootWindowImplHaikuClass GdkRootWindowImplHaikuClass;
 
-#define GDK_TYPE_ROOT_WINDOW_IMPL_QUARTZ              (_gdk_root_window_impl_quartz_get_type ())
+#define GDK_TYPE_ROOT_WINDOW_IMPL_QUARTZ              (_gdk_root_window_impl_haiku_get_type ())
 #define GDK_ROOT_WINDOW_IMPL_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_ROOT_WINDOW_IMPL_QUARTZ, GdkRootWindowImplHaiku))
 #define GDK_ROOT_WINDOW_IMPL_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_ROOT_WINDOW_IMPL_QUARTZ, GdkRootWindowImplHaikuClass))
 #define GDK_IS_ROOT_WINDOW_IMPL_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_ROOT_WINDOW_IMPL_QUARTZ))
@@ -112,7 +112,7 @@ struct _GdkRootWindowImplHaikuClass
   GdkWindowImplHaikuClass parent_class;
 };
 
-GType _gdk_root_window_impl_quartz_get_type (void);
+GType _gdk_root_window_impl_haiku_get_type (void);
 
 G_END_DECLS
 

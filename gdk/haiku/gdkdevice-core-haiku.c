@@ -107,11 +107,11 @@ gdk_haiku_device_core_class_init (GdkHaikuDeviceCoreClass *klass)
 }
 
 static void
-gdk_haiku_device_core_init (GdkHaikuDeviceCore *quartz_device_core)
+gdk_haiku_device_core_init (GdkHaikuDeviceCore *haiku_device_core)
 {
   GdkDevice *device;
 
-  device = GDK_DEVICE (quartz_device_core);
+  device = GDK_DEVICE (haiku_device_core);
 
   _gdk_device_add_axis (device, GDK_NONE, GDK_AXIS_X, 0, 0, 1);
   _gdk_device_add_axis (device, GDK_NONE, GDK_AXIS_Y, 0, 0, 1);

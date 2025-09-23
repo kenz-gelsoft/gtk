@@ -73,9 +73,9 @@ static const double dpi = 72.0;
 G_DEFINE_TYPE (GdkHaikuScreen, gdk_haiku_screen, GDK_TYPE_SCREEN);
 
 static void
-gdk_haiku_screen_init (GdkHaikuScreen *quartz_screen)
+gdk_haiku_screen_init (GdkHaikuScreen *haiku_screen)
 {
-  GdkScreen *screen = GDK_SCREEN (quartz_screen);
+  GdkScreen *screen = GDK_SCREEN (haiku_screen);
   /* Screen resolution is used exclusively to pass to Pango for font
    * scaling. There's a long discussion in
    * https://bugzilla.gnome.org/show_bug.cgi?id=787867 exploring how
@@ -87,10 +87,10 @@ gdk_haiku_screen_init (GdkHaikuScreen *quartz_screen)
    */
 
   g_signal_connect (_gdk_display, "monitors-changed",
-                    G_CALLBACK (gdk_haiku_screen_reconfigure), quartz_screen);
+                    G_CALLBACK (gdk_haiku_screen_reconfigure), haiku_screen);
   /* The first monitors-changed should have fired already. */
   _gdk_screen_set_resolution (screen, dpi);
-  gdk_haiku_screen_calculate_layout (quartz_screen, NULL);
+  gdk_haiku_screen_calculate_layout (haiku_screen, NULL);
 }
 
 static void

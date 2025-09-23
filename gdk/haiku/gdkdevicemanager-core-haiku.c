@@ -106,14 +106,14 @@ gdk_haiku_device_manager_core_init (GdkHaikuDeviceManagerCore *device_manager)
 static void
 gdk_haiku_device_manager_core_finalize (GObject *object)
 {
-  GdkHaikuDeviceManagerCore *quartz_device_manager_core;
+  GdkHaikuDeviceManagerCore *haiku_device_manager_core;
 
-  quartz_device_manager_core = GDK_QUARTZ_DEVICE_MANAGER_CORE (object);
+  haiku_device_manager_core = GDK_QUARTZ_DEVICE_MANAGER_CORE (object);
 
-  g_object_unref (quartz_device_manager_core->core_pointer);
-  g_object_unref (quartz_device_manager_core->core_keyboard);
+  g_object_unref (haiku_device_manager_core->core_pointer);
+  g_object_unref (haiku_device_manager_core->core_keyboard);
 
-  g_list_free_full (quartz_device_manager_core->known_tablet_devices, g_object_unref);
+  g_list_free_full (haiku_device_manager_core->known_tablet_devices, g_object_unref);
 
   G_OBJECT_CLASS (gdk_haiku_device_manager_core_parent_class)->finalize (object);
 }
@@ -168,10 +168,10 @@ gdk_haiku_device_manager_core_list_devices (GdkDeviceManager *device_manager,
 static GdkDevice *
 gdk_haiku_device_manager_core_get_client_pointer (GdkDeviceManager *device_manager)
 {
-  GdkHaikuDeviceManagerCore *quartz_device_manager_core;
+  GdkHaikuDeviceManagerCore *haiku_device_manager_core;
 
-  quartz_device_manager_core = (GdkHaikuDeviceManagerCore *) device_manager;
-  return quartz_device_manager_core->core_pointer;
+  haiku_device_manager_core = (GdkHaikuDeviceManagerCore *) device_manager;
+  return haiku_device_manager_core->core_pointer;
 }
 
 static GdkDevice *

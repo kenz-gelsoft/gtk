@@ -79,7 +79,7 @@ create_gray_visual (GdkScreen *screen)
 G_DEFINE_TYPE (GdkHaikuVisual, gdk_haiku_visual, GDK_TYPE_VISUAL)
 
 static void
-gdk_haiku_visual_init (GdkHaikuVisual *quartz_visual)
+gdk_haiku_visual_init (GdkHaikuVisual *haiku_visual)
 {
 }
 

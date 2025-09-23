@@ -434,10 +434,10 @@ gdk_haiku_cursor_finalize (GObject *object)
 }
 
 static void
-gdk_haiku_cursor_class_init (GdkHaikuCursorClass *quartz_cursor_class)
+gdk_haiku_cursor_class_init (GdkHaikuCursorClass *haiku_cursor_class)
 {
-  GdkCursorClass *cursor_class = GDK_CURSOR_CLASS (quartz_cursor_class);
-  GObjectClass *object_class = G_OBJECT_CLASS (quartz_cursor_class);
+  GdkCursorClass *cursor_class = GDK_CURSOR_CLASS (haiku_cursor_class);
+  GObjectClass *object_class = G_OBJECT_CLASS (haiku_cursor_class);
 
   object_class->finalize = gdk_haiku_cursor_finalize;
 
