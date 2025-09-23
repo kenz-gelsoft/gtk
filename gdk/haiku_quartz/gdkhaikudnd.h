@@ -1,0 +1,59 @@
+/* gdkhaikudnd.h
+ *
+ * Copyright (C) 2010 Kristian Rietveld  <kris@gtk.org>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef __GDK_HAIKU_DND_H__
+#define __GDK_HAIKU_DND_H__
+
+#if !defined (GTK_COMPILATION) && !defined (GDK_COMPILATION)
+#error "gdkhaikudnd.h is for Gtk's internal use only"
+#endif
+
+#include <gdk/gdk.h>
+
+G_BEGIN_DECLS
+
+#define GDK_TYPE_HAIKU_DRAG_CONTEXT              (gdk_haiku_drag_context_get_type ())
+#define GDK_HAIKU_DRAG_CONTEXT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_HAIKU_DRAG_CONTEXT, GdkHaikuDragContext))
+#define GDK_HAIKU_DRAG_CONTEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_HAIKU_DRAG_CONTEXT, GdkHaikuDragContextClass))
+#define GDK_IS_HAIKU_DRAG_CONTEXT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_HAIKU_DRAG_CONTEXT))
+#define GDK_IS_HAIKU_DRAG_CONTEXT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_HAIKU_DRAG_CONTEXT))
+#define GDK_HAIKU_DRAG_CONTEXT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_HAIKU_DRAG_CONTEXT, GdkHaikuDragContextClass))
+
+#ifdef GDK_COMPILATION
+typedef struct _GdkHaikuDragContext GdkHaikuDragContext;
+#else
+typedef GdkDragContext GdkHaikuDragContext;
+#endif
+typedef struct _GdkHaikuDragContextClass GdkHaikuDragContextClass;
+
+
+GDK_AVAILABLE_IN_ALL
+GType     gdk_haiku_drag_context_get_type (void);
+
+GDK_AVAILABLE_IN_ALL
+id        gdk_haiku_drag_context_get_dragging_info_libgtk_only (GdkDragContext *context);
+
+GDK_AVAILABLE_IN_ALL
+GdkDragContext *gdk_haiku_drag_source_context_libgtk_only (void);
+
+GDK_AVAILABLE_IN_3_24
+void _gdk_haiku_drag_source_context_destroy_gtk_only ();
+
+G_END_DECLS
+
+#endif /* __GDK_HAIKU_DRAG_CONTEXT_H__ */
