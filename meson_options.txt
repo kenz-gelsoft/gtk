@@ -9,6 +9,8 @@ option('win32_backend', type: 'boolean', value: true,
   description : 'Enable the Windows gdk backend (only when building on Windows)')
 option('quartz_backend', type: 'boolean', value: true,
   description : 'Enable the macOS gdk backend (only when building on macOS)')
+option('haiku_backend', type: 'boolean', value: true,
+  description : 'Enable the Haiku gdk backend (only when building on Haiku)')
 
 # Optional dependencies
 option('xinerama', type: 'combo', choices : ['yes', 'no', 'auto'], value : 'auto',

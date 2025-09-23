@@ -137,6 +137,7 @@ wayland_enabled        = get_option('wayland_backend')
 broadway_enabled       = get_option('broadway_backend')
 quartz_enabled         = get_option('quartz_backend')
 win32_enabled          = get_option('win32_backend')
+haiku_enabled          = get_option('haiku_backend')
 
 os_unix   = false
 os_linux  = false
@@ -497,7 +498,7 @@ cairo_backends = []
 foreach backend: [ ['cairo-xlib', cairo_req, x11_enabled],
                    ['cairo-win32', cairo_req, win32_enabled],
                    ['cairo-quartz', cairo_req, quartz_enabled],
-                   ['cairo', cairo_req, broadway_enabled or wayland_enabled], ]
+                   ['cairo', cairo_req, broadway_enabled or wayland_enabled or haiku_enabled], ]
   backend_enabled = backend.get(2)
   cairo_backend_req = backend.get(1)
   cairo_backend = backend.get(0)

@@ -54,6 +54,10 @@
 #include "wayland/gdkprivate-wayland.h"
 #endif
 
+#ifdef GDK_WINDOWING_HAIKU
+#include "haiku/gdkprivate-haiku.h"
+#endif
+
 /**
  * SECTION:gdkdisplaymanager
  * @Short_description: Maintains a list of all open GdkDisplays

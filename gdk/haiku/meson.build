@@ -45,14 +45,15 @@ gdk_haiku_public_headers = files(
 install_headers(gdk_haiku_public_headers, subdir: 'gtk-3.0/gdk/haiku')
 install_headers('gdkhaiku.h', subdir: 'gtk-3.0/gdk')
 
-core_graphics_dep = dependency('appleframeworks', modules : 'CoreGraphics', required : true)
-appkit_dep = dependency('appleframeworks', modules : 'AppKit', required : true)
-cocoa_dep = dependency('appleframeworks', modules : 'Cocoa', required : true)
-carbon_dep = dependency('appleframeworks', modules : 'Carbon', required : true)
-haiku_dep = dependency('appleframeworks', modules : 'QuartzCore', required : true)
-iosurface_dep = dependency('appleframeworks', modules: 'IOSurface', required: true)
+#core_graphics_dep = dependency('appleframeworks', modules : 'CoreGraphics', required : true)
+#appkit_dep = dependency('appleframeworks', modules : 'AppKit', required : true)
+#cocoa_dep = dependency('appleframeworks', modules : 'Cocoa', required : true)
+#carbon_dep = dependency('appleframeworks', modules : 'Carbon', required : true)
+#haiku_dep = dependency('appleframeworks', modules : 'QuartzCore', required : true)
+#iosurface_dep = dependency('appleframeworks', modules: 'IOSurface', required: true)
 
-gdk_haiku_deps = [ core_graphics_dep, appkit_dep, cocoa_dep, carbon_dep, haiku_dep, iosurface_dep ]
+#gdk_haiku_deps = [ core_graphics_dep, appkit_dep, cocoa_dep, carbon_dep, haiku_dep, iosurface_dep ]
+gdk_haiku_deps = []
 
 libgdk_haiku = static_library('gdk-haiku',
   gdk_haiku_sources, gdkconfig, gdkenum_h,
