@@ -23,7 +23,7 @@
 
 /* This is mostly a pot of function prototypes to avoid having
  * separate include file for each implementation file that exports
- * functions to one other file in GdkQuartz.
+ * functions to one other file in GdkHaiku.
  */
 
 /* NSInteger only exists in Leopard and newer.  This check has to be
@@ -73,7 +73,7 @@ NSCursor   *_gdk_quartz_cursor_get_ns_cursor        (GdkCursor *cursor);
 /* Events */
 typedef enum {
   GDK_QUARTZ_EVENT_SUBTYPE_EVENTLOOP
-} GdkQuartzEventSubType;
+} GdkHaikuEventSubType;
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= 101300
 #define GDK_QUARTZ_EVENT_TABLET_PROXIMITY NSEventTypeTabletProximity

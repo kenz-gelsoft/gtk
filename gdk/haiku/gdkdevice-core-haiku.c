@@ -21,7 +21,7 @@
 #include <gdk/gdkdeviceprivate.h>
 #include <gdk/gdkdisplayprivate.h>
 
-#import "GdkQuartzView.h"
+#import "GdkHaikuView.h"
 #include "gdkquartzwindow.h"
 #include "gdkquartzcursor.h"
 #include "gdkprivate-quartz.h"
@@ -29,7 +29,7 @@
 #include "gdkinternal-quartz.h"
 #include "gdkquartz-cocoa-access.h"
 
-struct _GdkQuartzDeviceCore
+struct _GdkHaikuDeviceCore
 {
   GdkDevice parent_instance;
 
@@ -38,7 +38,7 @@ struct _GdkQuartzDeviceCore
   unsigned long long unique_id;
 };
 
-struct _GdkQuartzDeviceCoreClass
+struct _GdkHaikuDeviceCoreClass
 {
   GdkDeviceClass parent_class;
 };
@@ -88,10 +88,10 @@ static void      gdk_quartz_device_core_select_window_events (GdkDevice       *d
                                                               GdkEventMask     event_mask);
 
 
-G_DEFINE_TYPE (GdkQuartzDeviceCore, gdk_quartz_device_core, GDK_TYPE_DEVICE)
+G_DEFINE_TYPE (GdkHaikuDeviceCore, gdk_quartz_device_core, GDK_TYPE_DEVICE)
 
 static void
-gdk_quartz_device_core_class_init (GdkQuartzDeviceCoreClass *klass)
+gdk_quartz_device_core_class_init (GdkHaikuDeviceCoreClass *klass)
 {
   GdkDeviceClass *device_class = GDK_DEVICE_CLASS (klass);
 
@@ -107,7 +107,7 @@ gdk_quartz_device_core_class_init (GdkQuartzDeviceCoreClass *klass)
 }
 
 static void
-gdk_quartz_device_core_init (GdkQuartzDeviceCore *quartz_device_core)
+gdk_quartz_device_core_init (GdkHaikuDeviceCore *quartz_device_core)
 {
   GdkDevice *device;
 
@@ -373,7 +373,7 @@ _gdk_quartz_device_core_set_active (GdkDevice  *device,
                                     gboolean    active,
                                     NSUInteger  device_id)
 {
-  GdkQuartzDeviceCore *self = GDK_QUARTZ_DEVICE_CORE (device);
+  GdkHaikuDeviceCore *self = GDK_QUARTZ_DEVICE_CORE (device);
 
   self->active = active;
   self->device_id = device_id;
@@ -383,7 +383,7 @@ gboolean
 _gdk_quartz_device_core_is_active (GdkDevice  *device,
                                    NSUInteger  device_id)
 {
-  GdkQuartzDeviceCore *self = GDK_QUARTZ_DEVICE_CORE (device);
+  GdkHaikuDeviceCore *self = GDK_QUARTZ_DEVICE_CORE (device);
 
   return (self->active && self->device_id == device_id);
 }

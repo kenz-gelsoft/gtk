@@ -24,7 +24,7 @@
 #include "gdkdisplay-quartz.h"
 #include "gdkinternal-quartz.h"
 
-G_DEFINE_TYPE (GdkQuartzMonitor, gdk_quartz_monitor, GDK_TYPE_MONITOR)
+G_DEFINE_TYPE (GdkHaikuMonitor, gdk_quartz_monitor, GDK_TYPE_MONITOR)
 
 static void
 gdk_quartz_monitor_get_workarea (GdkMonitor   *monitor,
@@ -38,7 +38,7 @@ gdk_quartz_monitor_get_workarea (GdkMonitor   *monitor,
     {
       CGDirectDisplayID screen_id =
         [[[obj deviceDescription] objectForKey:@"NSScreenNumber"] unsignedIntValue];
-      GdkQuartzMonitor *q_mon = GDK_QUARTZ_MONITOR (monitor);
+      GdkHaikuMonitor *q_mon = GDK_QUARTZ_MONITOR (monitor);
       if (screen_id == q_mon->id)
         {
           screen = obj;
@@ -48,7 +48,7 @@ gdk_quartz_monitor_get_workarea (GdkMonitor   *monitor,
 
   if (screen)
     {
-      GdkQuartzDisplay *display =
+      GdkHaikuDisplay *display =
         GDK_QUARTZ_DISPLAY (gdk_monitor_get_display (monitor));
       NSRect rect = [screen visibleFrame];
       dest->x = (int)trunc (display->geometry.origin.x + rect.origin.x);
@@ -64,12 +64,12 @@ gdk_quartz_monitor_get_workarea (GdkMonitor   *monitor,
 }
 
 static void
-gdk_quartz_monitor_init (GdkQuartzMonitor *monitor)
+gdk_quartz_monitor_init (GdkHaikuMonitor *monitor)
 {
 }
 
 static void
-gdk_quartz_monitor_class_init (GdkQuartzMonitorClass *class)
+gdk_quartz_monitor_class_init (GdkHaikuMonitorClass *class)
 {
   GDK_MONITOR_CLASS (class)->get_workarea = gdk_quartz_monitor_get_workarea;
 }

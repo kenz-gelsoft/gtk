@@ -157,12 +157,12 @@ static const char *const state_names[]  = {
 typedef enum
   {
    GDK_QUARTZ_EVENT_MASK_ANY = NSAnyEventMask,
-  } GdkQuartzEventMask;
+  } GdkHaikuEventMask;
 #else
 typedef enum
   {
    GDK_QUARTZ_EVENT_MASK_ANY = NSEventMaskAny,
-  } GdkQuartzEventMask;
+  } GdkHaikuEventMask;
 #endif
 
 static SelectThreadState select_thread_state = BEFORE_START;

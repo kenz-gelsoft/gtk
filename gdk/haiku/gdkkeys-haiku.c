@@ -63,17 +63,17 @@
 
 static GdkKeymap *default_keymap = NULL;
 
-struct _GdkQuartzKeymap
+struct _GdkHaikuKeymap
 {
   GdkKeymap keymap;
 };
 
-struct _GdkQuartzKeymapClass
+struct _GdkHaikuKeymapClass
 {
   GdkKeymapClass keymap_class;
 };
 
-G_DEFINE_TYPE (GdkQuartzKeymap, gdk_quartz_keymap, GDK_TYPE_KEYMAP)
+G_DEFINE_TYPE (GdkHaikuKeymap, gdk_quartz_keymap, GDK_TYPE_KEYMAP)
 
 GdkKeymap *
 _gdk_quartz_display_get_keymap (GdkDisplay *display)
@@ -810,7 +810,7 @@ input_sources_changed_notification (CFNotificationCenterRef  center,
 }
 
 static void
-gdk_quartz_keymap_init (GdkQuartzKeymap *keymap)
+gdk_quartz_keymap_init (GdkHaikuKeymap *keymap)
 {
   CFNotificationCenterAddObserver (CFNotificationCenterGetDistributedCenter (),
                                    keymap,
@@ -833,7 +833,7 @@ gdk_quartz_keymap_finalize (GObject *object)
 }
 
 static void
-gdk_quartz_keymap_class_init (GdkQuartzKeymapClass *klass)
+gdk_quartz_keymap_class_init (GdkHaikuKeymapClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GdkKeymapClass *keymap_class = GDK_KEYMAP_CLASS (klass);

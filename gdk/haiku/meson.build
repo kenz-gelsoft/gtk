@@ -2,8 +2,8 @@
 add_languages(['objc'])
 
 gdk_quartz_sources = files(
-  'GdkQuartzView.c',
-  'GdkQuartzNSWindow.c',
+  'GdkHaikuView.c',
+  'GdkHaikuNSWindow.c',
   'gdkcursor-quartz.c',
   'gdkdevice-core-quartz.c',
   'gdkdevicemanager-core-quartz.c',

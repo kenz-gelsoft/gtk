@@ -31,7 +31,7 @@
 G_BEGIN_DECLS
 
 
-struct _GdkQuartzDisplay
+struct _GdkHaikuDisplay
 {
   GdkDisplay parent_instance;
   NSRect geometry; /* In AppKit coordinates. */
@@ -43,7 +43,7 @@ struct _GdkQuartzDisplay
   GSource *frame_source;
 };
 
-struct _GdkQuartzDisplayClass
+struct _GdkHaikuDisplayClass
 {
   GdkDisplayClass parent_class;
 };

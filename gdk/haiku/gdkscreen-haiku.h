@@ -23,7 +23,7 @@
 
 G_BEGIN_DECLS
 
-struct _GdkQuartzScreen
+struct _GdkHaikuScreen
 {
   GdkScreen parent_instance;
 
@@ -43,7 +43,7 @@ struct _GdkQuartzScreen
   guint emit_monitors_changed : 1;
 };
 
-struct _GdkQuartzScreenClass
+struct _GdkHaikuScreenClass
 {
   GdkScreenClass parent_class;
 };

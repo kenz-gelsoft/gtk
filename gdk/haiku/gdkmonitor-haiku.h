@@ -27,13 +27,13 @@
 #include "gdkquartzmonitor.h"
 #include "gdkprivate-quartz.h"
 
-struct _GdkQuartzMonitor
+struct _GdkHaikuMonitor
 {
   GdkMonitor parent;
   CGDirectDisplayID id;
 };
 
-struct _GdkQuartzMonitorClass {
+struct _GdkHaikuMonitorClass {
   GdkMonitorClass parent_class;
 };
 

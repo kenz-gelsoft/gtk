@@ -67,7 +67,7 @@ typedef enum
  GDK_QUARTZ_MINIATURIZABLE_WINDOW = NSMiniaturizableWindowMask,
  GDK_QUARTZ_RESIZABLE_WINDOW = NSResizableWindowMask,
  GDK_QUARTZ_TITLED_WINDOW = NSTitledWindowMask,
-} GdkQuartzWindowMask;
+} GdkHaikuWindowMask;
 #else
 typedef enum
 {
@@ -77,7 +77,7 @@ typedef enum
  GDK_QUARTZ_MINIATURIZABLE_WINDOW = NSWindowStyleMaskMiniaturizable,
  GDK_QUARTZ_RESIZABLE_WINDOW = NSWindowStyleMaskResizable,
  GDK_QUARTZ_TITLED_WINDOW = NSWindowStyleMaskTitled,
-} GdkQuartzWindowMask;
+} GdkHaikuWindowMask;
 #endif
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
@@ -95,34 +95,34 @@ static void clear_toplevel_order  (void);
    GDK_WINDOW_TYPE (window) != GDK_WINDOW_OFFSCREEN)
 
 /*
- * GdkQuartzWindow
+ * GdkHaikuWindow
  */
 
-struct _GdkQuartzWindow
+struct _GdkHaikuWindow
 {
   GdkWindow parent;
 };
 
-struct _GdkQuartzWindowClass
+struct _GdkHaikuWindowClass
 {
   GdkWindowClass parent_class;
 };
 
-G_DEFINE_TYPE (GdkQuartzWindow, gdk_quartz_window, GDK_TYPE_WINDOW);
+G_DEFINE_TYPE (GdkHaikuWindow, gdk_quartz_window, GDK_TYPE_WINDOW);
 
 static void
-gdk_quartz_window_class_init (GdkQuartzWindowClass *quartz_window_class)
+gdk_quartz_window_class_init (GdkHaikuWindowClass *quartz_window_class)
 {
 }
 
 static void
-gdk_quartz_window_init (GdkQuartzWindow *quartz_window)
+gdk_quartz_window_init (GdkHaikuWindow *quartz_window)
 {
 }
 
 
 /*
- * GdkQuartzWindowImpl
+ * GdkHaikuWindowImpl
  */
 static inline GdkWindowImplQuartz*
 gdk_window_get_quartz_impl (GdkWindow* window)
@@ -257,12 +257,12 @@ static cairo_user_data_key_t gdk_quartz_cairo_key;
 typedef struct {
   GdkWindowImplQuartz  *window_impl;
   CGContextRef  cg_context;
-} GdkQuartzCairoSurfaceData;
+} GdkHaikuCairoSurfaceData;
 
 static void
 gdk_quartz_cairo_surface_destroy (void *data)
 {
-  GdkQuartzCairoSurfaceData *surface_data = data;
+  GdkHaikuCairoSurfaceData *surface_data = data;
   cairo_surface_t *surface = surface_data->window_impl->cairo_surface;
 
   if (!cairo_surface_get_reference_count (surface))
@@ -276,10 +276,10 @@ gdk_quartz_create_cairo_surface (GdkWindowImplQuartz *impl,
 				 int                  width,
 				 int                  height)
 {
-  GdkQuartzCairoSurfaceData *surface_data;
+  GdkHaikuCairoSurfaceData *surface_data;
   cairo_surface_t *surface;
 
-  surface_data = g_new (GdkQuartzCairoSurfaceData, 1);
+  surface_data = g_new (GdkHaikuCairoSurfaceData, 1);
   surface_data->window_impl = impl;
   surface_data->cg_context = NULL;
 
@@ -353,7 +353,7 @@ gdk_window_impl_quartz_init (GdkWindowImplQuartz *impl)
 static gboolean
 gdk_window_impl_quartz_begin_paint (GdkWindow *window)
 {
-     gdk_quartz_ref_cairo_surface (window); //unreffed in GdkQuartzView::updateLayer
+     gdk_quartz_ref_cairo_surface (window); //unreffed in GdkHaikuView::updateLayer
   return FALSE;
 }
 
@@ -624,7 +624,7 @@ _gdk_quartz_window_gdk_xy_to_xy (gint  gdk_x,
                                  gint *ns_x,
                                  gint *ns_y)
 {
-  GdkQuartzScreen *screen_quartz = GDK_QUARTZ_SCREEN (_gdk_screen);
+  GdkHaikuScreen *screen_quartz = GDK_QUARTZ_SCREEN (_gdk_screen);
 
   if (ns_y)
     *ns_y = screen_quartz->orig_y - gdk_y;
@@ -639,7 +639,7 @@ _gdk_quartz_window_xy_to_gdk_xy (gint  ns_x,
                                  gint *gdk_x,
                                  gint *gdk_y)
 {
-  GdkQuartzScreen *screen_quartz = GDK_QUARTZ_SCREEN (_gdk_screen);
+  GdkHaikuScreen *screen_quartz = GDK_QUARTZ_SCREEN (_gdk_screen);
 
   if (gdk_y)
     *gdk_y = screen_quartz->orig_y - ns_y;
@@ -965,7 +965,7 @@ _gdk_quartz_display_create_window_impl (GdkDisplay    *display,
                           GDK_QUARTZ_RESIZABLE_WINDOW);
           }
 
-	impl->toplevel = [[GdkQuartzNSWindow alloc] initWithContentRect:content_rect 
+	impl->toplevel = [[GdkHaikuNSWindow alloc] initWithContentRect:content_rect 
 			                                      styleMask:style_mask
 			                                        backing:NSBackingStoreBuffered
 			                                          defer:NO
@@ -990,7 +990,7 @@ _gdk_quartz_display_create_window_impl (GdkDisplay    *display,
         content_rect.origin.x = 0;
         content_rect.origin.y = 0;
 
-	impl->view = [[GdkQuartzView alloc] initWithFrame:content_rect];
+	impl->view = [[GdkHaikuView alloc] initWithFrame:content_rect];
 	[impl->view setGdkWindow:window];
 	[impl->toplevel setContentView:impl->view];
         [[NSNotificationCenter defaultCenter] addObserver: impl->toplevel
@@ -1011,7 +1011,7 @@ _gdk_quartz_display_create_window_impl (GdkDisplay    *display,
                                             window->width,
                                             window->height);
 	
-	    impl->view = [[GdkQuartzView alloc] initWithFrame:frame_rect];
+	    impl->view = [[GdkHaikuView alloc] initWithFrame:frame_rect];
 	    
 	    [impl->view setGdkWindow:window];
 
@@ -1183,7 +1183,7 @@ gdk_window_quartz_show (GdkWindow *window, gboolean already_mapped)
       make_key = (window->accept_focus && focus_on_map &&
                   window->window_type != GDK_WINDOW_TEMP);
 
-      [(GdkQuartzNSWindow*)impl->toplevel showAndMakeKey:make_key];
+      [(GdkHaikuNSWindow*)impl->toplevel showAndMakeKey:make_key];
       clear_toplevel_order ();
 
       _gdk_quartz_events_send_map_event (window);
@@ -1291,7 +1291,7 @@ gdk_window_quartz_hide (GdkWindow *window)
       if (impl->transient_for)
         _gdk_quartz_window_detach_from_parent (window);
 
-      [(GdkQuartzNSWindow*)impl->toplevel hide];
+      [(GdkHaikuNSWindow*)impl->toplevel hide];
     }
   else if (impl->view)
     {
@@ -1601,10 +1601,10 @@ update_toplevel_order (void)
     {
       GdkWindow *window;
 
-      if (![[nswindow contentView] isKindOfClass:[GdkQuartzView class]])
+      if (![[nswindow contentView] isKindOfClass:[GdkHaikuView class]])
         continue;
 
-      window = [(GdkQuartzView *)[nswindow contentView] gdkWindow];
+      window = [(GdkHaikuView *)[nswindow contentView] gdkWindow];
       toplevels = g_list_prepend (toplevels, window);
     }
 
@@ -2476,7 +2476,7 @@ gdk_quartz_window_begin_resize_drag (GdkWindow     *window,
       return;
     }
 
-  [(GdkQuartzNSWindow *)impl->toplevel beginManualResize:edge];
+  [(GdkHaikuNSWindow *)impl->toplevel beginManualResize:edge];
 }
 
 static void
@@ -2501,7 +2501,7 @@ gdk_quartz_window_begin_move_drag (GdkWindow *window,
       return;
     }
 
-  [(GdkQuartzNSWindow *)impl->toplevel beginManualMove];
+  [(GdkHaikuNSWindow *)impl->toplevel beginManualMove];
 }
 
 static void
@@ -2641,11 +2641,11 @@ gdk_quartz_window_set_decorations (GdkWindow       *window,
           NSScreen *screen = [impl->toplevel screen];
 
           /* Make sure the old window is closed, recall that releasedWhenClosed
-           * is set on GdkQuartzWindows.
+           * is set on GdkHaikuWindows.
            */
           [impl->toplevel close];
 
-          impl->toplevel = [[GdkQuartzNSWindow alloc] initWithContentRect:rect
+          impl->toplevel = [[GdkHaikuNSWindow alloc] initWithContentRect:rect
                                                                 styleMask:new_mask
                                                                   backing:NSBackingStoreBuffered
                                                                     defer:NO
@@ -2671,7 +2671,7 @@ gdk_quartz_window_set_decorations (GdkWindow       *window,
        * enabled, to get the shadow shape updated.
        */
       if (![old_view isOpaque] && [impl->toplevel hasShadow])
-        [(GdkQuartzView*)old_view setNeedsInvalidateShadow:YES];
+        [(GdkHaikuView*)old_view setNeedsInvalidateShadow:YES];
 
       [old_view release];
     }

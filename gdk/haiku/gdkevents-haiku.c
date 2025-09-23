@@ -386,9 +386,9 @@ get_window_point_from_screen_point (GdkWindow *window,
                                     gint      *y)
 {
   NSPoint point;
-  GdkQuartzNSWindow *nswindow;
+  GdkHaikuNSWindow *nswindow;
 
-  nswindow = (GdkQuartzNSWindow*)gdk_quartz_window_get_nswindow (window);
+  nswindow = (GdkHaikuNSWindow*)gdk_quartz_window_get_nswindow (window);
   point = [nswindow convertPointFromScreen:screen_point];
   *x = point.x;
   *y = window->height - point.y;
@@ -421,11 +421,11 @@ get_toplevel_from_ns_event (NSEvent *nsevent,
 
   if (nswindow)
     {
-      GdkQuartzView *view;
+      GdkHaikuView *view;
       NSPoint point, view_point;
       NSRect view_bounds;
 
-      view = (GdkQuartzView *)[[nsevent window] contentView];
+      view = (GdkHaikuView *)[[nsevent window] contentView];
 
       toplevel = [view gdkWindow];
 
@@ -484,7 +484,7 @@ get_toplevel_from_ns_event (NSEvent *nsevent,
         }
       else
         {
-	  *screen_point = [(GdkQuartzNSWindow*)nswindow convertPointToScreen:point];
+	  *screen_point = [(GdkHaikuNSWindow*)nswindow convertPointToScreen:point];
           *x = point.x;
           *y = toplevel->height - point.y;
         }
@@ -571,7 +571,7 @@ _gdk_quartz_events_update_focus_window (GdkWindow *window,
   if (got_focus && window == current_keyboard_window)
     return;
 
-  /* FIXME: Don't do this when grabbed? Or make GdkQuartzNSWindow
+  /* FIXME: Don't do this when grabbed? Or make GdkHaikuNSWindow
    * disallow it in the first place instead?
    */
   
@@ -677,7 +677,7 @@ find_toplevel_under_pointer (GdkDisplay *display,
 static GdkWindow *
 find_toplevel_for_keyboard_event (NSEvent *nsevent)
 {
-  GdkQuartzView *view = (GdkQuartzView *)[[nsevent window] contentView];
+  GdkHaikuView *view = (GdkHaikuView *)[[nsevent window] contentView];
   GdkWindow *window  = [view gdkWindow];
   GdkDisplay *display = gdk_window_get_display (window);
   GdkSeat *seat = gdk_display_get_default_seat (display);
@@ -810,12 +810,12 @@ find_window_for_ns_event (NSEvent *nsevent,
                           gint    *x_root,
                           gint    *y_root)
 {
-  GdkQuartzView *view;
+  GdkHaikuView *view;
   GdkWindow *toplevel;
   NSPoint screen_point;
   NSEventType event_type;
 
-  view = (GdkQuartzView *)[[nsevent window] contentView];
+  view = (GdkHaikuView *)[[nsevent window] contentView];
 
   toplevel = get_toplevel_from_ns_event (nsevent, &screen_point, x, y);
   if (!toplevel)
@@ -1546,7 +1546,7 @@ gdk_event_translate (GdkEvent *event,
   nswindow = [nsevent window];
 
   /* Ignore events for windows not created by GDK. */
-  if (nswindow && ![[nswindow contentView] isKindOfClass:[GdkQuartzView class]])
+  if (nswindow && ![[nswindow contentView] isKindOfClass:[GdkHaikuView class]])
     return FALSE;
 
   /* Ignore events for ones with no windows */
@@ -1576,16 +1576,16 @@ gdk_event_translate (GdkEvent *event,
    * dragged. This is a workaround for the window getting events for
    * the window title.
    */
-  if ([(GdkQuartzNSWindow *)nswindow isInMove])
+  if ([(GdkHaikuNSWindow *)nswindow isInMove])
     {
       _gdk_quartz_events_break_all_grabs (get_time_from_ns_event (nsevent));
       return FALSE;
     }
 
   /* Also when in a manual resize or move , we ignore events so that
-   * these are pushed to GdkQuartzNSWindow's sendEvent handler.
+   * these are pushed to GdkHaikuNSWindow's sendEvent handler.
    */
-  if ([(GdkQuartzNSWindow *)nswindow isInManualResizeOrMove])
+  if ([(GdkHaikuNSWindow *)nswindow isInManualResizeOrMove])
     return FALSE;
 
   /* Find the right GDK window to send the event to, taking grabs and

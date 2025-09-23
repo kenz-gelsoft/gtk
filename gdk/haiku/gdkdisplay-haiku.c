@@ -90,7 +90,7 @@ void
 _gdk_quartz_display_add_frame_callback (GdkDisplay             *display,
                                         GdkWindow              *window)
 {
-  GdkQuartzDisplay *display_quartz;
+  GdkHaikuDisplay *display_quartz;
   GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
 
   display_quartz = GDK_QUARTZ_DISPLAY (display);
@@ -108,7 +108,7 @@ void
 _gdk_quartz_display_remove_frame_callback (GdkDisplay             *display,
                                            GdkWindow              *window)
 {
-  GdkQuartzDisplay *display_quartz = GDK_QUARTZ_DISPLAY (display);
+  GdkHaikuDisplay *display_quartz = GDK_QUARTZ_DISPLAY (display);
   GSList *link;
 
   link = g_slist_find (display_quartz->windows_awaiting_frame, window);
@@ -127,7 +127,7 @@ static gboolean
 gdk_quartz_display_frame_cb (gpointer data)
 {
   GdkDisplayLinkSource *source;
-  GdkQuartzDisplay *display_quartz = data;
+  GdkHaikuDisplay *display_quartz = data;
   GSList *iter, **last_next = NULL;
   gint64 presentation_time;
 
@@ -185,7 +185,7 @@ gdk_quartz_display_frame_cb (gpointer data)
 static void
 gdk_quartz_display_init_display_link (GdkDisplay *display)
 {
-  GdkQuartzDisplay *display_quartz = GDK_QUARTZ_DISPLAY (display);
+  GdkHaikuDisplay *display_quartz = GDK_QUARTZ_DISPLAY (display);
 
   display_quartz->frame_source = gdk_display_link_source_new ();
   g_source_set_callback (display_quartz->frame_source,
@@ -389,9 +389,9 @@ cgrect_to_gdkrect (CGRect cgrect)
 
 static void
 configure_monitor (GdkMonitor       *monitor,
-                   GdkQuartzDisplay *display)
+                   GdkHaikuDisplay *display)
 {
-  GdkQuartzMonitor *quartz_monitor = GDK_QUARTZ_MONITOR (monitor);
+  GdkHaikuMonitor *quartz_monitor = GDK_QUARTZ_MONITOR (monitor);
   CGSize disp_size = CGDisplayScreenSize (quartz_monitor->id);
   gint width = (int)trunc (disp_size.width);
   gint height = (int)trunc (disp_size.height);
@@ -422,7 +422,7 @@ configure_monitor (GdkMonitor       *monitor,
 }
 
 static void
-display_rect (GdkQuartzDisplay *display)
+display_rect (GdkHaikuDisplay *display)
 {
   uint32_t disp, n_displays = 0;
   float min_x = 0.0, max_x = 0.0, min_y = 0.0, max_y = 0.0;
@@ -460,7 +460,7 @@ display_rect (GdkQuartzDisplay *display)
 static gboolean
 same_monitor (gconstpointer a, gconstpointer b)
 {
-  GdkQuartzMonitor *mon_a = GDK_QUARTZ_MONITOR (a);
+  GdkHaikuMonitor *mon_a = GDK_QUARTZ_MONITOR (a);
   CGDirectDisplayID disp_id = (CGDirectDisplayID)GPOINTER_TO_INT (b);
   if (!mon_a)
     return FALSE;
@@ -472,7 +472,7 @@ display_reconfiguration_callback (CGDirectDisplayID            cg_display,
                                   CGDisplayChangeSummaryFlags  flags,
                                   void                        *data)
 {
-  GdkQuartzDisplay *display = data;
+  GdkHaikuDisplay *display = data;
 
   /* Ignore the begin configuration signal. */
   if (flags & kCGDisplayBeginConfigurationFlag)
@@ -482,7 +482,7 @@ display_reconfiguration_callback (CGDirectDisplayID            cg_display,
                kCGDisplaySetMainFlag | kCGDisplayMirrorFlag |
                kCGDisplayUnMirrorFlag))
     {
-      GdkQuartzMonitor *monitor = NULL;
+      GdkHaikuMonitor *monitor = NULL;
       guint index;
 
       if (!g_ptr_array_find_with_equal_func (display->monitors,
@@ -515,7 +515,7 @@ display_reconfiguration_callback (CGDirectDisplayID            cg_display,
                                             same_monitor,
                                             &index))
         {
-          GdkQuartzMonitor *monitor = g_ptr_array_index (display->monitors,
+          GdkHaikuMonitor *monitor = g_ptr_array_index (display->monitors,
                                                          index);
           gdk_display_monitor_removed (GDK_DISPLAY (display),
                                        GDK_MONITOR (monitor));
@@ -530,7 +530,7 @@ display_reconfiguration_callback (CGDirectDisplayID            cg_display,
 static int
 gdk_quartz_display_get_n_monitors (GdkDisplay *display)
 {
-  GdkQuartzDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
+  GdkHaikuDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
   return quartz_display->monitors->len;
 }
 
@@ -538,7 +538,7 @@ static GdkMonitor *
 gdk_quartz_display_get_monitor (GdkDisplay *display,
                                 int         monitor_num)
 {
-  GdkQuartzDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
+  GdkHaikuDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
   int n_displays = gdk_quartz_display_get_n_monitors (display);
 
   if (monitor_num >= 0 && monitor_num < n_displays)
@@ -550,7 +550,7 @@ gdk_quartz_display_get_monitor (GdkDisplay *display,
 static GdkMonitor *
 gdk_quartz_display_get_primary_monitor (GdkDisplay *display)
 {
-  GdkQuartzDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
+  GdkHaikuDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
   CGDirectDisplayID primary_id = CGMainDisplayID ();
   GdkMonitor *monitor = NULL;
   guint index;
@@ -592,7 +592,7 @@ gdk_quartz_display_get_monitor_at_window (GdkDisplay *display,
 
   if (screen)
   {
-    GdkQuartzDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
+    GdkHaikuDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
     guint index;
     CGDirectDisplayID disp_id =
       [[[screen deviceDescription]
@@ -612,10 +612,10 @@ gdk_quartz_display_get_monitor_at_window (GdkDisplay *display,
   return monitor;
 }
 
-G_DEFINE_TYPE (GdkQuartzDisplay, gdk_quartz_display, GDK_TYPE_DISPLAY)
+G_DEFINE_TYPE (GdkHaikuDisplay, gdk_quartz_display, GDK_TYPE_DISPLAY)
 
 static void
-gdk_quartz_display_init (GdkQuartzDisplay *display)
+gdk_quartz_display_init (GdkHaikuDisplay *display)
 {
   uint32_t n_displays = 0, disp;
   CGDirectDisplayID *displays;
@@ -625,7 +625,7 @@ gdk_quartz_display_init (GdkQuartzDisplay *display)
   display->monitors = g_ptr_array_new_full (n_displays, g_object_unref);
   for (disp = 0; disp < n_displays; ++disp)
     {
-      GdkQuartzMonitor *monitor = g_object_new (GDK_TYPE_QUARTZ_MONITOR,
+      GdkHaikuMonitor *monitor = g_object_new (GDK_TYPE_QUARTZ_MONITOR,
                                                        "display", display, NULL);
       monitor->id = displays[disp];
       g_ptr_array_add (display->monitors, monitor);
@@ -641,7 +641,7 @@ gdk_quartz_display_init (GdkQuartzDisplay *display)
 static void
 gdk_quartz_display_dispose (GObject *object)
 {
-  GdkQuartzDisplay *quartz_display = GDK_QUARTZ_DISPLAY (object);
+  GdkHaikuDisplay *quartz_display = GDK_QUARTZ_DISPLAY (object);
 
   g_ptr_array_free (quartz_display->monitors, TRUE);
   CGDisplayRemoveReconfigurationCallback (display_reconfiguration_callback,
@@ -657,7 +657,7 @@ gdk_quartz_display_finalize (GObject *object)
 }
 
 static void
-gdk_quartz_display_class_init (GdkQuartzDisplayClass *class)
+gdk_quartz_display_class_init (GdkHaikuDisplayClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
   GdkDisplayClass *display_class = GDK_DISPLAY_CLASS (class);
@@ -723,7 +723,7 @@ gdk_quartz_display_class_init (GdkQuartzDisplayClass *class)
   display_class->make_gl_context_current = gdk_quartz_display_make_gl_context_current;
 
   /**
-   * GdkQuartzDisplay::monitors-changed:
+   * GdkHaikuDisplay::monitors-changed:
    * @display: The object on which the signal is emitted
    *
    * The ::monitors-changed signal is emitted whenever the arrangement

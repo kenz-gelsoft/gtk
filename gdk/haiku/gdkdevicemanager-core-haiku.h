@@ -27,7 +27,7 @@
 
 G_BEGIN_DECLS
 
-struct _GdkQuartzDeviceManagerCore
+struct _GdkHaikuDeviceManagerCore
 {
   GdkDeviceManager parent_object;
   GdkDevice *core_pointer;
@@ -36,7 +36,7 @@ struct _GdkQuartzDeviceManagerCore
   guint num_active_devices;
 };
 
-struct _GdkQuartzDeviceManagerCoreClass
+struct _GdkHaikuDeviceManagerCoreClass
 {
   GdkDeviceManagerClass parent_class;
 };

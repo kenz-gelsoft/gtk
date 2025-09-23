@@ -26,7 +26,7 @@
 
 G_BEGIN_DECLS
 
-struct _GdkQuartzDragContext
+struct _GdkHaikuDragContext
 {
   GdkDragContext context;
 
@@ -34,7 +34,7 @@ struct _GdkQuartzDragContext
   GdkDevice *device;
 };
 
-struct _GdkQuartzDragContextClass
+struct _GdkHaikuDragContextClass
 {
   GdkDragContextClass context_class;
 };

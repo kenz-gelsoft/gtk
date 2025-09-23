@@ -1,4 +1,4 @@
-/* GdkQuartzView.h
+/* GdkHaikuView.h
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -35,9 +35,9 @@
 #define GIC_FILTER_FILTERED	1
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101400
-@interface GdkQuartzView : NSView <NSTextInputClient>
+@interface GdkHaikuView : NSView <NSTextInputClient>
 #else
-@interface GdkQuartzView : NSView <NSTextInputClient, NSViewLayerContentScaleDelegate>
+@interface GdkHaikuView : NSView <NSTextInputClient, NSViewLayerContentScaleDelegate>
 #endif
 {
   GdkWindow *gdk_window;

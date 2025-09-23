@@ -63,17 +63,17 @@
 
 static void  gdk_quartz_screen_dispose          (GObject          *object);
 static void  gdk_quartz_screen_finalize         (GObject          *object);
-static void  gdk_quartz_screen_calculate_layout (GdkQuartzScreen  *screen,
-                                                 GdkQuartzDisplay *display);
-static void  gdk_quartz_screen_reconfigure      (GdkQuartzDisplay *display,
-                                                 GdkQuartzScreen  *screen);
+static void  gdk_quartz_screen_calculate_layout (GdkHaikuScreen  *screen,
+                                                 GdkHaikuDisplay *display);
+static void  gdk_quartz_screen_reconfigure      (GdkHaikuDisplay *display,
+                                                 GdkHaikuScreen  *screen);
 
 static const double dpi = 72.0;
 
-G_DEFINE_TYPE (GdkQuartzScreen, gdk_quartz_screen, GDK_TYPE_SCREEN);
+G_DEFINE_TYPE (GdkHaikuScreen, gdk_quartz_screen, GDK_TYPE_SCREEN);
 
 static void
-gdk_quartz_screen_init (GdkQuartzScreen *quartz_screen)
+gdk_quartz_screen_init (GdkHaikuScreen *quartz_screen)
 {
   GdkScreen *screen = GDK_SCREEN (quartz_screen);
   /* Screen resolution is used exclusively to pass to Pango for font
@@ -96,7 +96,7 @@ gdk_quartz_screen_init (GdkQuartzScreen *quartz_screen)
 static void
 gdk_quartz_screen_dispose (GObject *object)
 {
-  GdkQuartzScreen *screen = GDK_QUARTZ_SCREEN (object);
+  GdkHaikuScreen *screen = GDK_QUARTZ_SCREEN (object);
 
   if (screen->screen_changed_id)
     {
@@ -119,8 +119,8 @@ gdk_quartz_screen_finalize (GObject *object)
 @end
 
 static void
-gdk_quartz_screen_calculate_layout (GdkQuartzScreen *screen,
-                                    GdkQuartzDisplay *display)
+gdk_quartz_screen_calculate_layout (GdkHaikuScreen *screen,
+                                    GdkHaikuDisplay *display)
 {
   if (!display)
     display = GDK_QUARTZ_DISPLAY (gdk_screen_get_display (GDK_SCREEN (screen)));
@@ -171,7 +171,7 @@ _gdk_quartz_screen_update_window_sizes (GdkScreen *screen)
 }
 
 static void
-gdk_quartz_screen_reconfigure (GdkQuartzDisplay *display, GdkQuartzScreen *screen)
+gdk_quartz_screen_reconfigure (GdkHaikuDisplay *display, GdkHaikuScreen *screen)
 {
   int width, height;
 
@@ -256,7 +256,7 @@ gdk_quartz_screen_get_height_mm (GdkScreen *screen)
 }
 
 static void
-gdk_quartz_screen_class_init (GdkQuartzScreenClass *klass)
+gdk_quartz_screen_class_init (GdkHaikuScreenClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GdkScreenClass *screen_class = GDK_SCREEN_CLASS (klass);

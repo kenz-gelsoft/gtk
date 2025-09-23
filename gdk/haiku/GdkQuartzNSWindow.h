@@ -1,4 +1,4 @@
-/* GdkQuartzNSWindow.h
+/* GdkHaikuNSWindow.h
  *
  * Copyright (C) 2005-2007 Imendio AB
  *
@@ -21,7 +21,7 @@
 #include <glib.h>
 #include <gdk.h>
 
-@interface GdkQuartzNSWindow : NSWindow {
+@interface GdkHaikuNSWindow : NSWindow {
   BOOL    inMove;
   BOOL    inShowOrHide;
   BOOL    initialPositionKnown;

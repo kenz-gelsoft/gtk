@@ -28,18 +28,18 @@
 G_BEGIN_DECLS
 
 #define GDK_TYPE_QUARTZ_DRAG_CONTEXT              (gdk_quartz_drag_context_get_type ())
-#define GDK_QUARTZ_DRAG_CONTEXT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_DRAG_CONTEXT, GdkQuartzDragContext))
-#define GDK_QUARTZ_DRAG_CONTEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_QUARTZ_DRAG_CONTEXT, GdkQuartzDragContextClass))
+#define GDK_QUARTZ_DRAG_CONTEXT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_DRAG_CONTEXT, GdkHaikuDragContext))
+#define GDK_QUARTZ_DRAG_CONTEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_QUARTZ_DRAG_CONTEXT, GdkHaikuDragContextClass))
 #define GDK_IS_QUARTZ_DRAG_CONTEXT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_QUARTZ_DRAG_CONTEXT))
 #define GDK_IS_QUARTZ_DRAG_CONTEXT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_QUARTZ_DRAG_CONTEXT))
-#define GDK_QUARTZ_DRAG_CONTEXT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_QUARTZ_DRAG_CONTEXT, GdkQuartzDragContextClass))
+#define GDK_QUARTZ_DRAG_CONTEXT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_QUARTZ_DRAG_CONTEXT, GdkHaikuDragContextClass))
 
 #ifdef GDK_COMPILATION
-typedef struct _GdkQuartzDragContext GdkQuartzDragContext;
+typedef struct _GdkHaikuDragContext GdkHaikuDragContext;
 #else
-typedef GdkDragContext GdkQuartzDragContext;
+typedef GdkDragContext GdkHaikuDragContext;
 #endif
-typedef struct _GdkQuartzDragContextClass GdkQuartzDragContextClass;
+typedef struct _GdkHaikuDragContextClass GdkHaikuDragContextClass;
 
 
 GDK_AVAILABLE_IN_ALL

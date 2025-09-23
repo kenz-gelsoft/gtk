@@ -31,28 +31,28 @@
 #include "gdkdisplaymanagerprivate.h"
 #include "gdkinternals.h"
 
-struct _GdkQuartzDisplayManager
+struct _GdkHaikuDisplayManager
 {
   GdkDisplayManager parent;
 };
 
 
-G_DEFINE_TYPE (GdkQuartzDisplayManager, gdk_quartz_display_manager, GDK_TYPE_DISPLAY_MANAGER)
+G_DEFINE_TYPE (GdkHaikuDisplayManager, gdk_quartz_display_manager, GDK_TYPE_DISPLAY_MANAGER)
 
 static void
-gdk_quartz_display_manager_init (GdkQuartzDisplayManager *manager)
+gdk_quartz_display_manager_init (GdkHaikuDisplayManager *manager)
 {
 }
 
 static void
 gdk_quartz_display_manager_finalize (GObject *object)
 {
-  g_error ("A GdkQuartzDisplayManager object was finalized. This should not happen");
+  g_error ("A GdkHaikuDisplayManager object was finalized. This should not happen");
   G_OBJECT_CLASS (gdk_quartz_display_manager_parent_class)->finalize (object);
 }
 
 static void
-gdk_quartz_display_manager_class_init (GdkQuartzDisplayManagerClass *class)
+gdk_quartz_display_manager_class_init (GdkHaikuDisplayManagerClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 

@@ -23,12 +23,12 @@
 #include "gdkprivate-quartz.h"
 
 
-struct _GdkQuartzVisual
+struct _GdkHaikuVisual
 {
   GdkVisual visual;
 };
 
-struct _GdkQuartzVisualClass
+struct _GdkHaikuVisualClass
 {
   GdkVisualClass visual_class;
 };
@@ -76,15 +76,15 @@ create_gray_visual (GdkScreen *screen)
 }
 
 
-G_DEFINE_TYPE (GdkQuartzVisual, gdk_quartz_visual, GDK_TYPE_VISUAL)
+G_DEFINE_TYPE (GdkHaikuVisual, gdk_quartz_visual, GDK_TYPE_VISUAL)
 
 static void
-gdk_quartz_visual_init (GdkQuartzVisual *quartz_visual)
+gdk_quartz_visual_init (GdkHaikuVisual *quartz_visual)
 {
 }
 
 static void
-gdk_quartz_visual_class_init (GdkQuartzVisualClass *class)
+gdk_quartz_visual_class_init (GdkHaikuVisualClass *class)
 {
 }
 

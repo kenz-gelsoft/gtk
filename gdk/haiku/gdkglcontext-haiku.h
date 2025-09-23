@@ -36,7 +36,7 @@
 
 G_BEGIN_DECLS
 
-struct _GdkQuartzGLContext
+struct _GdkHaikuGLContext
 {
   GdkGLContext parent_instance;
 
@@ -44,7 +44,7 @@ struct _GdkQuartzGLContext
   gboolean is_attached;
 };
 
-struct _GdkQuartzGLContextClass
+struct _GdkHaikuGLContextClass
 {
   GdkGLContextClass parent_class;
 };

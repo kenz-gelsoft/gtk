@@ -19,8 +19,8 @@
 #ifndef __GDK_WINDOW_QUARTZ_H__
 #define __GDK_WINDOW_QUARTZ_H__
 
-#import <gdk/quartz/GdkQuartzView.h>
-#import <gdk/quartz/GdkQuartzNSWindow.h>
+#import <gdk/quartz/GdkHaikuView.h>
+#import <gdk/quartz/GdkHaikuNSWindow.h>
 #include "gdk/gdkwindowimpl.h"
 
 G_BEGIN_DECLS
@@ -46,7 +46,7 @@ struct _GdkWindowImplQuartz
 
   NSWindow *toplevel;
   NSTrackingRectTag tracking_rect;
-  GdkQuartzView *view;
+  GdkHaikuView *view;
 
   GdkWindowTypeHint type_hint;
 

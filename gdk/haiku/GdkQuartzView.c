@@ -1,4 +1,4 @@
-/* GdkQuartzView.m
+/* GdkHaikuView.m
  *
  * Copyright (C) 2005-2007 Imendio AB
  * Copyright (C) 2011 Hiroyuki Yamamoto
@@ -19,7 +19,7 @@
 
 #include <AvailabilityMacros.h>
 #include "config.h"
-#import "GdkQuartzView.h"
+#import "GdkHaikuView.h"
 #include "gdkquartzwindow.h"
 #include "gdkprivate-quartz.h"
 #include "gdkquartz.h"
@@ -28,7 +28,7 @@
 #import <AppKit/AppKit.h>
 #import <IOSurface/IOSurface.h>
 
-@implementation GdkQuartzView
+@implementation GdkHaikuView
 
 
 

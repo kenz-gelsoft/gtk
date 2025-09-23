@@ -1,4 +1,4 @@
-/* GdkQuartzWindow.m
+/* GdkHaikuWindow.m
  *
  * Copyright (C) 2005-2007 Imendio AB
  *
@@ -17,14 +17,14 @@
  */
 
 #include "config.h"
-#import "GdkQuartzNSWindow.h"
+#import "GdkHaikuNSWindow.h"
 #include "gdkquartzwindow.h"
 #include "gdkdnd-quartz.h"
 #include "gdkprivate-quartz.h"
 #include "gdkinternal-quartz.h"
 #include "gdkquartzdnd.h"
 
-@implementation GdkQuartzNSWindow
+@implementation GdkHaikuNSWindow
 
 - (void)windowWillClose:(NSNotification*)notification
 {
@@ -811,12 +811,12 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
 typedef enum
 {
  GDK_QUARTZ_FULL_SCREEN_MASK = NSFullScreenWindowMask,
-} GdkQuartzFullScreen;
+} GdkHaikuFullScreen;
 #else
 typedef enum
 {
  GDK_QUARTZ_FULL_SCREEN_MASK = NSWindowStyleMaskFullScreen,
-} GdkQuartzFullScreen;
+} GdkHaikuFullScreen;
 #endif
 - (void)setStyleMask:(NSUInteger)styleMask
 {

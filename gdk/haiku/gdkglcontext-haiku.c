@@ -34,7 +34,7 @@
 
 #include "gdkintl.h"
 
-G_DEFINE_TYPE (GdkQuartzGLContext, gdk_quartz_gl_context, GDK_TYPE_GL_CONTEXT)
+G_DEFINE_TYPE (GdkHaikuGLContext, gdk_quartz_gl_context, GDK_TYPE_GL_CONTEXT)
 
 static void gdk_quartz_gl_context_dispose (GObject *gobject);
 
@@ -70,13 +70,13 @@ gdk_quartz_gl_context_end_frame (GdkGLContext *context,
                                  cairo_region_t *painted,
                                  cairo_region_t *damage)
 {
-  GdkQuartzGLContext *context_quartz = GDK_QUARTZ_GL_CONTEXT (context);
+  GdkHaikuGLContext *context_quartz = GDK_QUARTZ_GL_CONTEXT (context);
 
   [context_quartz->gl_context flushBuffer];
 }
 
 static void
-gdk_quartz_gl_context_class_init (GdkQuartzGLContextClass *klass)
+gdk_quartz_gl_context_class_init (GdkHaikuGLContextClass *klass)
 {
   GdkGLContextClass *context_class = GDK_GL_CONTEXT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -87,7 +87,7 @@ gdk_quartz_gl_context_class_init (GdkQuartzGLContextClass *klass)
 }
 
 static void
-gdk_quartz_gl_context_init (GdkQuartzGLContext *self)
+gdk_quartz_gl_context_init (GdkHaikuGLContext *self)
 {
 }
 
@@ -104,7 +104,7 @@ gdk_quartz_window_create_gl_context (GdkWindow     *window,
                                      GError       **error)
 {
   GdkDisplay *display = gdk_window_get_display (window);
-  GdkQuartzGLContext *context;
+  GdkHaikuGLContext *context;
   NSOpenGLContext *ctx;
   NSOpenGLPixelFormatAttribute attrs[] =
     {
@@ -167,7 +167,7 @@ gdk_quartz_window_create_gl_context (GdkWindow     *window,
 static void
 gdk_quartz_gl_context_dispose (GObject *gobject)
 {
-  GdkQuartzGLContext *context_quartz = GDK_QUARTZ_GL_CONTEXT (gobject);
+  GdkHaikuGLContext *context_quartz = GDK_QUARTZ_GL_CONTEXT (gobject);
 
   if (context_quartz->gl_context != NULL)
     {
@@ -183,7 +183,7 @@ gboolean
 gdk_quartz_display_is_gl_context_current (GdkDisplay   *display,
                                           GdkGLContext *context)
 {
-  GdkQuartzGLContext *context_quartz = GDK_QUARTZ_GL_CONTEXT (context);
+  GdkHaikuGLContext *context_quartz = GDK_QUARTZ_GL_CONTEXT (context);
 
   return context_quartz->gl_context == [NSOpenGLContext currentContext];
 }
@@ -192,7 +192,7 @@ gboolean
 gdk_quartz_display_make_gl_context_current (GdkDisplay   *display,
                                             GdkGLContext *context)
 {
-  GdkQuartzGLContext *context_quartz;
+  GdkHaikuGLContext *context_quartz;
 
   if (context == NULL)
     {

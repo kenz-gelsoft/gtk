@@ -40,7 +40,7 @@ typedef enum
   GDK_QUARTZ_POINTER_DEVICE_TYPE_ERASER = NSPointingDeviceTypeEraser,
   GDK_QUARTZ_POINTER_DEVICE_TYPE_PEN = NSPointingDeviceTypePen,
 #endif
-} GdkQuartzPointerDeviceType;
+} GdkHaikuPointerDeviceType;
 
 #define HAS_FOCUS(toplevel)                           \
   ((toplevel)->has_focus || (toplevel)->has_pointer_focus)
@@ -53,10 +53,10 @@ static GList * gdk_quartz_device_manager_core_list_devices (GdkDeviceManager *de
 static GdkDevice * gdk_quartz_device_manager_core_get_client_pointer (GdkDeviceManager *device_manager);
 
 
-G_DEFINE_TYPE (GdkQuartzDeviceManagerCore, gdk_quartz_device_manager_core, GDK_TYPE_DEVICE_MANAGER)
+G_DEFINE_TYPE (GdkHaikuDeviceManagerCore, gdk_quartz_device_manager_core, GDK_TYPE_DEVICE_MANAGER)
 
 static void
-gdk_quartz_device_manager_core_class_init (GdkQuartzDeviceManagerCoreClass *klass)
+gdk_quartz_device_manager_core_class_init (GdkHaikuDeviceManagerCoreClass *klass)
 {
   GdkDeviceManagerClass *device_manager_class = GDK_DEVICE_MANAGER_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -98,7 +98,7 @@ create_core_keyboard (GdkDeviceManager *device_manager,
 }
 
 static void
-gdk_quartz_device_manager_core_init (GdkQuartzDeviceManagerCore *device_manager)
+gdk_quartz_device_manager_core_init (GdkHaikuDeviceManagerCore *device_manager)
 {
   device_manager->known_tablet_devices = NULL;
 }
@@ -106,7 +106,7 @@ gdk_quartz_device_manager_core_init (GdkQuartzDeviceManagerCore *device_manager)
 static void
 gdk_quartz_device_manager_core_finalize (GObject *object)
 {
-  GdkQuartzDeviceManagerCore *quartz_device_manager_core;
+  GdkHaikuDeviceManagerCore *quartz_device_manager_core;
 
   quartz_device_manager_core = GDK_QUARTZ_DEVICE_MANAGER_CORE (object);
 
@@ -121,7 +121,7 @@ gdk_quartz_device_manager_core_finalize (GObject *object)
 static void
 gdk_quartz_device_manager_core_constructed (GObject *object)
 {
-  GdkQuartzDeviceManagerCore *device_manager;
+  GdkHaikuDeviceManagerCore *device_manager;
   GdkDisplay *display;
   GdkSeat *seat;
 
@@ -143,7 +143,7 @@ static GList *
 gdk_quartz_device_manager_core_list_devices (GdkDeviceManager *device_manager,
                                              GdkDeviceType     type)
 {
-  GdkQuartzDeviceManagerCore *self;
+  GdkHaikuDeviceManagerCore *self;
   GList *devices = NULL;
   GList *l;
 
@@ -168,9 +168,9 @@ gdk_quartz_device_manager_core_list_devices (GdkDeviceManager *device_manager,
 static GdkDevice *
 gdk_quartz_device_manager_core_get_client_pointer (GdkDeviceManager *device_manager)
 {
-  GdkQuartzDeviceManagerCore *quartz_device_manager_core;
+  GdkHaikuDeviceManagerCore *quartz_device_manager_core;
 
-  quartz_device_manager_core = (GdkQuartzDeviceManagerCore *) device_manager;
+  quartz_device_manager_core = (GdkHaikuDeviceManagerCore *) device_manager;
   return quartz_device_manager_core->core_pointer;
 }
 
@@ -245,7 +245,7 @@ void
 _gdk_quartz_device_manager_register_device_for_ns_event (GdkDeviceManager *device_manager,
                                                          NSEvent          *nsevent)
 {
-  GdkQuartzDeviceManagerCore *self = GDK_QUARTZ_DEVICE_MANAGER_CORE (device_manager);
+  GdkHaikuDeviceManagerCore *self = GDK_QUARTZ_DEVICE_MANAGER_CORE (device_manager);
   GList *l = NULL;
   GdkInputSource input_source = GDK_SOURCE_MOUSE;
   GdkDevice *device = NULL;
@@ -346,7 +346,7 @@ GdkDevice *
 _gdk_quartz_device_manager_core_device_for_ns_event (GdkDeviceManager *device_manager,
                                                      NSEvent          *nsevent)
 {
-  GdkQuartzDeviceManagerCore *self = GDK_QUARTZ_DEVICE_MANAGER_CORE (device_manager);
+  GdkHaikuDeviceManagerCore *self = GDK_QUARTZ_DEVICE_MANAGER_CORE (device_manager);
   GdkDevice *device = NULL;
 
   if ([nsevent type] == GDK_QUARTZ_EVENT_TABLET_PROXIMITY ||
