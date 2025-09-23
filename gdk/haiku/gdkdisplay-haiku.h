@@ -20,7 +20,7 @@
 #ifndef __GDK_HAIKU_DISPLAY__
 #define __GDK_HAIKU_DISPLAY__
 
-#include <AppKit/AppKit.h>
+//#include <AppKit/AppKit.h>
 
 #include "gdkdisplayprivate.h"
 #include "gdkkeys.h"
@@ -34,8 +34,8 @@ G_BEGIN_DECLS
 struct _GdkHaikuDisplay
 {
   GdkDisplay parent_instance;
-  NSRect geometry; /* In AppKit coordinates. */
-  NSSize size; /* Aggregate size of displays in millimeters. */
+//  NSRect geometry; /* In AppKit coordinates. */
+//  NSSize size; /* Aggregate size of displays in millimeters. */
   GPtrArray *monitors;
   /* This structure is not allocated. It points to an embedded
    * GList in the GdkWindow. */

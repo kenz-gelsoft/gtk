@@ -32,7 +32,7 @@ struct _GdkHaikuCursor
 {
   GdkCursor cursor;
 
-  NSCursor *nscursor;
+//  NSCursor *nscursor;
 };
 
 struct _GdkHaikuCursorClass
@@ -43,6 +43,7 @@ struct _GdkHaikuCursorClass
 
 static GdkCursor *cached_xcursors[G_N_ELEMENTS (xcursors)];
 
+#if 0
 static GdkCursor *
 gdk_haiku_cursor_new_from_nscursor (NSCursor      *nscursor,
                                      GdkCursorType  cursor_type)
@@ -57,10 +58,12 @@ gdk_haiku_cursor_new_from_nscursor (NSCursor      *nscursor,
 
   return GDK_CURSOR (private);
 }
+#endif
 
 static GdkCursor *
 create_blank_cursor (void)
 {
+#if 0
   NSCursor *nscursor;
   NSImage *nsimage;
   NSSize size = { 1.0, 1.0 };
@@ -71,6 +74,8 @@ create_blank_cursor (void)
   [nsimage release];
 
   return gdk_haiku_cursor_new_from_nscursor (nscursor, GDK_BLANK_CURSOR);
+#endif
+  return NULL;
 }
 
 static gboolean
@@ -95,6 +100,7 @@ get_bit (const guchar *data,
 static GdkCursor *
 create_builtin_cursor (GdkCursorType cursor_type)
 {
+#if 0
   GdkCursor *cursor;
   NSBitmapImageRep *bitmap_rep;
   NSInteger mask_width, mask_height;
@@ -185,12 +191,15 @@ create_builtin_cursor (GdkCursorType cursor_type)
   GDK_HAIKU_RELEASE_POOL;
 
   return cursor;
+#endif
+  return NULL;
 }
 
 GdkCursor*
 _gdk_haiku_display_get_cursor_for_type (GdkDisplay    *display,
                                          GdkCursorType  cursor_type)
 {
+#if 0
   NSCursor *nscursor;
 
   g_return_val_if_fail (display == gdk_display_get_default (), NULL);
@@ -248,6 +257,8 @@ _gdk_haiku_display_get_cursor_for_type (GdkDisplay    *display,
 
   [nscursor retain];
   return gdk_haiku_cursor_new_from_nscursor (nscursor, cursor_type);
+#endif
+  return NULL;
 }
 
 
@@ -257,6 +268,7 @@ _gdk_haiku_display_get_cursor_for_surface (GdkDisplay      *display,
 					    gdouble          x,
 					    gdouble          y)
 {
+#if 0
   NSImage *image;
   NSCursor *nscursor;
   GdkCursor *cursor;
@@ -284,6 +296,8 @@ _gdk_haiku_display_get_cursor_for_surface (GdkDisplay      *display,
   GDK_HAIKU_RELEASE_POOL;
 
   return cursor;
+#endif
+  return NULL;
 }
 
 /* OS X only exports a number of cursor types in its public NSCursor interface.
@@ -292,6 +306,7 @@ _gdk_haiku_display_get_cursor_for_surface (GdkDisplay      *display,
  * instead of in advance). WebKit does this too.
  */
 
+#if 0
 @interface gdkCoreCursor : NSCursor {
 @private
 	int type;
@@ -344,13 +359,15 @@ CUSTOM_CURSOR_CTOR(gdkZoomInCursor, 42)
 CUSTOM_CURSOR_CTOR(gdkZoomOutCursor, 43)
 
 @end
+#endif
 
 struct CursorsByName {
   const gchar *name;
-  NSString *selector;
+//  NSString *selector;
 };
 
 static const struct CursorsByName cursors_by_name[] = {
+#if 0
   /* Link & Status */
   { "context-menu", @"contextualMenuCursor" },
   { "help", @"gdkHelpCursor" },
@@ -389,6 +406,7 @@ static const struct CursorsByName cursors_by_name[] = {
   /* Zoom */
   { "zoom-in", @"gdkZoomInCursor" },
   { "zoom-out", @"gdkZoomOutCursor" },
+#endif
   { NULL, NULL },
 };
 
@@ -396,6 +414,7 @@ GdkCursor*
 _gdk_haiku_display_get_cursor_for_name (GdkDisplay  *display,
                                          const gchar *name)
 {
+#if 0
   NSCursor *nscursor;
   const struct CursorsByName *test;
   SEL selector;
@@ -415,6 +434,8 @@ _gdk_haiku_display_get_cursor_for_name (GdkDisplay  *display,
 
   [nscursor retain];
   return gdk_haiku_cursor_new_from_nscursor (nscursor, GDK_CURSOR_IS_PIXMAP);
+#endif
+  return NULL;
 }
 
 G_DEFINE_TYPE (GdkHaikuCursor, gdk_haiku_cursor, GDK_TYPE_CURSOR)
@@ -426,11 +447,13 @@ static cairo_surface_t *gdk_haiku_cursor_get_surface (GdkCursor *cursor,
 static void
 gdk_haiku_cursor_finalize (GObject *object)
 {
+#if 0
   GdkHaikuCursor *private = GDK_HAIKU_CURSOR (object);
 
   if (private->nscursor)
     [private->nscursor release];
   private->nscursor = NULL;
+#endif
 }
 
 static void
@@ -482,6 +505,7 @@ _gdk_haiku_display_get_maximal_cursor_size (GdkDisplay *display,
   *height = 65536;
 }
 
+#if 0
 NSCursor *
 _gdk_haiku_cursor_get_ns_cursor (GdkCursor *cursor)
 {
@@ -496,6 +520,7 @@ _gdk_haiku_cursor_get_ns_cursor (GdkCursor *cursor)
 
   return cursor_private->nscursor;
 }
+#endif
 
 static cairo_surface_t *
 gdk_haiku_cursor_get_surface (GdkCursor *cursor,

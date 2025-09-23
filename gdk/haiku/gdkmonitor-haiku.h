@@ -20,7 +20,7 @@
 
 #include <glib.h>
 #include <gio/gio.h>
-#include <AppKit/AppKit.h>
+//#include <AppKit/AppKit.h>
 
 #include "gdkmonitorprivate.h"
 
@@ -30,7 +30,7 @@
 struct _GdkHaikuMonitor
 {
   GdkMonitor parent;
-  CGDirectDisplayID id;
+//  CGDirectDisplayID id;
 };
 
 struct _GdkHaikuMonitorClass {

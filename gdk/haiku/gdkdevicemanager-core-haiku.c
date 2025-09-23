@@ -29,6 +29,7 @@
 #include "gdkprivate-haiku.h"
 #include "gdkinternal-haiku.h"
 
+#if 0
 typedef enum
 {
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
@@ -41,6 +42,7 @@ typedef enum
   GDK_HAIKU_POINTER_DEVICE_TYPE_PEN = NSPointingDeviceTypePen,
 #endif
 } GdkHaikuPointerDeviceType;
+#endif
 
 #define HAS_FOCUS(toplevel)                           \
   ((toplevel)->has_focus || (toplevel)->has_pointer_focus)
@@ -241,6 +243,7 @@ translate_device_axes (GdkDevice *source_device,
   g_object_thaw_notify (G_OBJECT (core_pointer));
 }
 
+#if 0
 void
 _gdk_haiku_device_manager_register_device_for_ns_event (GdkDeviceManager *device_manager,
                                                          NSEvent          *nsevent)
@@ -370,3 +373,4 @@ _gdk_haiku_device_manager_core_device_for_ns_event (GdkDeviceManager *device_man
 
   return device;
 }
+#endif

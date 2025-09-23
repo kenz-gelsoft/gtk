@@ -2,8 +2,8 @@
 add_languages(['objc'])
 
 gdk_haiku_sources = files(
-  'GdkHaikuView.c',
-  'GdkHaikuNSWindow.c',
+#  'GdkHaikuView.c',
+#  'GdkHaikuNSWindow.c',
   'gdkcursor-haiku.c',
   'gdkdevice-core-haiku.c',
   'gdkdevicemanager-core-haiku.c',

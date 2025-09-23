@@ -19,8 +19,8 @@
 #ifndef __GDK_WINDOW_HAIKU_H__
 #define __GDK_WINDOW_HAIKU_H__
 
-#import <gdk/haiku/GdkHaikuView.h>
-#import <gdk/haiku/GdkHaikuNSWindow.h>
+//#import <gdk/haiku/GdkHaikuView.h>
+//#import <gdk/haiku/GdkHaikuNSWindow.h>
 #include "gdk/gdkwindowimpl.h"
 
 G_BEGIN_DECLS
@@ -44,9 +44,9 @@ struct _GdkWindowImplHaiku
 
   GdkWindow *wrapper;
 
-  NSWindow *toplevel;
-  NSTrackingRectTag tracking_rect;
-  GdkHaikuView *view;
+//  NSWindow *toplevel;
+//  NSTrackingRectTag tracking_rect;
+//  GdkHaikuView *view;
 
   GdkWindowTypeHint type_hint;
 
@@ -74,18 +74,22 @@ struct _GdkWindowImplHaikuClass
 {
   GdkWindowImplClass parent_class;
 
+#if 0
   CGContextRef  (* get_context)     (GdkWindowImplHaiku *window,
                                      gboolean             antialias);
   void          (* release_context) (GdkWindowImplHaiku *window,
                                      CGContextRef         cg_context);
+#endif
 };
 
 GType _gdk_window_impl_haiku_get_type (void);
 
+#if 0
 CGContextRef gdk_haiku_window_get_context     (GdkWindowImplHaiku *window,
                                                 gboolean             antialias);
 void         gdk_haiku_window_release_context (GdkWindowImplHaiku *window,
                                                 CGContextRef         context);
+#endif
 
 /* Root window implementation for Quartz
  */
@@ -103,7 +107,7 @@ typedef struct _GdkRootWindowImplHaikuClass GdkRootWindowImplHaikuClass;
 struct _GdkRootWindowImplHaiku
 {
   GdkWindowImplHaiku parent_instance;
-  CGContextRef cg_context;
+//  CGContextRef cg_context;
   GList* cg_layers;
 };
  

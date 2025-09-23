@@ -174,6 +174,7 @@ _gdk_haiku_display_text_property_to_utf8_list (GdkDisplay    *display,
     }
 }
 
+#if 0
 GdkAtom
 gdk_haiku_pasteboard_type_to_atom_libgtk_only (NSString *type)
 {
@@ -214,3 +215,4 @@ gdk_haiku_atom_to_pasteboard_type_libgtk_only (GdkAtom atom)
 
   return ret;
 }
+#endif

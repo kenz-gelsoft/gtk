@@ -16,8 +16,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <AppKit/AppKit.h>
-#import <CoreVideo/CoreVideo.h>
+//#import <AppKit/AppKit.h>
+//#import <CoreVideo/CoreVideo.h>
 #include "gdk/gdk.h"
 
 /* Text Input Client */
@@ -34,6 +34,7 @@
 #define GIC_FILTER_PASSTHRU	0
 #define GIC_FILTER_FILTERED	1
 
+#if 0
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101400
 @interface GdkHaikuView : NSView <NSTextInputClient>
 #else
@@ -57,3 +58,4 @@
 - (void)createBackingStoreWithWidth: (CGFloat) width andHeight: (CGFloat) height;
 
 @end
+#endif

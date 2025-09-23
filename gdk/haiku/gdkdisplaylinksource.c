@@ -21,7 +21,7 @@
 
 #include "config.h"
 
-#include <mach/mach_time.h>
+//#include <mach/mach_time.h>
 
 #include "gdkinternal-haiku.h"
 #include "gdkdisplaylinksource.h"
@@ -77,10 +77,12 @@ gdk_display_link_source_dispatch (GSource     *source,
 static void
 gdk_display_link_source_finalize (GSource *source)
 {
+#if 0
   GdkDisplayLinkSource *impl = (GdkDisplayLinkSource *)source;
 
   CVDisplayLinkStop (impl->display_link);
   CVDisplayLinkRelease (impl->display_link);
+#endif
 }
 
 static GSourceFuncs gdk_display_link_source_funcs = {
@@ -93,15 +95,16 @@ static GSourceFuncs gdk_display_link_source_funcs = {
 void
 gdk_display_link_source_pause (GdkDisplayLinkSource *source)
 {
-  CVDisplayLinkStop (source->display_link);
+//  CVDisplayLinkStop (source->display_link);
 }
 
 void
 gdk_display_link_source_unpause (GdkDisplayLinkSource *source)
 {
-  CVDisplayLinkStart (source->display_link);
+//  CVDisplayLinkStart (source->display_link);
 }
 
+#if 0
 static CVReturn
 gdk_display_link_source_frame_cb (CVDisplayLinkRef   display_link,
                                   const CVTimeStamp *inNow,
@@ -147,6 +150,7 @@ gdk_display_link_source_frame_cb (CVDisplayLinkRef   display_link,
 
   return kCVReturnSuccess;
 }
+#endif
 
 /**
  * gdk_display_link_source_new:
@@ -164,6 +168,7 @@ gdk_display_link_source_frame_cb (CVDisplayLinkRef   display_link,
 GSource *
 gdk_display_link_source_new (void)
 {
+#if 0
   GdkDisplayLinkSource *impl;
   GSource *source;
   CVReturn ret;
@@ -203,11 +208,14 @@ gdk_display_link_source_new (void)
   g_source_set_name (source, "[gdk] quartz frame clock");
 
   return source;
+#endif
+  return NULL;
 }
 
 static gint64
 host_to_frame_clock_time (gint64 host_time)
 {
+#if 0
   static mach_timebase_info_data_t timebase_info;
 
   /*
@@ -254,4 +262,6 @@ host_to_frame_clock_time (gint64 host_time)
     }
 
   return host_time / timebase_info.denom;
+#endif
+  return 0;
 }

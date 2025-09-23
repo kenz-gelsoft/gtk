@@ -20,12 +20,12 @@
 
 #include "config.h"
 #include <sys/types.h>
-#include <sys/sysctl.h>
+//#include <sys/sysctl.h>
 #include <pthread.h>
 #include <unistd.h>
 
-#import <Cocoa/Cocoa.h>
-#include <Carbon/Carbon.h>
+//#import <Cocoa/Cocoa.h>
+//#include <Carbon/Carbon.h>
 
 #include <gdk/gdkdisplayprivate.h>
 
@@ -45,9 +45,11 @@
 #define GDK_LION_RESIZE 5
 #define TABLET_AXES 5
 
+#if 0
 #if MAC_OS_X_VERSION_MAX_ALLOWED < 1060
 #define NSEventTypeRotate 13
 #define NSEventTypeMagnify 30
+#endif
 #endif
 
 #define WINDOW_IS_TOPLEVEL(window)		     \
@@ -63,11 +65,11 @@ static GdkWindow   *current_keyboard_window;
 static void append_event                        (GdkEvent  *event,
                                                  gboolean   windowing);
 
+#if 0
 static GdkWindow *find_toplevel_under_pointer   (GdkDisplay *display,
                                                  NSPoint     screen_point,
                                                  gint       *x,
                                                  gint       *y);
-
 
 static void
 gdk_haiku_ns_notification_callback (CFNotificationCenterRef  center,
@@ -95,10 +97,12 @@ gdk_haiku_ns_notification_callback (CFNotificationCenterRef  center,
 
   gdk_event_put (&new_event);
 }
+#endif
 
 static void
 gdk_haiku_events_init_notifications (void)
 {
+#if 0
   static gboolean notifications_initialized = FALSE;
 
   if (notifications_initialized)
@@ -118,6 +122,7 @@ gdk_haiku_events_init_notifications (void)
                                    CFSTR ("AppleNoRedisplayAppearancePreferenceChanged"),
                                    NULL,
                                    CFNotificationSuspensionBehaviorDeliverImmediately);
+#endif
 }
 
 void
@@ -168,6 +173,7 @@ append_event (GdkEvent *event,
     _gdk_windowing_got_event (_gdk_display, node, event, 0);
 }
 
+#if 0
 static gint
 gdk_event_apply_filters (NSEvent *nsevent,
 			 GdkEvent *event,
@@ -506,6 +512,7 @@ get_toplevel_from_ns_event (NSEvent *nsevent,
 
   return toplevel;
 }
+#endif
 
 static GdkEvent *
 create_focus_event (GdkWindow *window,
@@ -529,6 +536,7 @@ create_focus_event (GdkWindow *window,
 static void
 generate_motion_event (GdkWindow *window)
 {
+#if 0
   NSPoint screen_point;
   GdkEvent *event;
   gint x, y, x_root, y_root;
@@ -559,6 +567,7 @@ generate_motion_event (GdkWindow *window)
   gdk_event_set_seat (event, seat);
 
   append_event (event, TRUE);
+#endif
 }
 
 /* Note: Used to both set a new focus window and to unset the old one. */
@@ -609,6 +618,7 @@ _gdk_haiku_events_update_focus_window (GdkWindow *window,
 void
 _gdk_haiku_events_send_map_event (GdkWindow *window)
 {
+#if 0
   GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (window->impl);
 
   if (!impl->toplevel)
@@ -623,8 +633,10 @@ _gdk_haiku_events_send_map_event (GdkWindow *window)
   
       gdk_event_put (&event);
     }
+#endif
 }
 
+#if 0
 static GdkWindow *
 find_toplevel_under_pointer (GdkDisplay *display,
                              NSPoint     screen_point,
@@ -1355,6 +1367,7 @@ synthesize_crossing_event (GdkWindow *window,
 
   return FALSE;
 }
+#endif
 
 void
 _gdk_haiku_synthesize_null_key_event (GdkWindow *window)
@@ -1378,6 +1391,7 @@ _gdk_haiku_synthesize_null_key_event (GdkWindow *window)
 GdkModifierType
 _gdk_haiku_events_get_current_keyboard_modifiers (void)
 {
+#if 0
   if (gdk_haiku_osx_version () >= GDK_OSX_SNOW_LEOPARD)
     {
       return get_keyboard_modifiers_from_ns_flags ([NSClassFromString(@"NSEvent") modifierFlags]);
@@ -1400,11 +1414,14 @@ _gdk_haiku_events_get_current_keyboard_modifiers (void)
 
       return modifiers;
     }
+#endif
+  return 0;
 }
 
 GdkModifierType
 _gdk_haiku_events_get_current_mouse_modifiers (void)
 {
+#if 0
   NSUInteger buttons = 0;
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1060
   if (gdk_haiku_osx_version () >= GDK_OSX_SNOW_LEOPARD)
@@ -1417,10 +1434,13 @@ _gdk_haiku_events_get_current_mouse_modifiers (void)
     buttons = GetCurrentButtonState ();
 #endif
   return get_mouse_button_modifiers_from_ns_buttons (buttons);
+#endif
+  return 0;
 }
 
 /* Detect window resizing */
 
+#if 0
 static gboolean
 test_resize (NSEvent *event, GdkWindow *toplevel, gint x, gint y)
 {
@@ -1793,10 +1813,12 @@ gdk_event_translate (GdkEvent *event,
 
   return return_val;
 }
+#endif
 
 void
 _gdk_haiku_display_queue_events (GdkDisplay *display)
-{  
+{
+#if 0 
   NSEvent *nsevent;
 
   nsevent = _gdk_haiku_event_loop_get_pending ();
@@ -1832,6 +1854,7 @@ _gdk_haiku_display_queue_events (GdkDisplay *display)
 
       _gdk_haiku_event_loop_release_event (nsevent);
     }
+#endif
 }
 
 void
@@ -1846,6 +1869,7 @@ _gdk_haiku_screen_get_setting (GdkScreen   *screen,
                                 const gchar *name,
                                 GValue      *value)
 {
+#if 0
   if (strcmp (name, "gtk-double-click-time") == 0)
     {
       NSUserDefaults *defaults;
@@ -1921,7 +1945,7 @@ _gdk_haiku_screen_get_setting (GdkScreen   *screen,
     }
   
   /* FIXME: Add more settings */
-
+#endif
   return FALSE;
 }
 
@@ -1930,6 +1954,7 @@ _gdk_haiku_display_event_data_copy (GdkDisplay     *display,
                                      const GdkEvent *src,
                                      GdkEvent       *dst)
 {
+#if 0
   GdkEventPrivate *priv_src = (GdkEventPrivate *) src;
   GdkEventPrivate *priv_dst = (GdkEventPrivate *) dst;
 
@@ -1938,12 +1963,14 @@ _gdk_haiku_display_event_data_copy (GdkDisplay     *display,
       priv_dst->windowing_data = priv_src->windowing_data;
       [(NSEvent *)priv_dst->windowing_data retain];
     }
+#endif
 }
 
 void
 _gdk_haiku_display_event_data_free (GdkDisplay *display,
                                      GdkEvent   *event)
 {
+#if 0
   GdkEventPrivate *priv = (GdkEventPrivate *) event;
 
   if (priv->windowing_data)
@@ -1951,4 +1978,5 @@ _gdk_haiku_display_event_data_free (GdkDisplay *display,
       [(NSEvent *)priv->windowing_data release];
       priv->windowing_data = NULL;
     }
+#endif
 }

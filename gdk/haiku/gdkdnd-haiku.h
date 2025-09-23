@@ -22,7 +22,7 @@
 
 #include <gdkdndprivate.h>
 
-#include <AppKit/AppKit.h>
+//#include <AppKit/AppKit.h>
 
 G_BEGIN_DECLS
 
@@ -30,7 +30,7 @@ struct _GdkHaikuDragContext
 {
   GdkDragContext context;
 
-  id <NSDraggingInfo> dragging_info;
+//  id <NSDraggingInfo> dragging_info;
   GdkDevice *device;
 };
 

@@ -49,8 +49,8 @@
 
 #include "config.h"
 
-#include <Carbon/Carbon.h>
-#include <AppKit/NSEvent.h>
+//#include <Carbon/Carbon.h>
+//#include <AppKit/NSEvent.h>
 #include "gdk.h"
 #include "gdkhaikukeys.h"
 #include "gdkkeysprivate.h"
@@ -94,6 +94,7 @@ const static struct {
   guint keyval;
   unsigned int modmask; /* So we can tell when a mod key is pressed/released */
 } modifier_keys[] = {
+#if 0
   {  54, GDK_KEY_Meta_R,    GDK_HAIKU_COMMAND_KEY_MASK },
   {  55, GDK_KEY_Meta_L,    GDK_HAIKU_COMMAND_KEY_MASK },
   {  56, GDK_KEY_Shift_L,   GDK_HAIKU_SHIFT_KEY_MASK },
@@ -103,6 +104,7 @@ const static struct {
   {  60, GDK_KEY_Shift_R,   GDK_HAIKU_SHIFT_KEY_MASK },
   {  61, GDK_KEY_Alt_R,     GDK_HAIKU_ALTERNATE_KEY_MASK },
   {  62, GDK_KEY_Control_R, GDK_HAIKU_CONTROL_KEY_MASK }
+#endif
 };
 
 const static struct {
@@ -228,6 +230,7 @@ const static struct {
 static void
 update_keymap (void)
 {
+#if 0
   const void *chr_data = NULL;
   guint *p;
   int i;
@@ -464,6 +467,7 @@ update_keymap (void)
 
   if (default_keymap != NULL)
     g_signal_emit_by_name (default_keymap, "keys-changed");
+#endif
 }
 
 static PangoDirection
@@ -739,6 +743,7 @@ gdk_haiku_keymap_get_modifier_mask (GdkKeymap         *keymap,
     }
 }
 
+#if 0
 /* What sort of key event is this? Returns one of
  * GDK_KEY_PRESS, GDK_KEY_RELEASE, GDK_NOTHING (should be ignored)
  */
@@ -781,6 +786,7 @@ _gdk_haiku_keys_event_type (NSEvent *event)
    * events for no good reason. Ignore them! */
   return GDK_NOTHING;
 }
+#endif
 
 gboolean
 _gdk_haiku_keys_is_modifier (guint keycode)
@@ -799,6 +805,7 @@ _gdk_haiku_keys_is_modifier (guint keycode)
   return FALSE;
 }
 
+#if 0
 static void
 input_sources_changed_notification (CFNotificationCenterRef  center,
                                     void                    *observer,
@@ -808,10 +815,12 @@ input_sources_changed_notification (CFNotificationCenterRef  center,
 {
   update_keymap ();
 }
+#endif
 
 static void
 gdk_haiku_keymap_init (GdkHaikuKeymap *keymap)
 {
+#if 0
   CFNotificationCenterAddObserver (CFNotificationCenterGetDistributedCenter (),
                                    keymap,
                                    input_sources_changed_notification,
@@ -819,17 +828,20 @@ gdk_haiku_keymap_init (GdkHaikuKeymap *keymap)
                                    NULL,
                                    CFNotificationSuspensionBehaviorDeliverImmediately);
   update_keymap ();
+#endif
 }
 
 static void
 gdk_haiku_keymap_finalize (GObject *object)
 {
+#if 0
   CFNotificationCenterRemoveObserver (CFNotificationCenterGetDistributedCenter (),
                                       object,
                                       CFSTR ("AppleSelectedInputSourcesChangedNotification"),
                                       NULL);
 
   G_OBJECT_CLASS (gdk_haiku_keymap_parent_class)->finalize (object);
+#endif
 }
 
 static void

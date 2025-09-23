@@ -113,15 +113,18 @@ gdk_haiku_screen_finalize (GObject *object)
   G_OBJECT_CLASS (gdk_haiku_screen_parent_class)->finalize (object);
 }
 
+#if 0
 /* Protocol to build cleanly for OSX < 10.7 */
 @protocol ScaleFactor
 - (CGFloat) backingScaleFactor;
 @end
+#endif
 
 static void
 gdk_haiku_screen_calculate_layout (GdkHaikuScreen *screen,
                                     GdkHaikuDisplay *display)
 {
+#if 0
   if (!display)
     display = GDK_HAIKU_DISPLAY (gdk_screen_get_display (GDK_SCREEN (screen)));
 
@@ -132,7 +135,7 @@ gdk_haiku_screen_calculate_layout (GdkHaikuScreen *screen,
   screen->orig_y = (int)trunc (display->geometry.origin.y);
   screen->mm_width = (int)trunc (display->size.width);
   screen->mm_height = (int)trunc (display->size.height);
-
+#endif
  }
 
 void

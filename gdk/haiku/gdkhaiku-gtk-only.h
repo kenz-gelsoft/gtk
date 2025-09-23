@@ -23,10 +23,11 @@
 #error "This API is for use only in Gtk internal code."
 #endif
 
-#include <AppKit/AppKit.h>
+//#include <AppKit/AppKit.h>
 #include <gdk/gdk.h>
 #include <gdk/haiku/gdkhaiku.h>
 
+#if 0
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101400
 #define GDK_HAIKU_FILE_PBOARD_TYPE    NSURLPboardType
 #define GDK_HAIKU_URL_PBOARD_TYPE     NSURLPboardType
@@ -52,5 +53,6 @@ NSString *gdk_haiku_atom_to_pasteboard_type_libgtk_only        (GdkAtom         
 /* Utilities */
 GDK_AVAILABLE_IN_ALL
 NSImage  *gdk_haiku_pixbuf_to_ns_image_libgtk_only (GdkPixbuf *pixbuf);
+#endif
 
 #endif

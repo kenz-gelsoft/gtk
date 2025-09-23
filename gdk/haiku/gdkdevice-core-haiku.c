@@ -34,7 +34,7 @@ struct _GdkHaikuDeviceCore
   GdkDevice parent_instance;
 
   gboolean active;
-  NSUInteger device_id;
+//  NSUInteger device_id;
   unsigned long long unique_id;
 };
 
@@ -174,6 +174,7 @@ gdk_haiku_device_core_set_window_cursor (GdkDevice *device,
                                           GdkWindow *window,
                                           GdkCursor *cursor)
 {
+#if 0
   NSCursor *nscursor;
 
   if (GDK_WINDOW_DESTROYED (window))
@@ -182,6 +183,7 @@ gdk_haiku_device_core_set_window_cursor (GdkDevice *device,
   nscursor = _gdk_haiku_cursor_get_ns_cursor (cursor);
 
   [nscursor set];
+#endif
 }
 
 static void
@@ -190,7 +192,7 @@ gdk_haiku_device_core_warp (GdkDevice *device,
                              gdouble    x,
                              gdouble    y)
 {
-  CGDisplayMoveCursorToPoint (CGMainDisplayID (), CGPointMake (x, y));
+//  CGDisplayMoveCursorToPoint (CGMainDisplayID (), CGPointMake (x, y));
 }
 
 static GdkWindow *
@@ -200,6 +202,7 @@ gdk_haiku_device_core_query_state_helper (GdkWindow       *window,
                                            gdouble         *y,
                                            GdkModifierType *mask)
 {
+#if 0
   GdkWindow *toplevel;
   NSPoint point;
   gint x_tmp, y_tmp;
@@ -257,6 +260,8 @@ gdk_haiku_device_core_query_state_helper (GdkWindow       *window,
     *y = y_tmp;
 
   return found_window;
+#endif
+  return NULL;
 }
 
 static void
@@ -270,6 +275,7 @@ gdk_haiku_device_core_query_state (GdkDevice        *device,
                                     gdouble          *win_y,
                                     GdkModifierType  *mask)
 {
+#if 0
   GdkWindow *found_window;
   NSPoint point;
   gint x_tmp, y_tmp;
@@ -292,6 +298,7 @@ gdk_haiku_device_core_query_state (GdkDevice        *device,
 
   if (root_y)
     *root_y = y_tmp;
+#endif
 }
 
 static GdkGrabStatus
@@ -327,6 +334,7 @@ gdk_haiku_device_core_window_at_position (GdkDevice       *device,
                                            GdkModifierType *mask,
                                            gboolean         get_toplevel)
 {
+#if 0
   GdkDisplay *display;
   GdkScreen *screen;
   GdkWindow *found_window;
@@ -358,6 +366,8 @@ gdk_haiku_device_core_window_at_position (GdkDevice       *device,
         _gdk_haiku_events_get_current_mouse_modifiers ();
 
   return found_window;
+#endif
+  return NULL;
 }
 
 static void
@@ -368,6 +378,7 @@ gdk_haiku_device_core_select_window_events (GdkDevice    *device,
   /* The mask is set in the common code. */
 }
 
+#if 0
 void
 _gdk_haiku_device_core_set_active (GdkDevice  *device,
                                     gboolean    active,
@@ -387,6 +398,7 @@ _gdk_haiku_device_core_is_active (GdkDevice  *device,
 
   return (self->active && self->device_id == device_id);
 }
+#endif
 
 void
 _gdk_haiku_device_core_set_unique (GdkDevice          *device,

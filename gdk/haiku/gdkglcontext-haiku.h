@@ -30,9 +30,9 @@
 #include "gdkinternals.h"
 #include "gdkmain.h"
 
-#import <OpenGL/OpenGL.h>
-#import <OpenGL/gl.h>
-#import <AppKit/AppKit.h>
+//#import <OpenGL/OpenGL.h>
+//#import <OpenGL/gl.h>
+//#import <AppKit/AppKit.h>
 
 G_BEGIN_DECLS
 
@@ -40,7 +40,7 @@ struct _GdkHaikuGLContext
 {
   GdkGLContext parent_instance;
 
-  NSOpenGLContext *gl_context;
+//  NSOpenGLContext *gl_context;
   gboolean is_attached;
 };
 

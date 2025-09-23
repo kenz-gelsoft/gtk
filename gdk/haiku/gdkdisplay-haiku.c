@@ -67,9 +67,11 @@
 
 static gint MONITORS_CHANGED = 0;
 
+#if 0
 static void display_reconfiguration_callback (CGDirectDisplayID            display,
                                               CGDisplayChangeSummaryFlags  flags,
                                               void                        *data);
+#endif
 
 static GdkWindow *
 gdk_haiku_display_get_default_group (GdkDisplay *display)
@@ -198,6 +200,7 @@ gdk_haiku_display_init_display_link (GdkDisplay *display)
 GdkDisplay *
 _gdk_haiku_display_open (const gchar *display_name)
 {
+#if 0
   if (_gdk_display != NULL)
     return NULL;
 
@@ -223,6 +226,8 @@ _gdk_haiku_display_open (const gchar *display_name)
   g_signal_emit_by_name (_gdk_display, "opened");
 
   return _gdk_display;
+#endif
+  return 0;
 }
 
 static const gchar *
@@ -230,12 +235,14 @@ gdk_haiku_display_get_name (GdkDisplay *display)
 {
   static gchar *display_name = NULL;
 
+#if 0
   if (!display_name)
     {
       GDK_HAIKU_ALLOC_POOL;
       display_name = g_strdup ([[[NSHost currentHost] name] UTF8String]);
       GDK_HAIKU_RELEASE_POOL;
     }
+#endif
 
   return display_name;
 }
@@ -249,9 +256,11 @@ gdk_haiku_display_get_default_screen (GdkDisplay *display)
 static void
 gdk_haiku_display_beep (GdkDisplay *display)
 {
+#if 0
   g_return_if_fail (GDK_IS_DISPLAY (display));
 
   NSBeep();
+#endif
 }
 
 static void
@@ -362,6 +371,7 @@ gdk_haiku_display_pop_error_trap (GdkDisplay *display, gboolean ignore)
    the same for determining the number of monitors and indexing them.
  */
 
+#if 0
 int
 get_active_displays (CGDirectDisplayID **displays)
 {
@@ -386,11 +396,13 @@ cgrect_to_gdkrect (CGRect cgrect)
                           (int)trunc (cgrect.size.height)};
   return gdkrect;
 }
+#endif
 
 static void
 configure_monitor (GdkMonitor       *monitor,
                    GdkHaikuDisplay *display)
 {
+#if 0
   GdkHaikuMonitor *haiku_monitor = GDK_HAIKU_MONITOR (monitor);
   CGSize disp_size = CGDisplayScreenSize (haiku_monitor->id);
   gint width = (int)trunc (disp_size.width);
@@ -419,11 +431,13 @@ configure_monitor (GdkMonitor       *monitor,
     monitor->scale_factor = 1;
   monitor->refresh_rate = refresh_rate;
   monitor->subpixel_layout = GDK_SUBPIXEL_LAYOUT_UNKNOWN;
+#endif
 }
 
 static void
 display_rect (GdkHaikuDisplay *display)
 {
+#if 0
   uint32_t disp, n_displays = 0;
   float min_x = 0.0, max_x = 0.0, min_y = 0.0, max_y = 0.0;
   float min_x_mm = 0.0, max_x_mm = 0.0, min_y_mm = 0.0, max_y_mm = 0.0;
@@ -455,18 +469,22 @@ display_rect (GdkHaikuDisplay *display)
   display->geometry = NSMakeRect (-min_x, main_height - min_y,
                                   max_x - min_x, max_y - min_y);
   display->size = NSMakeSize (max_x_mm - min_x_mm, max_y_mm - min_y_mm);
+#endif
 }
 
 static gboolean
 same_monitor (gconstpointer a, gconstpointer b)
 {
+#if 0
   GdkHaikuMonitor *mon_a = GDK_HAIKU_MONITOR (a);
   CGDirectDisplayID disp_id = (CGDirectDisplayID)GPOINTER_TO_INT (b);
   if (!mon_a)
     return FALSE;
   return mon_a->id == disp_id;
+#endif
 }
 
+#if 0
 static void
 display_reconfiguration_callback (CGDirectDisplayID            cg_display,
                                   CGDisplayChangeSummaryFlags  flags,
@@ -525,6 +543,7 @@ display_reconfiguration_callback (CGDirectDisplayID            cg_display,
 
   g_signal_emit (display, MONITORS_CHANGED, 0);
 }
+#endif
 
 
 static int
@@ -550,6 +569,7 @@ gdk_haiku_display_get_monitor (GdkDisplay *display,
 static GdkMonitor *
 gdk_haiku_display_get_primary_monitor (GdkDisplay *display)
 {
+#if 0
   GdkHaikuDisplay *haiku_display = GDK_HAIKU_DISPLAY (display);
   CGDirectDisplayID primary_id = CGMainDisplayID ();
   GdkMonitor *monitor = NULL;
@@ -561,12 +581,15 @@ gdk_haiku_display_get_primary_monitor (GdkDisplay *display)
     monitor = g_ptr_array_index (haiku_display->monitors, index);
 
   return monitor;
+#endif
+  return 0;
 }
 
 static GdkMonitor *
 gdk_haiku_display_get_monitor_at_window (GdkDisplay *display,
                                           GdkWindow *window)
 {
+#if 0
   GdkWindowImplHaiku *impl = NULL;
   NSWindow *nswindow = NULL;
   NSScreen *screen = NULL;
@@ -610,6 +633,8 @@ gdk_haiku_display_get_monitor_at_window (GdkDisplay *display,
                                                  rect.y + rect.height /2);
     }
   return monitor;
+#endif
+  return 0;
 }
 
 G_DEFINE_TYPE (GdkHaikuDisplay, gdk_haiku_display, GDK_TYPE_DISPLAY)
@@ -617,6 +642,7 @@ G_DEFINE_TYPE (GdkHaikuDisplay, gdk_haiku_display, GDK_TYPE_DISPLAY)
 static void
 gdk_haiku_display_init (GdkHaikuDisplay *display)
 {
+#if 0
   uint32_t n_displays = 0, disp;
   CGDirectDisplayID *displays;
 
@@ -636,11 +662,13 @@ gdk_haiku_display_init (GdkHaikuDisplay *display)
                                             display);
   /* So that monitors changed will keep display->geometry syncronized. */
   g_signal_emit (display, MONITORS_CHANGED, 0);
+#endif
 }
 
 static void
 gdk_haiku_display_dispose (GObject *object)
 {
+#if 0
   GdkHaikuDisplay *haiku_display = GDK_HAIKU_DISPLAY (object);
 
   g_ptr_array_free (haiku_display->monitors, TRUE);
@@ -648,6 +676,7 @@ gdk_haiku_display_dispose (GObject *object)
                                           haiku_display);
 
   G_OBJECT_CLASS (gdk_haiku_display_parent_class)->dispose (object);
+#endif
 }
 
 static void
@@ -659,6 +688,7 @@ gdk_haiku_display_finalize (GObject *object)
 static void
 gdk_haiku_display_class_init (GdkHaikuDisplayClass *class)
 {
+#if 0
   GObjectClass *object_class = G_OBJECT_CLASS (class);
   GdkDisplayClass *display_class = GDK_DISPLAY_CLASS (class);
 
@@ -747,4 +777,5 @@ gdk_haiku_display_class_init (GdkHaikuDisplayClass *class)
    * with a user interface, in case we're not running from a .app bundle
    */
   TransformProcessType (&psn, kProcessTransformToForegroundApplication);
+#endif
 }

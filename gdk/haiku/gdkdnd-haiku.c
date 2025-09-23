@@ -151,11 +151,13 @@ gdk_haiku_drag_context_drop_status (GdkDragContext *context)
   return FALSE;
 }
 
+#if 0
 id
 gdk_haiku_drag_context_get_dragging_info_libgtk_only (GdkDragContext *context)
 {
   return GDK_HAIKU_DRAG_CONTEXT (context)->dragging_info;
 }
+#endif
 
 static void
 gdk_haiku_drag_context_init (GdkHaikuDragContext *context)

@@ -23,7 +23,7 @@
 #include <gdkdevicemanagerprivate.h>
 #include "gdkhaikudevicemanager-core.h"
 
-#import <Cocoa/Cocoa.h>
+//#import <Cocoa/Cocoa.h>
 
 G_BEGIN_DECLS
 
@@ -41,11 +41,13 @@ struct _GdkHaikuDeviceManagerCoreClass
   GdkDeviceManagerClass parent_class;
 };
 
+#if 0
 void       _gdk_haiku_device_manager_register_device_for_ns_event (GdkDeviceManager *device_manager,
                                                                     NSEvent          *nsevent);
 
 GdkDevice *_gdk_haiku_device_manager_core_device_for_ns_event (GdkDeviceManager *device_manager,
                                                                 NSEvent          *ns_event);
+#endif
 
 G_END_DECLS
 

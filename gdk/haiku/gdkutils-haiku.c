@@ -26,6 +26,7 @@
 #include "gdkhaiku-cocoa-access.h"
 #include <gdkhaikuutils.h>
 
+#if 0
 NSImage *
 gdk_haiku_pixbuf_to_ns_image_libgtk_only (GdkPixbuf *pixbuf)
 {
@@ -97,6 +98,7 @@ gdk_haiku_event_get_nsevent (GdkEvent *event)
   /* FIXME: If the event here is unallocated, we crash. */
   return ((GdkEventPrivate *) event)->windowing_data;
 }
+#endif
 
 /*
  * Code for key code conversion
@@ -106,6 +108,7 @@ gdk_haiku_event_get_nsevent (GdkEvent *event)
 gunichar
 gdk_haiku_get_key_equivalent (guint key)
 {
+#if 0
   if (key >= GDK_KEY_A && key <= GDK_KEY_Z)
     return key + (GDK_KEY_a - GDK_KEY_A);
 
@@ -241,6 +244,6 @@ gdk_haiku_get_key_equivalent (guint key)
       default:
         break;
     }
-
+#endif
   return '\0';
 }

@@ -71,7 +71,7 @@ static gint run_loop_max_priority;
 
 /* Timer that we've added to wake up the run loop when a GLib timeout
  */
-static CFRunLoopTimerRef run_loop_timer = NULL;
+//static CFRunLoopTimerRef run_loop_timer = NULL;
 
 /* These are the file descriptors that are we are polling out of
  * the run loop. (We keep the array around and reuse it to avoid
@@ -113,14 +113,14 @@ static GPollFunc old_poll_func;
 /* Reference to the run loop of the main thread. (There is a unique
  * CFRunLoop per thread.)
  */
-static CFRunLoopRef main_thread_run_loop;
+//static CFRunLoopRef main_thread_run_loop;
 
 /* Normally the Cocoa main loop maintains an NSAutoReleasePool and frees
  * it on every iteration. Since we are replacing the main loop we have
  * to provide this functionality ourself. We free and replace the
  * auto-release pool in our sources prepare() function.
  */
-static NSAutoreleasePool *autorelease_pool;
+//static NSAutoreleasePool *autorelease_pool;
 
 /* Flag when we've called nextEventMatchingMask ourself; this triggers
  * a run loop iteration, so we need to detect that and avoid triggering
@@ -153,6 +153,7 @@ static const char *const state_names[]  = {
 };
 #endif
 
+#if 0
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
 typedef enum
   {
@@ -163,6 +164,7 @@ typedef enum
   {
    GDK_HAIKU_EVENT_MASK_ANY = NSEventMaskAny,
   } GdkHaikuEventMask;
+#endif
 #endif
 
 static SelectThreadState select_thread_state = BEFORE_START;
@@ -192,7 +194,7 @@ static guint next_n_pollfds;
 static gint select_thread_wakeup_pipe[2];
 
 /* Run loop source used to wake up the main thread */
-static CFRunLoopSourceRef select_main_thread_source;
+//static CFRunLoopSourceRef select_main_thread_source;
 
 static void
 select_thread_set_state (SelectThreadState new_state)
@@ -213,6 +215,7 @@ select_thread_set_state (SelectThreadState new_state)
 static void
 signal_main_thread (void)
 {
+#if 0
   GDK_NOTE (EVENTLOOP, g_message ("EventLoop: Waking up main thread"));
 
   /* If we are in nextEventMatchingMask, then we need to make sure an
@@ -227,6 +230,7 @@ signal_main_thread (void)
    * we checked).
    */
   CFRunLoopWakeUp (main_thread_run_loop);
+#endif
 }
 
 static void *
@@ -305,15 +309,18 @@ select_thread_func (void *arg)
     }
 }
 
+#if 0
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
 #define GDK_HAIKU_APPLICATION_DEFINED NSApplicationDefined
 #else
 #define GDK_HAIKU_APPLICATION_DEFINED NSEventTypeApplicationDefined
 #endif
+#endif
 
 static void 
 got_fd_activity (void *info)
 {
+#if 0
   NSEvent *event;
 
   /* Post a message so we'll break out of the message loop */
@@ -328,11 +335,13 @@ got_fd_activity (void *info)
 	                        data2: 0];
 
   [NSApp postEvent:event atStart:YES];
+#endif
 }
 
 static void
 select_thread_start (void)
 {
+#if 0
   g_return_if_fail (select_thread_state == BEFORE_START);
   
   pipe (select_thread_wakeup_pipe);
@@ -353,6 +362,7 @@ select_thread_start (void)
       g_warning ("Failed to create select thread, sleeping and trying again");
       sleep (1);
     }
+#endif
 }
 
 #ifdef G_ENABLE_DEBUG
@@ -616,6 +626,7 @@ _gdk_haiku_event_loop_check_pending (void)
   return current_events && current_events->head;
 }
 
+#if 0
 NSEvent*
 _gdk_haiku_event_loop_get_pending (void)
 {
@@ -632,11 +643,13 @@ _gdk_haiku_event_loop_release_event (NSEvent *event)
 {
   [event release];
 }
+#endif
 
 static gboolean
 gdk_event_prepare (GSource *source,
 		   gint    *timeout)
 {
+#if 0
   gboolean retval;
 
   gdk_threads_enter ();
@@ -677,6 +690,8 @@ gdk_event_prepare (GSource *source,
   gdk_threads_leave ();
 
   return retval;
+#endif
+  return 0;
 }
 
 static gboolean
@@ -733,10 +748,12 @@ static GSourceFuncs event_funcs = {
  *********             Our Poll Function            *********
  ************************************************************/
 
+#if 0
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
 #define GDK_HAIKU_EVENT_MASK_ANY NSAnyEventMask
 #else
 #define GDK_HAIKU_EVENT_MASK_ANY NSEventMaskAny
+#endif
 #endif
 
 static gint
@@ -744,6 +761,7 @@ poll_func (GPollFD *ufds,
 	   guint    nfds,
 	   gint     timeout_)
 {
+#if 0
   NSEvent *event;
   NSDate *limit_date;
   gint n_ready;
@@ -801,6 +819,8 @@ poll_func (GPollFD *ufds,
     }
 
   return n_ready;
+#endif
+  return 0;
 }
 
 /************************************************************
@@ -900,16 +920,19 @@ run_loop_before_sources (void)
     }
 }
 
+#if 0
 static void
 dummy_timer_callback (CFRunLoopTimerRef  timer,
 		      void              *info)
 {
   /* Nothing; won't normally even be called */
 }
+#endif
 
 static void
 run_loop_before_waiting (void)
 {
+#if 0
   GMainContext *context = g_main_context_default ();
   gint timeout;
   gint n_ready;
@@ -952,11 +975,13 @@ run_loop_before_waiting (void)
     }
   
   run_loop_polling_async = n_ready < 0;
+#endif
 }
 
 static void
 run_loop_after_waiting (void)
 {
+#if 0
   GMainContext *context = g_main_context_default ();
 
   /* After sleeping, we finish of the GMain loop iteratin started in before_waiting()
@@ -981,6 +1006,7 @@ run_loop_after_waiting (void)
       GDK_NOTE (EVENTLOOP, g_message ("EventLoop: Dispatching after waiting"));
       g_main_context_dispatch (context);
     }
+#endif
 }
 
 static void
@@ -995,6 +1021,7 @@ run_loop_exit (void)
     }
 }
 
+#if 0
 static void
 run_loop_observer_callback (CFRunLoopObserverRef observer,
 			    CFRunLoopActivity    activity,
@@ -1040,12 +1067,14 @@ run_loop_observer_callback (CFRunLoopObserverRef observer,
       break;
     }
 }
+#endif
 
 /************************************************************/
 
 void
 _gdk_haiku_event_loop_init (void)
 {
+#if 0
   GSource *source;
   CFRunLoopObserverRef observer;
 
@@ -1080,4 +1109,5 @@ _gdk_haiku_event_loop_init (void)
   /* Initialize our autorelease pool */
 
   autorelease_pool = [[NSAutoreleasePool alloc] init];
+#endif
 }

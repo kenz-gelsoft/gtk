@@ -23,14 +23,16 @@
 #error "This header declares Cocoa types and can be included only from source files compiled with Objective-C."
 #endif
 
-#include <AppKit/AppKit.h>
+//#include <AppKit/AppKit.h>
 #include <gdk/gdk.h>
 
+#if 0
 GDK_AVAILABLE_IN_ALL
 NSEvent  *gdk_haiku_event_get_nsevent              (GdkEvent  *event);
 GDK_AVAILABLE_IN_ALL
 NSWindow *gdk_haiku_window_get_nswindow            (GdkWindow *window);
 GDK_AVAILABLE_IN_ALL
 NSView   *gdk_haiku_window_get_nsview              (GdkWindow *window);
+#endif
 
 #endif

@@ -19,7 +19,7 @@
 #ifndef __GDK_INTERNAL_HAIKU_H__
 #define __GDK_INTERNAL_HAIKU_H__
 
-#include <AppKit/AppKit.h>
+//#include <AppKit/AppKit.h>
 
 /* This is mostly a pot of function prototypes to avoid having
  * separate include file for each implementation file that exports
@@ -30,6 +30,7 @@
  * done after inclusion of the system headers.  If NSInteger has not
  * been defined, we know for sure that we are on 32-bit.
  */
+#if 0
 #ifndef NSINTEGER_DEFINED
 typedef int NSInteger;
 typedef unsigned int NSUInteger;
@@ -41,6 +42,7 @@ typedef float CGFloat;
 
 #define GDK_HAIKU_ALLOC_POOL NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]
 #define GDK_HAIKU_RELEASE_POOL [pool release]
+#endif
 
 #include "../gdkprivate.h"
 #include "gdkhaiku.h"
@@ -68,13 +70,14 @@ void _gdk_haiku_events_init                (void);
 void _gdk_haiku_event_loop_init            (void);
 
 /* Cursor */
-NSCursor   *_gdk_haiku_cursor_get_ns_cursor        (GdkCursor *cursor);
+//NSCursor   *_gdk_haiku_cursor_get_ns_cursor        (GdkCursor *cursor);
 
 /* Events */
 typedef enum {
   GDK_HAIKU_EVENT_SUBTYPE_EVENTLOOP
 } GdkHaikuEventSubType;
 
+#if 0
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= 101300
 #define GDK_HAIKU_EVENT_TABLET_PROXIMITY NSEventTypeTabletProximity
 #define GDK_HAIKU_EVENT_SUBTYPE_TABLET_PROXIMITY NSEventSubtypeTabletProximity
@@ -83,6 +86,7 @@ typedef enum {
 #define GDK_HAIKU_EVENT_TABLET_PROXIMITY NSTabletProximity
 #define GDK_HAIKU_EVENT_SUBTYPE_TABLET_PROXIMITY NSTabletProximityEventSubtype
 #define GDK_HAIKU_EVENT_SUBTYPE_TABLET_POINT NSTabletPointEventSubtype
+#endif
 #endif
 
 void         _gdk_haiku_events_update_focus_window    (GdkWindow *new_window,
@@ -94,6 +98,7 @@ GdkModifierType _gdk_haiku_events_get_current_mouse_modifiers    (void);
 
 void         _gdk_haiku_events_break_all_grabs         (guint32    time);
 
+#if 0
 /* Devices */
 void       _gdk_haiku_device_core_set_active (GdkDevice  *device,
                                                gboolean    active,
@@ -101,6 +106,7 @@ void       _gdk_haiku_device_core_set_active (GdkDevice  *device,
 
 gboolean   _gdk_haiku_device_core_is_active (GdkDevice  *device,
                                               NSUInteger  device_id);
+#endif
 
 void       _gdk_haiku_device_core_set_unique (GdkDevice          *device,
                                                unsigned long long  unique_id);
@@ -109,11 +115,13 @@ unsigned long long _gdk_haiku_device_core_get_unique (GdkDevice *device);
 
 /* Event loop */
 gboolean   _gdk_haiku_event_loop_check_pending (void);
+#if 0
 NSEvent *  _gdk_haiku_event_loop_get_pending   (void);
 void       _gdk_haiku_event_loop_release_event (NSEvent *event);
 
 /* Keys */
 GdkEventType _gdk_haiku_keys_event_type  (NSEvent   *event);
+#endif
 gboolean     _gdk_haiku_keys_is_modifier (guint      keycode);
 void         _gdk_haiku_synthesize_null_key_event (GdkWindow *window);
 
@@ -231,9 +239,11 @@ void       _gdk_haiku_window_xy_to_gdk_xy          (gint       ns_x,
                                                      gint       ns_y,
                                                      gint      *gdk_x,
                                                      gint      *gdk_y);
+#if 0
 void       _gdk_haiku_window_nspoint_to_gdk_xy     (NSPoint    point,
                                                      gint      *x,
                                                      gint      *y);
+#endif
 GdkWindow *_gdk_haiku_window_find_child            (GdkWindow *window,
                                                      gint       x,
                                                      gint       y,

@@ -24,7 +24,7 @@
 
 #include <glib.h>
 
-#include <QuartzCore/QuartzCore.h>
+//#include <QuartzCore/QuartzCore.h>
 
 G_BEGIN_DECLS
 
@@ -32,7 +32,7 @@ typedef struct
 {
   GSource          source;
 
-  CVDisplayLinkRef display_link;
+//  CVDisplayLinkRef display_link;
   gint64           refresh_interval;
 
   volatile gint64  presentation_time;

@@ -30,6 +30,7 @@ static void
 gdk_haiku_monitor_get_workarea (GdkMonitor   *monitor,
                                  GdkRectangle *dest)
 {
+#if 0
   GDK_HAIKU_ALLOC_POOL;
 
   NSArray *array = [NSScreen screens];
@@ -61,6 +62,7 @@ gdk_haiku_monitor_get_workarea (GdkMonitor   *monitor,
     *dest = monitor->geometry;
 
   GDK_HAIKU_RELEASE_POOL;
+#endif
 }
 
 static void

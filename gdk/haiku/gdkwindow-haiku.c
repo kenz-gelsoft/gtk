@@ -34,11 +34,11 @@
 #include "gdkhaiku-cocoa-access.h"
 #include "gdkinternal-haiku.h"
 
-#include <Carbon/Carbon.h>
-#include <AvailabilityMacros.h>
+//#include <Carbon/Carbon.h>
+//#include <AvailabilityMacros.h>
 
 #include <sys/time.h>
-#include <cairo-haiku.h>
+//#include <cairo-haiku.h>
 
 static gpointer parent_class;
 static gpointer root_window_parent_class;
@@ -55,6 +55,7 @@ typedef struct
   GdkWMDecoration decor;
 } FullscreenSavedGeometry;
 
+#if 0
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
 typedef enum
 {
@@ -78,6 +79,7 @@ typedef enum
  GDK_HAIKU_RESIZABLE_WINDOW = NSWindowStyleMaskResizable,
  GDK_HAIKU_TITLED_WINDOW = NSWindowStyleMaskTitled,
 } GdkHaikuWindowMask;
+#endif
 #endif
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
@@ -145,6 +147,7 @@ gdk_window_get_haiku_impl (GdkWindow* window)
   return GDK_WINDOW_IMPL_HAIKU (window->impl);
 }
 
+#if 0
 NSView *
 gdk_haiku_window_get_nsview (GdkWindow *window)
 {
@@ -224,10 +227,12 @@ gdk_window_impl_haiku_release_context (GdkWindowImplHaiku *window_impl,
     }
 #endif
 }
+#endif
 
 static void
 gdk_window_impl_haiku_finalize (GObject *object)
 {
+#if 0
   GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (object);
   GdkDisplay *display = gdk_window_get_display (impl->wrapper);
   GdkSeat *seat = gdk_display_get_default_seat (display);
@@ -250,13 +255,14 @@ gdk_window_impl_haiku_finalize (GObject *object)
   impl->toplevel = NULL;
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
+#endif
 }
 
 static cairo_user_data_key_t gdk_haiku_cairo_key;
 
 typedef struct {
   GdkWindowImplHaiku  *window_impl;
-  CGContextRef  cg_context;
+//  CGContextRef  cg_context;
 } GdkHaikuCairoSurfaceData;
 
 static void
@@ -276,6 +282,7 @@ gdk_haiku_create_cairo_surface (GdkWindowImplHaiku *impl,
 				 int                  width,
 				 int                  height)
 {
+#if 0
   GdkHaikuCairoSurfaceData *surface_data;
   cairo_surface_t *surface;
 
@@ -290,6 +297,8 @@ gdk_haiku_create_cairo_surface (GdkWindowImplHaiku *impl,
                                gdk_haiku_cairo_surface_destroy);
 
   return surface;
+#endif
+  return NULL;
 }
 
 static cairo_surface_t *
@@ -344,10 +353,12 @@ _gdk_haiku_unref_cairo_surface (GdkWindow *window)
 static void
 gdk_window_impl_haiku_init (GdkWindowImplHaiku *impl)
 {
+#if 0
   impl->type_hint = GDK_WINDOW_TYPE_HINT_NORMAL;
   impl->view      = NULL;
   impl->toplevel  = NULL;
   impl->transient_for = NULL;
+#endif
 }
 
 static gboolean
@@ -361,6 +372,7 @@ static void
 gdk_haiku_window_set_needs_display_in_region (GdkWindow    *window,
                                                cairo_region_t    *region)
 {
+#if 0
   GdkWindowImplHaiku *impl;
   int i, n_rects;
 
@@ -382,12 +394,14 @@ gdk_haiku_window_set_needs_display_in_region (GdkWindow    *window,
       [impl->view setNeedsDisplayInRect:NSMakeRect (rect.x, rect.y,
                                                     rect.width, rect.height)];
     }
+#endif
 }
 
 void
 _gdk_haiku_window_process_updates_recurse (GdkWindow *window,
                                             cairo_region_t *region)
 {
+#if 0
   /* Make sure to only flush each toplevel at most once if we're called
    * from process_all_updates.
    */
@@ -424,11 +438,13 @@ _gdk_haiku_window_process_updates_recurse (GdkWindow *window,
    * lot (since it triggers the beam syncing) and things seem to work
    * without it.
    */
+#endif
 }
 
 void
 _gdk_haiku_display_before_process_all_updates (GdkDisplay *display)
 {
+#if 0
   in_process_all_updates = TRUE;
 
   if (gdk_haiku_osx_version () >= GDK_OSX_EL_CAPITAN)
@@ -441,11 +457,13 @@ _gdk_haiku_display_before_process_all_updates (GdkDisplay *display)
       NSDisableScreenUpdates ();
     }
 #endif
+#endif
 }
 
 void
 _gdk_haiku_display_after_process_all_updates (GdkDisplay *display)
 {
+#if 0
   GSList *tmp_list = update_nswindows;
 
   update_nswindows = NULL;
@@ -479,6 +497,7 @@ _gdk_haiku_display_after_process_all_updates (GdkDisplay *display)
     {
       NSEnableScreenUpdates ();
     }
+#endif
 #endif
 }
 
@@ -517,6 +536,7 @@ get_ancestor_coordinates_from_child (GdkWindow *child_window,
 void
 _gdk_haiku_window_debug_highlight (GdkWindow *window, gint number)
 {
+#if 0
   gint x, y;
   gint gx, gy;
   GdkWindow *toplevel;
@@ -602,6 +622,7 @@ _gdk_haiku_window_debug_highlight (GdkWindow *window, gint number)
   [debug_window[number] setLevel:NSFloatingWindowLevel];
 
   [debug_window[number] orderFront:nil];
+#endif
 }
 
 gboolean
@@ -648,6 +669,7 @@ _gdk_haiku_window_xy_to_gdk_xy (gint  ns_x,
     *gdk_x = ns_x - screen_haiku->orig_x;
 }
 
+#if 0
 void
 _gdk_haiku_window_nspoint_to_gdk_xy (NSPoint  point,
                                       gint    *x,
@@ -656,6 +678,7 @@ _gdk_haiku_window_nspoint_to_gdk_xy (NSPoint  point,
   _gdk_haiku_window_xy_to_gdk_xy (point.x, point.y,
                                    x, y);
 }
+#endif
 
 static GdkWindow *
 find_child_window_helper (GdkWindow *window,
@@ -665,6 +688,7 @@ find_child_window_helper (GdkWindow *window,
 			  gint       y_offset,
                           gboolean   get_toplevel)
 {
+#if 0
   GdkWindowImplHaiku *impl;
   GList *l;
 
@@ -731,6 +755,8 @@ find_child_window_helper (GdkWindow *window,
     }
 
   return window;
+#endif
+  return NULL;
 }
 
 /* Given a GdkWindow and coordinates relative to it, returns the
@@ -754,6 +780,7 @@ _gdk_haiku_window_find_child (GdkWindow *window,
 static void
 raise_transient (GdkWindowImplHaiku *impl)
 {
+#if 0
   /* In quartz the transient-for behavior is implemented by
    * attaching the transient-for GdkNSWindows to the parent's
    * GdkNSWindow. Stacking is managed by Quartz and the order
@@ -769,6 +796,7 @@ raise_transient (GdkWindowImplHaiku *impl)
       [parent_impl->toplevel addChildWindow:impl->toplevel
                                     ordered:NSWindowAbove];
     }
+#endif
 }
 
 void
@@ -791,6 +819,7 @@ _gdk_haiku_window_did_become_main (GdkWindow *window)
 void
 _gdk_haiku_window_did_resign_main (GdkWindow *window)
 {
+#if 0
   GdkWindow *new_window = NULL;
 
   if (main_window_stack)
@@ -817,8 +846,10 @@ _gdk_haiku_window_did_resign_main (GdkWindow *window)
     }
 
   clear_toplevel_order ();
+#endif
 }
 
+#if 0
 static NSScreen *
 get_nsscreen_for_point (gint x, gint y)
 {
@@ -846,6 +877,7 @@ get_nsscreen_for_point (gint x, gint y)
 
   return screen;
 }
+#endif
 
 static void
 on_frame_clock_before_paint (GdkFrameClock *frame_clock,
@@ -879,6 +911,7 @@ _gdk_haiku_display_create_window_impl (GdkDisplay    *display,
                                         GdkWindowAttr *attributes,
                                         gint           attributes_mask)
 {
+#if 0
   GdkWindowImplHaiku *impl;
   GdkWindowImplHaiku *parent_impl;
   GdkWindowTypeHint    type_hint = GDK_WINDOW_TYPE_HINT_NORMAL;
@@ -1037,11 +1070,13 @@ _gdk_haiku_display_create_window_impl (GdkDisplay    *display,
                     G_CALLBACK (on_frame_clock_before_paint), window);
   g_signal_connect (frame_clock, "after-paint",
                     G_CALLBACK (on_frame_clock_after_paint), window);
+#endif
 }
 
 void
 _gdk_haiku_window_update_position (GdkWindow *window)
 {
+#if 0
   NSRect frame_rect;
   NSRect content_rect;
   GdkWindowImplHaiku *impl = gdk_window_get_haiku_impl (window);
@@ -1059,6 +1094,7 @@ _gdk_haiku_window_update_position (GdkWindow *window)
                                    &window->x, &window->y);
 
   GDK_HAIKU_RELEASE_POOL;
+#endif
 }
 
 void
@@ -1098,6 +1134,7 @@ gdk_haiku_window_destroy (GdkWindow *window,
                            gboolean   recursing,
                            gboolean   foreign_destroy)
 {
+#if 0
   GdkWindowImplHaiku *impl;
   GdkWindow *parent;
   GdkDisplay *display;
@@ -1149,6 +1186,7 @@ gdk_haiku_window_destroy (GdkWindow *window,
 
       GDK_HAIKU_RELEASE_POOL;
     }
+#endif
 }
 
 static void
@@ -1163,6 +1201,7 @@ gdk_haiku_window_destroy_foreign (GdkWindow *window)
 static void
 gdk_window_haiku_show (GdkWindow *window, gboolean already_mapped)
 {
+#if 0
   GdkWindowImplHaiku *impl = gdk_window_get_haiku_impl (window);
   gboolean focus_on_map;
 
@@ -1207,6 +1246,7 @@ gdk_window_haiku_show (GdkWindow *window, gboolean already_mapped)
     _gdk_haiku_window_attach_to_parent (window);
 
   GDK_HAIKU_RELEASE_POOL;
+#endif
 }
 
 /* Temporarily unsets the parent window, if the window is a
@@ -1215,6 +1255,7 @@ gdk_window_haiku_show (GdkWindow *window, gboolean already_mapped)
 void
 _gdk_haiku_window_detach_from_parent (GdkWindow *window)
 {
+#if 0
   GdkWindowImplHaiku *impl;
 
   g_return_if_fail (GDK_IS_WINDOW (window));
@@ -1234,12 +1275,14 @@ _gdk_haiku_window_detach_from_parent (GdkWindow *window)
           clear_toplevel_order ();
         }
     }
+#endif
 }
 
 /* Re-sets the parent window, if the window is a transient. */
 void
 _gdk_haiku_window_attach_to_parent (GdkWindow *window)
 {
+#if 0
   GdkWindowImplHaiku *impl;
 
   g_return_if_fail (GDK_IS_WINDOW (window));
@@ -1259,11 +1302,13 @@ _gdk_haiku_window_attach_to_parent (GdkWindow *window)
           clear_toplevel_order ();
         }
     }
+#endif
 }
 
 void
 gdk_window_haiku_hide (GdkWindow *window)
 {
+#if 0
   GdkWindowImplHaiku *impl;
   GdkDisplay *display = gdk_window_get_display (window);
   GdkSeat *seat = gdk_display_get_default_seat (display);
@@ -1297,6 +1342,7 @@ gdk_window_haiku_hide (GdkWindow *window)
     {
       [impl->view setHidden:YES];
     }
+#endif
 }
 
 void
@@ -1312,6 +1358,7 @@ move_resize_window_internal (GdkWindow *window,
 			     gint       width,
 			     gint       height)
 {
+#if 0
   GdkWindowImplHaiku *impl;
   GdkRectangle old_visible;
   GdkRectangle new_visible;
@@ -1455,6 +1502,7 @@ move_resize_window_internal (GdkWindow *window,
     [GDK_HAIKU_GL_CONTEXT (window->gl_paint_context)->gl_context update];
 
   GDK_HAIKU_RELEASE_POOL;
+#endif
 }
 
 static inline void
@@ -1531,6 +1579,7 @@ gdk_window_haiku_reparent (GdkWindow *window,
                             gint       x,
                             gint       y)
 {
+#if 0
   GdkWindow *old_parent;
   GdkWindowImplHaiku *impl, *old_parent_impl, *new_parent_impl;
   NSView *view, *new_parent_view;
@@ -1573,7 +1622,7 @@ gdk_window_haiku_reparent (GdkWindow *window,
     }
 
   new_parent_impl->sorted_children = g_list_prepend (new_parent_impl->sorted_children, window);
-
+#endif
   return FALSE;
 }
 
@@ -1584,6 +1633,7 @@ gdk_window_haiku_reparent (GdkWindow *window,
 static void
 update_toplevel_order (void)
 {
+#if 0
   GdkWindowImplHaiku *root_impl;
   NSEnumerator *enumerator;
   id nswindow;
@@ -1611,6 +1661,7 @@ update_toplevel_order (void)
   GDK_HAIKU_RELEASE_POOL;
 
   root_impl->sorted_children = g_list_reverse (toplevels);
+#endif
 }
 
 static void
@@ -1629,6 +1680,7 @@ clear_toplevel_order (void)
 static void
 gdk_window_haiku_raise (GdkWindow *window)
 {
+#if 0
   if (GDK_WINDOW_DESTROYED (window))
     return;
 
@@ -1662,11 +1714,13 @@ gdk_window_haiku_raise (GdkWindow *window)
             }
         }
     }
+#endif
 }
 
 static void
 gdk_window_haiku_lower (GdkWindow *window)
 {
+#if 0
   if (GDK_WINDOW_DESTROYED (window))
     return;
 
@@ -1698,6 +1752,7 @@ gdk_window_haiku_lower (GdkWindow *window)
             }
         }
     }
+#endif
 }
 
 static void
@@ -1705,6 +1760,7 @@ gdk_window_haiku_restack_toplevel (GdkWindow *window,
 				    GdkWindow *sibling,
 				    gboolean   above)
 {
+#if 0
   GdkWindowImplHaiku *impl;
   gint sibling_num = -1;
 
@@ -1719,6 +1775,7 @@ gdk_window_haiku_restack_toplevel (GdkWindow *window,
     [impl->toplevel orderWindow:NSWindowAbove relativeTo:sibling_num];
   else
     [impl->toplevel orderWindow:NSWindowBelow relativeTo:sibling_num];
+#endif
 }
 
 static void
@@ -1735,6 +1792,7 @@ gdk_window_haiku_set_device_cursor (GdkWindow *window,
                                      GdkDevice *device,
                                      GdkCursor *cursor)
 {
+#if 0
   NSCursor *nscursor;
 
   if (GDK_WINDOW_DESTROYED (window))
@@ -1743,6 +1801,7 @@ gdk_window_haiku_set_device_cursor (GdkWindow *window,
   nscursor = _gdk_haiku_cursor_get_ns_cursor (cursor);
 
   [nscursor set];
+#endif
 }
 
 static void
@@ -1752,6 +1811,7 @@ gdk_window_haiku_get_geometry (GdkWindow *window,
                                 gint      *width,
                                 gint      *height)
 {
+#if 0
   GdkWindowImplHaiku *impl;
   NSRect ns_rect;
 
@@ -1817,6 +1877,7 @@ gdk_window_haiku_get_geometry (GdkWindow *window,
       if (height)
         *height = ns_rect.size.height;
     }
+#endif
 }
 
 static void
@@ -1826,6 +1887,7 @@ gdk_window_haiku_get_root_coords (GdkWindow *window,
                                    gint      *root_x,
                                    gint      *root_y)
 {
+#if 0
   int tmp_x = 0, tmp_y = 0;
   GdkWindow *toplevel;
   NSRect content_rect;
@@ -1881,6 +1943,7 @@ gdk_window_haiku_get_root_coords (GdkWindow *window,
     *root_x = tmp_x;
   if (root_y)
     *root_y = tmp_y;
+#endif
 }
 
 /* Returns coordinates relative to the passed in window. */
@@ -1891,6 +1954,7 @@ gdk_window_haiku_get_device_state_helper (GdkWindow       *window,
                                            gdouble         *y,
                                            GdkModifierType *mask)
 {
+#if 0
   NSPoint point;
   gint x_tmp, y_tmp;
   GdkWindow *toplevel;
@@ -1944,6 +2008,8 @@ gdk_window_haiku_get_device_state_helper (GdkWindow       *window,
   *y = y_tmp;
 
   return found_window;
+#endif
+  return NULL;
 }
 
 static gboolean
@@ -1990,6 +2056,7 @@ gdk_haiku_window_set_geometry_hints (GdkWindow         *window,
                                       const GdkGeometry *geometry,
                                       GdkWindowHints     geom_mask)
 {
+#if 0
   GdkWindowImplHaiku *impl;
 
   g_return_if_fail (geometry != NULL);
@@ -2071,12 +2138,14 @@ gdk_haiku_window_set_geometry_hints (GdkWindow         *window,
     {
       /* FIXME: Implement */
     }
+#endif
 }
 
 static void
 gdk_haiku_window_set_title (GdkWindow   *window,
                              const gchar *title)
 {
+#if 0
   GdkWindowImplHaiku *impl;
 
   g_return_if_fail (title != NULL);
@@ -2093,6 +2162,7 @@ gdk_haiku_window_set_title (GdkWindow   *window,
       [impl->toplevel setTitle:[NSString stringWithUTF8String:title]];
       GDK_HAIKU_RELEASE_POOL;
     }
+#endif
 }
 
 static void
@@ -2117,6 +2187,7 @@ static void
 gdk_haiku_window_set_transient_for (GdkWindow *window,
                                      GdkWindow *parent)
 {
+#if 0
   GdkWindowImplHaiku *window_impl;
   GdkWindowImplHaiku *parent_impl;
 
@@ -2164,6 +2235,7 @@ gdk_haiku_window_set_transient_for (GdkWindow *window,
     }
   
   GDK_HAIKU_RELEASE_POOL;
+#endif
 }
 
 static void
@@ -2216,6 +2288,7 @@ static void
 gdk_haiku_window_focus (GdkWindow *window,
                          guint32    timestamp)
 {
+#if 0
   GdkWindowImplHaiku *impl;
 
   impl = gdk_window_get_haiku_impl (window);
@@ -2232,11 +2305,13 @@ gdk_haiku_window_focus (GdkWindow *window,
       clear_toplevel_order ();
       GDK_HAIKU_RELEASE_POOL;
     }
+#endif
 }
 
 static gint
 window_type_hint_to_level (GdkWindowTypeHint hint)
 {
+#if 0
   /*  the order in this switch statement corresponds to the actual
    *  stacking order: the first group is top, the last group is bottom
    */
@@ -2273,6 +2348,8 @@ window_type_hint_to_level (GdkWindowTypeHint hint)
     }
 
   return NSNormalWindowLevel;
+#endif
+  return 0;
 }
 
 static gboolean
@@ -2327,6 +2404,7 @@ window_type_hint_to_hides_on_deactivate (GdkWindowTypeHint hint)
 static void
 _gdk_haiku_window_update_has_shadow (GdkWindowImplHaiku *impl)
 {
+#if 0
     gboolean has_shadow;
 
     /* In case there is any shadow set we have to turn off the
@@ -2335,8 +2413,10 @@ _gdk_haiku_window_update_has_shadow (GdkWindowImplHaiku *impl)
     has_shadow = (window_type_hint_to_shadow (impl->type_hint) && !impl->shadow_max);
 
     [impl->toplevel setHasShadow: has_shadow];
+#endif
 }
 
+#if 0
 static void
 _gdk_haiku_window_set_collection_behavior (NSWindow *nswindow,
                                             GdkWindowTypeHint hint)
@@ -2376,11 +2456,13 @@ _gdk_haiku_window_set_collection_behavior (NSWindow *nswindow,
 #undef GDK_HAIKU_DISALLOWS_TILING
 #endif
 }
+#endif
 
 static void
 gdk_haiku_window_set_type_hint (GdkWindow        *window,
                                  GdkWindowTypeHint hint)
 {
+#if 0
   GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window) ||
@@ -2407,6 +2489,7 @@ gdk_haiku_window_set_type_hint (GdkWindow        *window,
     _gdk_haiku_window_set_collection_behavior (impl->toplevel, hint);
   [impl->toplevel setLevel: window_type_hint_to_level (hint)];
   [impl->toplevel setHidesOnDeactivate: window_type_hint_to_hides_on_deactivate (hint)];
+#endif
 }
 
 static GdkWindowTypeHint
@@ -2461,6 +2544,7 @@ gdk_haiku_window_begin_resize_drag (GdkWindow     *window,
                                      gint           root_y,
                                      guint32        timestamp)
 {
+#if 0
   GdkWindowImplHaiku *impl;
 
   g_return_if_fail (GDK_IS_WINDOW (window));
@@ -2477,6 +2561,7 @@ gdk_haiku_window_begin_resize_drag (GdkWindow     *window,
     }
 
   [(GdkHaikuNSWindow *)impl->toplevel beginManualResize:edge];
+#endif
 }
 
 static void
@@ -2487,6 +2572,7 @@ gdk_haiku_window_begin_move_drag (GdkWindow *window,
                                    gint       root_y,
                                    guint32    timestamp)
 {
+#if 0
   GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window) ||
@@ -2502,6 +2588,7 @@ gdk_haiku_window_begin_move_drag (GdkWindow *window,
     }
 
   [(GdkHaikuNSWindow *)impl->toplevel beginManualMove];
+#endif
 }
 
 static void
@@ -2515,6 +2602,7 @@ static void
 gdk_haiku_window_get_frame_extents (GdkWindow    *window,
                                      GdkRectangle *rect)
 {
+#if 0
   GdkWindow *toplevel;
   GdkWindowImplHaiku *impl;
   NSRect ns_rect;
@@ -2541,6 +2629,7 @@ gdk_haiku_window_get_frame_extents (GdkWindow    *window,
 
   rect->width = ns_rect.size.width;
   rect->height = ns_rect.size.height;
+#endif
 }
 
 /* Fake protocol to make gcc think that it's OK to call setStyleMask
@@ -2555,6 +2644,7 @@ static void
 gdk_haiku_window_set_decorations (GdkWindow       *window,
 			    GdkWMDecoration  decorations)
 {
+#if 0
   GdkWindowImplHaiku *impl;
   NSUInteger old_mask, new_mask;
   NSView *old_view;
@@ -2677,12 +2767,14 @@ gdk_haiku_window_set_decorations (GdkWindow       *window,
     }
 
   GDK_HAIKU_RELEASE_POOL;
+#endif
 }
 
 static gboolean
 gdk_haiku_window_get_decorations (GdkWindow       *window,
                                    GdkWMDecoration *decorations)
 {
+#if 0
   GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window) ||
@@ -2707,12 +2799,15 @@ gdk_haiku_window_get_decorations (GdkWindow       *window,
     }
 
   return TRUE;
+#endif
+  return FALSE;
 }
 
 static void
 gdk_haiku_window_set_functions (GdkWindow    *window,
                                  GdkWMFunction functions)
 {
+#if 0
   GdkWindowImplHaiku *impl;
   gboolean min, max, close;
 
@@ -2754,6 +2849,7 @@ gdk_haiku_window_set_functions (GdkWindow    *window,
 
       [impl->toplevel setStyleMask:mask];
     }
+#endif
 }
 
 static void
@@ -2775,6 +2871,7 @@ gdk_haiku_window_unstick (GdkWindow *window)
 static void
 gdk_haiku_window_maximize (GdkWindow *window)
 {
+#if 0
   GdkWindowImplHaiku *impl;
   gboolean maximized;
 
@@ -2795,11 +2892,13 @@ gdk_haiku_window_maximize (GdkWindow *window)
 
       GDK_HAIKU_RELEASE_POOL;
     }
+#endif
 }
 
 static void
 gdk_haiku_window_unmaximize (GdkWindow *window)
 {
+#if 0
   GdkWindowImplHaiku *impl;
   gboolean maximized;
 
@@ -2820,11 +2919,13 @@ gdk_haiku_window_unmaximize (GdkWindow *window)
 
       GDK_HAIKU_RELEASE_POOL;
     }
+#endif
 }
 
 static void
 gdk_haiku_window_iconify (GdkWindow *window)
 {
+#if 0
   GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window) ||
@@ -2849,11 +2950,13 @@ gdk_haiku_window_iconify (GdkWindow *window)
 				   0,
 				   GDK_WINDOW_STATE_ICONIFIED);
     }
+#endif
 }
 
 static void
 gdk_haiku_window_deiconify (GdkWindow *window)
 {
+#if 0
   GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window) ||
@@ -2878,6 +2981,7 @@ gdk_haiku_window_deiconify (GdkWindow *window)
 				   GDK_WINDOW_STATE_ICONIFIED,
 				   0);
     }
+#endif
 }
 
 static gboolean
@@ -2897,6 +3001,7 @@ window_is_fullscreen (GdkWindow *window)
 static void
 gdk_haiku_window_fullscreen (GdkWindow *window)
 {
+#if 0
   GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window) ||
@@ -2959,11 +3064,13 @@ gdk_haiku_window_fullscreen (GdkWindow *window)
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
     }
 #endif
+#endif
 }
 
 static void
 gdk_haiku_window_unfullscreen (GdkWindow *window)
 {
+#if 0
   GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window) ||
@@ -3014,6 +3121,7 @@ gdk_haiku_window_unfullscreen (GdkWindow *window)
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
     }
 #endif
+#endif
 }
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
@@ -3052,6 +3160,7 @@ static void
 gdk_haiku_window_set_keep_above (GdkWindow *window,
                                   gboolean   setting)
 {
+#if 0
   GdkWindowImplHaiku *impl = gdk_window_get_haiku_impl (window);
   gint level;
 
@@ -3066,12 +3175,14 @@ gdk_haiku_window_set_keep_above (GdkWindow *window,
   
   /* Adjust normal window level by one if necessary. */
   [impl->toplevel setLevel: level + (setting ? 1 : 0)];
+#endif
 }
 
 static void
 gdk_haiku_window_set_keep_below (GdkWindow *window,
                                   gboolean   setting)
 {
+#if 0
   GdkWindowImplHaiku *impl = gdk_window_get_haiku_impl (window);
   gint level;
 
@@ -3086,6 +3197,7 @@ gdk_haiku_window_set_keep_below (GdkWindow *window,
   
   /* Adjust normal window level by one if necessary. */
   [impl->toplevel setLevel: level - (setting ? 1 : 0)];
+#endif
 }
 
 /* X11 "feature" not useful in other backends. */
@@ -3114,6 +3226,7 @@ static void
 gdk_haiku_window_set_opacity (GdkWindow *window,
                                gdouble    opacity)
 {
+#if 0
   GdkWindowImplHaiku *impl = gdk_window_get_haiku_impl (window);
 
   g_return_if_fail (GDK_IS_WINDOW (window));
@@ -3130,6 +3243,7 @@ gdk_haiku_window_set_opacity (GdkWindow *window,
     opacity = 1;
 
   [impl->toplevel setAlphaValue: opacity];
+#endif
 }
 
 static void
@@ -3168,14 +3282,17 @@ gdk_haiku_window_get_input_shape (GdkWindow *window)
   return NULL;
 }
 
+#if 0
 /* Protocol to build cleanly for OSX < 10.7 */
 @protocol ScaleFactor
 - (CGFloat) backingScaleFactor;
 @end
+#endif
 
 static gint
 gdk_haiku_window_get_scale_factor (GdkWindow *window)
 {
+#if 0
   GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window))
@@ -3186,7 +3303,7 @@ gdk_haiku_window_get_scale_factor (GdkWindow *window)
   if (impl && impl->toplevel != NULL &&
       gdk_haiku_osx_version() >= GDK_OSX_LION)
     return [(id <ScaleFactor>) impl->toplevel backingScaleFactor];
-
+#endif
   return 1;
 }
 
@@ -3277,8 +3394,8 @@ gdk_window_impl_haiku_class_init (GdkWindowImplHaikuClass *klass)
   impl_class->create_gl_context = gdk_haiku_window_create_gl_context;
   impl_class->invalidate_for_new_frame = gdk_haiku_window_invalidate_for_new_frame;
 
-  impl_haiku_class->get_context = gdk_window_impl_haiku_get_context;
-  impl_haiku_class->release_context = gdk_window_impl_haiku_release_context;
+//  impl_haiku_class->get_context = gdk_window_impl_haiku_get_context;
+//  impl_haiku_class->release_context = gdk_window_impl_haiku_release_context;
 }
 
 GType
@@ -3309,6 +3426,7 @@ _gdk_window_impl_haiku_get_type (void)
   return object_type;
 }
 
+#if 0
 CGContextRef
 gdk_haiku_window_get_context (GdkWindowImplHaiku  *window,
                                gboolean             antialias)
@@ -3347,21 +3465,25 @@ gdk_haiku_window_release_context (GdkWindowImplHaiku  *window,
 
 static CGContextRef gdk_root_window_impl_haiku_get_context (GdkWindowImplHaiku *window, gboolean antialias);
 static void gdk_root_window_impl_haiku_release_context (GdkWindowImplHaiku *window, CGContextRef cg_context);
+#endif
 
 static void
 gdk_root_window_impl_haiku_class_init (GdkRootWindowImplHaikuClass *klass)
 {
+#if 0
   GdkWindowImplHaikuClass *window_haiku_class = GDK_WINDOW_IMPL_HAIKU_CLASS (klass);
 
   root_window_parent_class = g_type_class_peek_parent (klass);
 
   window_haiku_class->get_context = gdk_root_window_impl_haiku_get_context;
   window_haiku_class->release_context = gdk_root_window_impl_haiku_release_context;
+#endif
 }
 
 static void
 gdk_root_window_impl_haiku_init (GdkRootWindowImplHaiku *impl)
 {
+#if 0
   CGColorSpaceRef colorspace =  CGColorSpaceCreateDeviceRGB ();
   /* Alpha channel Info: Cairo, CGImage, and CVPixelBuffer all use
    * kCGImageAlphaPremultipliedFirst, CALayer.contents wants
@@ -3372,12 +3494,13 @@ gdk_root_window_impl_haiku_init (GdkRootWindowImplHaiku *impl)
                                             colorspace, info);
   CGColorSpaceRelease (colorspace);
   impl->cg_layers = NULL;
+#endif
 }
 
 static void
 gdk_root_window_impl_haiku_dispose (GdkRootWindowImplHaiku *impl)
 {
-  g_list_free_full (impl->cg_layers, (GDestroyNotify)CGLayerRelease);
+//  g_list_free_full (impl->cg_layers, (GDestroyNotify)CGLayerRelease);
 }
 
 GType
@@ -3409,6 +3532,7 @@ _gdk_root_window_impl_haiku_get_type (void)
 }
 
 
+#if 0
 static CGContextRef
 gdk_root_window_impl_haiku_get_context (GdkWindowImplHaiku *window_impl,
                                          gboolean             antialias)
@@ -3433,3 +3557,4 @@ gdk_root_window_impl_haiku_release_context (GdkWindowImplHaiku *window,
 {
   CGContextRelease (cg_context);
 }
+#endif

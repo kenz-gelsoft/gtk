@@ -18,6 +18,8 @@
 
 #ifndef __GDK_KEYS_HAIKU_H__
 #define __GDK_KEYS_HAIKU_H__
+
+#if 0
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
 typedef enum
   {
@@ -82,4 +84,6 @@ typedef enum
 
 
 #endif
+#endif
+
 #endif /* __GDK_KEYS_HAIKU_H__ */

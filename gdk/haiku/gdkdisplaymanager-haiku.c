@@ -22,7 +22,7 @@
 
 #include "config.h"
 
-#include <ApplicationServices/ApplicationServices.h>
+//#include <ApplicationServices/ApplicationServices.h>
 
 #include "gdkhaikudisplay.h"
 #include "gdkhaikudisplaymanager.h"
