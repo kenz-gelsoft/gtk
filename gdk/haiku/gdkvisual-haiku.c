@@ -19,7 +19,7 @@
 #include "config.h"
 
 #include "gdkvisualprivate.h"
-#include "gdkquartzvisual.h"
+#include "gdkhaikuvisual.h"
 #include "gdkprivate-haiku.h"
 
 

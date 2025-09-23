@@ -18,11 +18,11 @@
 
 #include "config.h"
 #import "GdkHaikuNSWindow.h"
-#include "gdkquartzwindow.h"
+#include "gdkhaikuwindow.h"
 #include "gdkdnd-haiku.h"
 #include "gdkprivate-haiku.h"
 #include "gdkinternal-haiku.h"
-#include "gdkquartzdnd.h"
+#include "gdkhaikudnd.h"
 
 @implementation GdkHaikuNSWindow
 

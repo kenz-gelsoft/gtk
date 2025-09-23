@@ -22,12 +22,12 @@
 #include <gdk/gdkdisplayprivate.h>
 
 #import "GdkHaikuView.h"
-#include "gdkquartzwindow.h"
-#include "gdkquartzcursor.h"
+#include "gdkhaikuwindow.h"
+#include "gdkhaikucursor.h"
 #include "gdkprivate-haiku.h"
-#include "gdkquartzdevice-core.h"
+#include "gdkhaikudevice-core.h"
 #include "gdkinternal-haiku.h"
-#include "gdkquartz-cocoa-access.h"
+#include "gdkhaiku-cocoa-access.h"
 
 struct _GdkHaikuDeviceCore
 {

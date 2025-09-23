@@ -1,4 +1,4 @@
-/* gdkquartz-gtk-only.h
+/* gdkhaiku-gtk-only.h
  *
  * Copyright (C) 2005-2007 Imendio AB
  *

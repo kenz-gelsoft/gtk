@@ -22,9 +22,9 @@
 #include <gdk/gdk.h>
 #include <gdkinternals.h>
 
-#include "gdkquartz-gtk-only.h"
-#include "gdkquartz-cocoa-access.h"
-#include <gdkquartzutils.h>
+#include "gdkhaiku-gtk-only.h"
+#include "gdkhaiku-cocoa-access.h"
+#include <gdkhaikuutils.h>
 
 NSImage *
 gdk_haiku_pixbuf_to_ns_image_libgtk_only (GdkPixbuf *pixbuf)

@@ -1,4 +1,4 @@
-/* gdkquartz-gtk-only.h
+/* gdkhaiku-gtk-only.h
  *
  * Copyright (C) 2005-2007 Imendio AB
  *
@@ -25,7 +25,7 @@
 
 #include <AppKit/AppKit.h>
 #include <gdk/gdk.h>
-#include <gdk/quartz/gdkquartz.h>
+#include <gdk/quartz/gdkhaiku.h>
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101400
 #define GDK_QUARTZ_FILE_PBOARD_TYPE    NSURLPboardType

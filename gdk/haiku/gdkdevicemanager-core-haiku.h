@@ -21,7 +21,7 @@
 #define __GDK_QUARTZ_DEVICE_MANAGER_CORE__
 
 #include <gdkdevicemanagerprivate.h>
-#include "gdkquartzdevicemanager-core.h"
+#include "gdkhaikudevicemanager-core.h"
 
 #import <Cocoa/Cocoa.h>
 

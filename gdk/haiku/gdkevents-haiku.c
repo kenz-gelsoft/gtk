@@ -31,13 +31,13 @@
 
 #include "gdkscreen.h"
 #include "gdkkeysyms.h"
-#include "gdkquartz.h"
-#include "gdkquartzdisplay.h"
+#include "gdkhaiku.h"
+#include "gdkhaikudisplay.h"
 #include "gdkprivate-haiku.h"
 #include "gdkinternal-haiku.h"
-#include "gdkquartz-cocoa-access.h"
-#include "gdkquartzdevicemanager-core.h"
-#include "gdkquartzkeys.h"
+#include "gdkhaiku-cocoa-access.h"
+#include "gdkhaikudevicemanager-core.h"
+#include "gdkhaikukeys.h"
 #include "gdkkeys-haiku.h"
 
 #define GRIP_WIDTH 15

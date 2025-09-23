@@ -19,7 +19,7 @@
 #include "config.h"
 #include "gdktypes.h"
 #include "gdkprivate.h"
-#include "gdkquartz.h"
+#include "gdkhaiku.h"
 #include "gdkinternal-haiku.h"
 
 GdkDisplay *_gdk_display = NULL;

@@ -24,11 +24,11 @@
 
 #include "gdkglcontext-haiku.h"
 
-#include "gdkquartzdisplay.h"
-#include "gdkquartzglcontext.h"
-#include "gdkquartzwindow.h"
+#include "gdkhaikudisplay.h"
+#include "gdkhaikuglcontext.h"
+#include "gdkhaikuwindow.h"
 #include "gdkprivate-haiku.h"
-#include "gdkquartz-cocoa-access.h"
+#include "gdkhaiku-cocoa-access.h"
 
 #include "gdkinternals.h"
 

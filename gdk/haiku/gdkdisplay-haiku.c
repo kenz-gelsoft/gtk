@@ -24,10 +24,10 @@
 #include <gdk/gdkframeclockprivate.h>
 
 #include "gdkprivate-haiku.h"
-#include "gdkquartzscreen.h"
-#include "gdkquartzwindow.h"
-#include "gdkquartzdisplay.h"
-#include "gdkquartzdevicemanager-core.h"
+#include "gdkhaikuscreen.h"
+#include "gdkhaikuwindow.h"
+#include "gdkhaikudisplay.h"
+#include "gdkhaikudevicemanager-core.h"
 #include "gdkscreen.h"
 #include "gdkmonitorprivate.h"
 #include "gdkdisplaylinksource.h"

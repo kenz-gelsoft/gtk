@@ -24,8 +24,8 @@
 
 #include <ApplicationServices/ApplicationServices.h>
 
-#include "gdkquartzdisplay.h"
-#include "gdkquartzdisplaymanager.h"
+#include "gdkhaikudisplay.h"
+#include "gdkhaikudisplaymanager.h"
 #include "gdkprivate-haiku.h"
 
 #include "gdkdisplaymanagerprivate.h"

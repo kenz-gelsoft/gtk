@@ -27,23 +27,23 @@ gdk_haiku_sources = files(
 )
 
 gdk_haiku_public_headers = files(
-  'gdkquartz-cocoa-access.h',
-  'gdkquartzcursor.h',
-  'gdkquartzdevice-core.h',
-  'gdkquartzdevicemanager-core.h',
-  'gdkquartzdisplay.h',
-  'gdkquartzdisplaymanager.h',
-  'gdkquartzdnd.h',
-  'gdkquartzkeys.h',
-  'gdkquartzmonitor.h',
-  'gdkquartzscreen.h',
-  'gdkquartzutils.h',
-  'gdkquartzvisual.h',
-  'gdkquartzwindow.h',
+  'gdkhaiku-cocoa-access.h',
+  'gdkhaikucursor.h',
+  'gdkhaikudevice-core.h',
+  'gdkhaikudevicemanager-core.h',
+  'gdkhaikudisplay.h',
+  'gdkhaikudisplaymanager.h',
+  'gdkhaikudnd.h',
+  'gdkhaikukeys.h',
+  'gdkhaikumonitor.h',
+  'gdkhaikuscreen.h',
+  'gdkhaikuutils.h',
+  'gdkhaikuvisual.h',
+  'gdkhaikuwindow.h',
 )
 
 install_headers(gdk_haiku_public_headers, subdir: 'gtk-3.0/gdk/quartz')
-install_headers('gdkquartz.h', subdir: 'gtk-3.0/gdk')
+install_headers('gdkhaiku.h', subdir: 'gtk-3.0/gdk')
 
 core_graphics_dep = dependency('appleframeworks', modules : 'CoreGraphics', required : true)
 appkit_dep = dependency('appleframeworks', modules : 'AppKit', required : true)

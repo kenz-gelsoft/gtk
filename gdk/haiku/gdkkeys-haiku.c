@@ -52,7 +52,7 @@
 #include <Carbon/Carbon.h>
 #include <AppKit/NSEvent.h>
 #include "gdk.h"
-#include "gdkquartzkeys.h"
+#include "gdkhaikukeys.h"
 #include "gdkkeysprivate.h"
 #include "gdkkeysyms.h"
 #include "gdkkeys-haiku.h"

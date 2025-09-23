@@ -21,10 +21,10 @@
 #include "gdkdisplay.h"
 #include "gdkcursor.h"
 #include "gdkcursorprivate.h"
-#include "gdkquartzcursor.h"
+#include "gdkhaikucursor.h"
 #include "gdkprivate-haiku.h"
 #include "gdkinternal-haiku.h"
-#include "gdkquartz-gtk-only.h"
+#include "gdkhaiku-gtk-only.h"
 
 #include "xcursors.h"
 

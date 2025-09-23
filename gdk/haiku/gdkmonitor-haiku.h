@@ -24,7 +24,7 @@
 
 #include "gdkmonitorprivate.h"
 
-#include "gdkquartzmonitor.h"
+#include "gdkhaikumonitor.h"
 #include "gdkprivate-haiku.h"
 
 struct _GdkHaikuMonitor

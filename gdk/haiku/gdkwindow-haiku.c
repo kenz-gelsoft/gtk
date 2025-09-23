@@ -28,10 +28,10 @@
 #include "gdkwindow-haiku.h"
 #include "gdkprivate-haiku.h"
 #include "gdkglcontext-haiku.h"
-#include "gdkquartzglcontext.h"
-#include "gdkquartzscreen.h"
-#include "gdkquartzcursor.h"
-#include "gdkquartz-cocoa-access.h"
+#include "gdkhaikuglcontext.h"
+#include "gdkhaikuscreen.h"
+#include "gdkhaikucursor.h"
+#include "gdkhaiku-cocoa-access.h"
 #include "gdkinternal-haiku.h"
 
 #include <Carbon/Carbon.h>

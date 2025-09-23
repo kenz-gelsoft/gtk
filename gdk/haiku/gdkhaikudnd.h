@@ -1,4 +1,4 @@
-/* gdkquartzdnd.h
+/* gdkhaikudnd.h
  *
  * Copyright (C) 2010 Kristian Rietveld  <kris@gtk.org>
  *
@@ -20,7 +20,7 @@
 #define __GDK_QUARTZ_DND_H__
 
 #if !defined (GTK_COMPILATION) && !defined (GDK_COMPILATION)
-#error "gdkquartzdnd.h is for Gtk's internal use only"
+#error "gdkhaikudnd.h is for Gtk's internal use only"
 #endif
 
 #include <gdk/gdk.h>

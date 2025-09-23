@@ -22,9 +22,9 @@
 
 #include "gdkselection.h"
 #include "gdkproperty.h"
-#include "gdkquartz.h"
+#include "gdkhaiku.h"
 #include "gdkinternal-haiku.h"
-#include "gdkquartz-gtk-only.h"
+#include "gdkhaiku-gtk-only.h"
 
 gboolean
 _gdk_haiku_display_set_selection_owner (GdkDisplay *display,

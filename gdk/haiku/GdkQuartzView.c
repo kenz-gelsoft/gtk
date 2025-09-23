@@ -20,9 +20,9 @@
 #include <AvailabilityMacros.h>
 #include "config.h"
 #import "GdkHaikuView.h"
-#include "gdkquartzwindow.h"
+#include "gdkhaikuwindow.h"
 #include "gdkprivate-haiku.h"
-#include "gdkquartz.h"
+#include "gdkhaiku.h"
 #include "gdkinternal-haiku.h"
 #include <cairo/cairo-haiku.h>
 #import <AppKit/AppKit.h>

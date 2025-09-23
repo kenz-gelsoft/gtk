@@ -24,7 +24,7 @@
 #include <gdk/gdkdevicemanagerprivate.h>
 #include <gdk/gdkdisplayprivate.h>
 #include "gdkdevicemanager-core-haiku.h"
-#include "gdkquartzdevice-core.h"
+#include "gdkhaikudevice-core.h"
 #include "gdkkeysyms.h"
 #include "gdkprivate-haiku.h"
 #include "gdkinternal-haiku.h"

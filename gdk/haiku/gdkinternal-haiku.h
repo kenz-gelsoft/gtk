@@ -43,7 +43,7 @@ typedef float CGFloat;
 #define GDK_QUARTZ_RELEASE_POOL [pool release]
 
 #include "../gdkprivate.h"
-#include "gdkquartz.h"
+#include "gdkhaiku.h"
 #include "gdkdevicemanager-core-haiku.h"
 #include "gdkdnd-haiku.h"
 #include "gdkscreen-haiku.h"

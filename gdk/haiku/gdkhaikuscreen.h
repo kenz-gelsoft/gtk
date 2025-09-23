@@ -1,4 +1,4 @@
-/* gdkquartzscreen.h
+/* gdkhaikuscreen.h
  *
  * Copyright (C) 2009, 2010  Kristian Rietveld  <kris@gtk.org>
  *
@@ -20,7 +20,7 @@
 #define __GDK_QUARTZ_SCREEN_H__
 
 #if !defined(__GDKQUARTZ_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdkquartz.h> can be included directly."
+#error "Only <gdk/gdkhaiku.h> can be included directly."
 #endif
 
 G_BEGIN_DECLS

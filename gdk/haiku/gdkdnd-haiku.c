@@ -18,10 +18,10 @@
 
 #include "config.h"
 #include "gdkdnd.h"
-#include "gdkquartzdnd.h"
+#include "gdkhaikudnd.h"
 #include "gdkprivate-haiku.h"
 #include "gdkinternal-haiku.h"
-#include "gdkquartz-gtk-only.h"
+#include "gdkhaiku-gtk-only.h"
 
 G_DEFINE_TYPE (GdkHaikuDragContext, gdk_haiku_drag_context, GDK_TYPE_DRAG_CONTEXT)
 
