@@ -53,7 +53,7 @@ GdkOSXVersion gdk_haiku_osx_version (void);
 
 G_END_DECLS
 
-#define __GDKQUARTZ_H_INSIDE__
+#define __GDKHAIKU_H_INSIDE__
 
 #include <gdk/haiku/gdkhaikucursor.h>
 #include <gdk/haiku/gdkhaikudevice-core.h>
@@ -67,6 +67,6 @@ G_END_DECLS
 #include <gdk/haiku/gdkhaikuvisual.h>
 #include <gdk/haiku/gdkhaikuwindow.h>
 
-#undef __GDKQUARTZ_H_INSIDE__
+#undef __GDKHAIKU_H_INSIDE__
 
 #endif /* __GDK_HAIKU_H__ */

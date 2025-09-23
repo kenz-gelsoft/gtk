@@ -22,7 +22,7 @@
 #ifndef __GDK_HAIKU_GL_CONTEXT_H__
 #define __GDK_HAIKU_GL_CONTEXT_H__
 
-#if !defined (__GDKQUARTZ_H_INSIDE__) && !defined (GDK_COMPILATION)
+#if !defined (__GDKHAIKU_H_INSIDE__) && !defined (GDK_COMPILATION)
 #error "Only <gdk/gdkhaiku.h> can be included directly."
 #endif
 

@@ -18,7 +18,7 @@
 #ifndef __GDK_HAIKU_DEVICE_MANAGER_CORE_H__
 #define __GDK_HAIKU_DEVICE_MANAGER_CORE_H__
 
-#if !defined(__GDKQUARTZ_H_INSIDE__) && !defined (GDK_COMPILATION)
+#if !defined(__GDKHAIKU_H_INSIDE__) && !defined (GDK_COMPILATION)
 #error "Only <gdk/gdkhaiku.h> can be included directly."
 #endif
 
