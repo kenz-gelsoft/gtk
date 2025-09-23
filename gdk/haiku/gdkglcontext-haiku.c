@@ -70,9 +70,9 @@ gdk_haiku_gl_context_end_frame (GdkGLContext *context,
                                  cairo_region_t *painted,
                                  cairo_region_t *damage)
 {
-  GdkHaikuGLContext *context_quartz = GDK_QUARTZ_GL_CONTEXT (context);
+  GdkHaikuGLContext *context_haiku = GDK_QUARTZ_GL_CONTEXT (context);
 
-  [context_quartz->gl_context flushBuffer];
+  [context_haiku->gl_context flushBuffer];
 }
 
 static void
@@ -167,13 +167,13 @@ gdk_haiku_window_create_gl_context (GdkWindow     *window,
 static void
 gdk_haiku_gl_context_dispose (GObject *gobject)
 {
-  GdkHaikuGLContext *context_quartz = GDK_QUARTZ_GL_CONTEXT (gobject);
+  GdkHaikuGLContext *context_haiku = GDK_QUARTZ_GL_CONTEXT (gobject);
 
-  if (context_quartz->gl_context != NULL)
+  if (context_haiku->gl_context != NULL)
     {
-      [context_quartz->gl_context clearDrawable];
-      [context_quartz->gl_context release];
-      context_quartz->gl_context = NULL;
+      [context_haiku->gl_context clearDrawable];
+      [context_haiku->gl_context release];
+      context_haiku->gl_context = NULL;
     }
 
   G_OBJECT_CLASS (gdk_haiku_gl_context_parent_class)->dispose (gobject);
@@ -183,16 +183,16 @@ gboolean
 gdk_haiku_display_is_gl_context_current (GdkDisplay   *display,
                                           GdkGLContext *context)
 {
-  GdkHaikuGLContext *context_quartz = GDK_QUARTZ_GL_CONTEXT (context);
+  GdkHaikuGLContext *context_haiku = GDK_QUARTZ_GL_CONTEXT (context);
 
-  return context_quartz->gl_context == [NSOpenGLContext currentContext];
+  return context_haiku->gl_context == [NSOpenGLContext currentContext];
 }
 
 gboolean
 gdk_haiku_display_make_gl_context_current (GdkDisplay   *display,
                                             GdkGLContext *context)
 {
-  GdkHaikuGLContext *context_quartz;
+  GdkHaikuGLContext *context_haiku;
 
   if (context == NULL)
     {
@@ -200,9 +200,9 @@ gdk_haiku_display_make_gl_context_current (GdkDisplay   *display,
       return TRUE;
     }
 
-  context_quartz = GDK_QUARTZ_GL_CONTEXT (context);
+  context_haiku = GDK_QUARTZ_GL_CONTEXT (context);
 
-  [context_quartz->gl_context makeCurrentContext];
+  [context_haiku->gl_context makeCurrentContext];
 
   return TRUE;
 }

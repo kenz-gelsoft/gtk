@@ -54,7 +54,7 @@ iosurface_dep = dependency('appleframeworks', modules: 'IOSurface', required: tr
 
 gdk_haiku_deps = [ core_graphics_dep, appkit_dep, cocoa_dep, carbon_dep, quartzcore_dep, iosurface_dep ]
 
-libgdk_quartz = static_library('gdk-haiku',
+libgdk_haiku = static_library('gdk-haiku',
   gdk_haiku_sources, gdkconfig, gdkenum_h,
   include_directories: [confinc, gdkinc],
   c_args: ['-DGDK_COMPILATION', '-DG_LOG_DOMAIN="Gdk"', '-xobjective-c'],
