@@ -164,7 +164,7 @@
 -(void)checkSendEnterNotify
 {
   GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
 
   /* When a new window has been created, and the mouse
    * is in the window area, we will not receive an NSMouseEntered
@@ -288,7 +288,7 @@ synthesize_configure_event(GdkWindow *window)
 -(BOOL)canBecomeMainWindow
 {
   GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
 
   switch (impl->type_hint)
     {
@@ -317,7 +317,7 @@ synthesize_configure_event(GdkWindow *window)
 -(BOOL)canBecomeKeyWindow
 {
   GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
 
   if (!window->accept_focus)
     return NO;
@@ -355,7 +355,7 @@ synthesize_configure_event(GdkWindow *window)
 - (void)showAndMakeKey:(BOOL)makeKey
 {
   GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
 
   inShowOrHide = YES;
 
@@ -372,7 +372,7 @@ synthesize_configure_event(GdkWindow *window)
 - (void)hide
 {
   GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
 
   inShowOrHide = YES;
   [impl->toplevel orderOut:nil];
@@ -418,7 +418,7 @@ synthesize_configure_event(GdkWindow *window)
 - (BOOL)trackManualMove
 {
   GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
   NSPoint currentLocation;
   NSPoint newOrigin;
   NSRect screenFrame = [[NSScreen mainScreen] visibleFrame];
@@ -839,7 +839,7 @@ typedef enum
 {
   NSRect rect;
   GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
 
   /* Allow the window to move up "shadow_top" more than normally allowed
    * by the default impl. This makes it possible to move windows with

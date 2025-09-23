@@ -609,7 +609,7 @@ _gdk_quartz_events_update_focus_window (GdkWindow *window,
 void
 _gdk_quartz_events_send_map_event (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
 
   if (!impl->toplevel)
     return;
@@ -1424,7 +1424,7 @@ _gdk_quartz_events_get_current_mouse_modifiers (void)
 static gboolean
 test_resize (NSEvent *event, GdkWindow *toplevel, gint x, gint y)
 {
-  GdkWindowImplQuartz *toplevel_impl;
+  GdkWindowImplHaiku *toplevel_impl;
   gboolean lion;
 
   /* Resizing from the resize indicator only begins if an GDK_QUARTZ_LEFT_MOUSE_BUTTON
@@ -1629,7 +1629,7 @@ gdk_event_translate (GdkEvent *event,
        event_type == GDK_QUARTZ_OTHER_MOUSE_DOWN ||
        event_type == GDK_QUARTZ_LEFT_MOUSE_DOWN))
     {
-      GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+      GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
 
       if (![NSApp isActive])
         {

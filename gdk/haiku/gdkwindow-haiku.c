@@ -124,7 +124,7 @@ gdk_quartz_window_init (GdkHaikuWindow *quartz_window)
 /*
  * GdkHaikuWindowImpl
  */
-static inline GdkWindowImplQuartz*
+static inline GdkWindowImplHaiku*
 gdk_window_get_quartz_impl (GdkWindow* window)
 {
   GdkWindow *embedder;
@@ -148,7 +148,7 @@ gdk_window_get_quartz_impl (GdkWindow* window)
 NSView *
 gdk_quartz_window_get_nsview (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+  GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
 
   return impl ? impl->view : NULL;
 }
@@ -156,13 +156,13 @@ gdk_quartz_window_get_nsview (GdkWindow *window)
 NSWindow *
 gdk_quartz_window_get_nswindow (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+  GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
 
   return impl ? impl->toplevel : NULL;
 }
 
 static CGContextRef
-gdk_window_impl_quartz_get_context (GdkWindowImplQuartz *window_impl,
+gdk_window_impl_quartz_get_context (GdkWindowImplHaiku *window_impl,
 				    gboolean             antialias)
 {
   CGContextRef cg_context = NULL;
@@ -205,7 +205,7 @@ gdk_window_impl_quartz_get_context (GdkWindowImplQuartz *window_impl,
 }
 
 static void
-gdk_window_impl_quartz_release_context (GdkWindowImplQuartz *window_impl,
+gdk_window_impl_quartz_release_context (GdkWindowImplHaiku *window_impl,
                                         CGContextRef         cg_context)
 {
   if (cg_context)
@@ -228,7 +228,7 @@ gdk_window_impl_quartz_release_context (GdkWindowImplQuartz *window_impl,
 static void
 gdk_window_impl_quartz_finalize (GObject *object)
 {
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (object);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (object);
   GdkDisplay *display = gdk_window_get_display (impl->wrapper);
   GdkSeat *seat = gdk_display_get_default_seat (display);
 
@@ -255,7 +255,7 @@ gdk_window_impl_quartz_finalize (GObject *object)
 static cairo_user_data_key_t gdk_quartz_cairo_key;
 
 typedef struct {
-  GdkWindowImplQuartz  *window_impl;
+  GdkWindowImplHaiku  *window_impl;
   CGContextRef  cg_context;
 } GdkHaikuCairoSurfaceData;
 
@@ -272,7 +272,7 @@ gdk_quartz_cairo_surface_destroy (void *data)
 }
 
 static cairo_surface_t *
-gdk_quartz_create_cairo_surface (GdkWindowImplQuartz *impl,
+gdk_quartz_create_cairo_surface (GdkWindowImplHaiku *impl,
 				 int                  width,
 				 int                  height)
 {
@@ -295,7 +295,7 @@ gdk_quartz_create_cairo_surface (GdkWindowImplQuartz *impl,
 static cairo_surface_t *
 gdk_quartz_ref_cairo_surface (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+  GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
 
   if (GDK_WINDOW_DESTROYED (window) || !impl)
     return NULL;
@@ -328,7 +328,7 @@ gdk_quartz_ref_cairo_surface (GdkWindow *window)
 void
 _gdk_quartz_unref_cairo_surface (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+  GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
   if (GDK_WINDOW_DESTROYED (window) || !impl)
     return;
 
@@ -342,7 +342,7 @@ _gdk_quartz_unref_cairo_surface (GdkWindow *window)
 }
 
 static void
-gdk_window_impl_quartz_init (GdkWindowImplQuartz *impl)
+gdk_window_impl_quartz_init (GdkWindowImplHaiku *impl)
 {
   impl->type_hint = GDK_WINDOW_TYPE_HINT_NORMAL;
   impl->view      = NULL;
@@ -361,7 +361,7 @@ static void
 gdk_quartz_window_set_needs_display_in_region (GdkWindow    *window,
                                                cairo_region_t    *region)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
   int i, n_rects;
 
   impl = gdk_window_get_quartz_impl (window);
@@ -394,7 +394,7 @@ _gdk_quartz_window_process_updates_recurse (GdkWindow *window,
   if (in_process_all_updates)
     {
       GdkWindow *toplevel= gdk_window_get_effective_toplevel (window);
-      GdkWindowImplQuartz *toplevel_impl =
+      GdkWindowImplHaiku *toplevel_impl =
             gdk_window_get_quartz_impl (toplevel);
 
       if (toplevel && WINDOW_IS_TOPLEVEL (toplevel) && toplevel_impl)
@@ -665,7 +665,7 @@ find_child_window_helper (GdkWindow *window,
 			  gint       y_offset,
                           gboolean   get_toplevel)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
   GList *l;
 
   impl = gdk_window_get_quartz_impl (window);
@@ -678,7 +678,7 @@ find_child_window_helper (GdkWindow *window,
   for (l = impl->sorted_children; l; l = l->next)
     {
       GdkWindow *child = l->data;
-      GdkWindowImplQuartz *child_impl = gdk_window_get_quartz_impl (child);
+      GdkWindowImplHaiku *child_impl = gdk_window_get_quartz_impl (child);
       int temp_x, temp_y;
 
       if (!GDK_WINDOW_IS_MAPPED (child))
@@ -752,7 +752,7 @@ _gdk_quartz_window_find_child (GdkWindow *window,
 /* Raises a transient window.
  */
 static void
-raise_transient (GdkWindowImplQuartz *impl)
+raise_transient (GdkWindowImplHaiku *impl)
 {
   /* In quartz the transient-for behavior is implemented by
    * attaching the transient-for GdkNSWindows to the parent's
@@ -761,7 +761,7 @@ raise_transient (GdkWindowImplQuartz *impl)
    * to change that order is to remove the child from the
    * parent and then add it back in.
    */
-  GdkWindowImplQuartz *parent_impl =
+  GdkWindowImplHaiku *parent_impl =
         gdk_window_get_quartz_impl (impl->transient_for);
   if (parent_impl)
     {
@@ -774,7 +774,7 @@ raise_transient (GdkWindowImplQuartz *impl)
 void
 _gdk_quartz_window_did_become_main (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+  GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
 
   main_window_stack = g_slist_remove (main_window_stack, window);
 
@@ -810,7 +810,7 @@ _gdk_quartz_window_did_resign_main (GdkWindow *window)
       GDK_WINDOW_IS_MAPPED (new_window) &&
       WINDOW_IS_TOPLEVEL (new_window))
     {
-      GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (new_window);
+      GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (new_window);
 
       if (impl)
         [impl->toplevel makeKeyAndOrderFront:impl->toplevel];
@@ -857,7 +857,7 @@ static void
 on_frame_clock_after_paint (GdkFrameClock *frame_clock,
                             GdkWindow     *window)
 {
-  GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+  GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
   GdkDisplay *display = gdk_window_get_display (window);
   GdkFrameTimings *timings;
 
@@ -879,8 +879,8 @@ _gdk_quartz_display_create_window_impl (GdkDisplay    *display,
                                         GdkWindowAttr *attributes,
                                         gint           attributes_mask)
 {
-  GdkWindowImplQuartz *impl;
-  GdkWindowImplQuartz *parent_impl;
+  GdkWindowImplHaiku *impl;
+  GdkWindowImplHaiku *parent_impl;
   GdkWindowTypeHint    type_hint = GDK_WINDOW_TYPE_HINT_NORMAL;
   GdkFrameClock *frame_clock;
 
@@ -1002,7 +1002,7 @@ _gdk_quartz_display_create_window_impl (GdkDisplay    *display,
 
     case GDK_WINDOW_CHILD:
       {
-	GdkWindowImplQuartz *parent_impl = gdk_window_get_quartz_impl (window->parent);
+	GdkWindowImplHaiku *parent_impl = gdk_window_get_quartz_impl (window->parent);
 
 	if (parent_impl && !window->input_only)
 	  {
@@ -1044,7 +1044,7 @@ _gdk_quartz_window_update_position (GdkWindow *window)
 {
   NSRect frame_rect;
   NSRect content_rect;
-  GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+  GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
 
   if (!impl)
     return;
@@ -1065,7 +1065,7 @@ void
 _gdk_quartz_window_init_windowing (GdkDisplay *display,
                                    GdkScreen  *screen)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   g_assert (_gdk_root == NULL);
 
@@ -1076,7 +1076,7 @@ _gdk_quartz_window_init_windowing (GdkDisplay *display,
   _gdk_root->visual = gdk_screen_get_system_visual (screen);
 
   impl = gdk_window_get_quartz_impl (_gdk_root);
-  /* If impl is somehow not a GdkWindowImplQuartz we're screwed, so crash. */
+  /* If impl is somehow not a GdkWindowImplHaiku we're screwed, so crash. */
   if (!impl)
     {
       g_error ("Initializing quartz windowing produced the wrong kind of impl!");
@@ -1098,7 +1098,7 @@ gdk_quartz_window_destroy (GdkWindow *window,
                            gboolean   recursing,
                            gboolean   foreign_destroy)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
   GdkWindow *parent;
   GdkDisplay *display;
 
@@ -1119,7 +1119,7 @@ gdk_quartz_window_destroy (GdkWindow *window,
   parent = window->parent;
   if (parent)
     {
-      GdkWindowImplQuartz *parent_impl = gdk_window_get_quartz_impl (parent);
+      GdkWindowImplHaiku *parent_impl = gdk_window_get_quartz_impl (parent);
 
       if (parent_impl)
         parent_impl->sorted_children = g_list_remove (parent_impl->sorted_children, window);
@@ -1163,7 +1163,7 @@ gdk_quartz_window_destroy_foreign (GdkWindow *window)
 static void
 gdk_window_quartz_show (GdkWindow *window, gboolean already_mapped)
 {
-  GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+  GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
   gboolean focus_on_map;
 
   if (!impl)
@@ -1215,7 +1215,7 @@ gdk_window_quartz_show (GdkWindow *window, gboolean already_mapped)
 void
 _gdk_quartz_window_detach_from_parent (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   g_return_if_fail (GDK_IS_WINDOW (window));
 
@@ -1225,7 +1225,7 @@ _gdk_quartz_window_detach_from_parent (GdkWindow *window)
 
   if (impl->transient_for && !GDK_WINDOW_DESTROYED (impl->transient_for))
     {
-      GdkWindowImplQuartz *parent_impl;
+      GdkWindowImplHaiku *parent_impl;
 
       parent_impl = gdk_window_get_quartz_impl (impl->transient_for);
       if (parent_impl)
@@ -1240,7 +1240,7 @@ _gdk_quartz_window_detach_from_parent (GdkWindow *window)
 void
 _gdk_quartz_window_attach_to_parent (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   g_return_if_fail (GDK_IS_WINDOW (window));
 
@@ -1250,7 +1250,7 @@ _gdk_quartz_window_attach_to_parent (GdkWindow *window)
 
   if (impl->transient_for && !GDK_WINDOW_DESTROYED (impl->transient_for))
     {
-      GdkWindowImplQuartz *parent_impl;
+      GdkWindowImplHaiku *parent_impl;
 
       parent_impl = gdk_window_get_quartz_impl (impl->transient_for);
       if (parent_impl)
@@ -1264,7 +1264,7 @@ _gdk_quartz_window_attach_to_parent (GdkWindow *window)
 void
 gdk_window_quartz_hide (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
   GdkDisplay *display = gdk_window_get_display (window);
   GdkSeat *seat = gdk_display_get_default_seat (display);
   gdk_seat_ungrab (seat);
@@ -1312,7 +1312,7 @@ move_resize_window_internal (GdkWindow *window,
 			     gint       width,
 			     gint       height)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
   GdkRectangle old_visible;
   GdkRectangle new_visible;
   GdkRectangle scroll_rect;
@@ -1532,7 +1532,7 @@ gdk_window_quartz_reparent (GdkWindow *window,
                             gint       y)
 {
   GdkWindow *old_parent;
-  GdkWindowImplQuartz *impl, *old_parent_impl, *new_parent_impl;
+  GdkWindowImplHaiku *impl, *old_parent_impl, *new_parent_impl;
   NSView *view, *new_parent_view;
 
   if (new_parent == _gdk_root)
@@ -1584,7 +1584,7 @@ gdk_window_quartz_reparent (GdkWindow *window,
 static void
 update_toplevel_order (void)
 {
-  GdkWindowImplQuartz *root_impl;
+  GdkWindowImplHaiku *root_impl;
   NSEnumerator *enumerator;
   id nswindow;
   GList *toplevels = NULL;
@@ -1616,7 +1616,7 @@ update_toplevel_order (void)
 static void
 clear_toplevel_order (void)
 {
-  GdkWindowImplQuartz *root_impl;
+  GdkWindowImplHaiku *root_impl;
 
   root_impl = gdk_window_get_quartz_impl (_gdk_root);
   if (root_impl)
@@ -1634,7 +1634,7 @@ gdk_window_quartz_raise (GdkWindow *window)
 
   if (WINDOW_IS_TOPLEVEL (window))
     {
-      GdkWindowImplQuartz *impl;
+      GdkWindowImplHaiku *impl;
 
       impl = gdk_window_get_quartz_impl (window);
       if (!impl)
@@ -1652,7 +1652,7 @@ gdk_window_quartz_raise (GdkWindow *window)
 
       if (parent)
         {
-          GdkWindowImplQuartz *impl;
+          GdkWindowImplHaiku *impl;
 
           impl = gdk_window_get_quartz_impl (parent);
           if (impl)
@@ -1672,7 +1672,7 @@ gdk_window_quartz_lower (GdkWindow *window)
 
   if (WINDOW_IS_TOPLEVEL (window))
     {
-      GdkWindowImplQuartz *impl;
+      GdkWindowImplHaiku *impl;
 
       impl = gdk_window_get_quartz_impl (window);
       if (impl)
@@ -1688,7 +1688,7 @@ gdk_window_quartz_lower (GdkWindow *window)
 
       if (parent)
         {
-          GdkWindowImplQuartz *impl;
+          GdkWindowImplHaiku *impl;
 
           impl = gdk_window_get_quartz_impl (parent);
           if (impl)
@@ -1705,7 +1705,7 @@ gdk_window_quartz_restack_toplevel (GdkWindow *window,
 				    GdkWindow *sibling,
 				    gboolean   above)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
   gint sibling_num = -1;
 
   impl = gdk_window_get_quartz_impl (sibling);
@@ -1752,7 +1752,7 @@ gdk_window_quartz_get_geometry (GdkWindow *window,
                                 gint      *width,
                                 gint      *height)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
   NSRect ns_rect;
 
   if (GDK_WINDOW_DESTROYED (window))
@@ -1829,7 +1829,7 @@ gdk_window_quartz_get_root_coords (GdkWindow *window,
   int tmp_x = 0, tmp_y = 0;
   GdkWindow *toplevel;
   NSRect content_rect;
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window)) 
     {
@@ -1919,7 +1919,7 @@ gdk_window_quartz_get_device_state_helper (GdkWindow       *window,
     }
   else
     {
-      GdkWindowImplQuartz *impl;
+      GdkWindowImplHaiku *impl;
       NSWindow *nswindow;
 
       impl = gdk_window_get_quartz_impl (toplevel);
@@ -1990,7 +1990,7 @@ gdk_quartz_window_set_geometry_hints (GdkWindow         *window,
                                       const GdkGeometry *geometry,
                                       GdkWindowHints     geom_mask)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   g_return_if_fail (geometry != NULL);
 
@@ -2077,7 +2077,7 @@ static void
 gdk_quartz_window_set_title (GdkWindow   *window,
                              const gchar *title)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   g_return_if_fail (title != NULL);
 
@@ -2117,8 +2117,8 @@ static void
 gdk_quartz_window_set_transient_for (GdkWindow *window,
                                      GdkWindow *parent)
 {
-  GdkWindowImplQuartz *window_impl;
-  GdkWindowImplQuartz *parent_impl;
+  GdkWindowImplHaiku *window_impl;
+  GdkWindowImplHaiku *parent_impl;
 
   if (GDK_WINDOW_DESTROYED (window)  || GDK_WINDOW_DESTROYED (parent) ||
       !WINDOW_IS_TOPLEVEL (window))
@@ -2216,7 +2216,7 @@ static void
 gdk_quartz_window_focus (GdkWindow *window,
                          guint32    timestamp)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   impl = gdk_window_get_quartz_impl (window);
 
@@ -2325,7 +2325,7 @@ window_type_hint_to_hides_on_deactivate (GdkWindowTypeHint hint)
 }
 
 static void
-_gdk_quartz_window_update_has_shadow (GdkWindowImplQuartz *impl)
+_gdk_quartz_window_update_has_shadow (GdkWindowImplHaiku *impl)
 {
     gboolean has_shadow;
 
@@ -2381,7 +2381,7 @@ static void
 gdk_quartz_window_set_type_hint (GdkWindow        *window,
                                  GdkWindowTypeHint hint)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL (window))
@@ -2461,7 +2461,7 @@ gdk_quartz_window_begin_resize_drag (GdkWindow     *window,
                                      gint           root_y,
                                      guint32        timestamp)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   g_return_if_fail (GDK_IS_WINDOW (window));
 
@@ -2487,7 +2487,7 @@ gdk_quartz_window_begin_move_drag (GdkWindow *window,
                                    gint       root_y,
                                    guint32    timestamp)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL (window))
@@ -2516,7 +2516,7 @@ gdk_quartz_window_get_frame_extents (GdkWindow    *window,
                                      GdkRectangle *rect)
 {
   GdkWindow *toplevel;
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
   NSRect ns_rect;
 
   g_return_if_fail (rect != NULL);
@@ -2555,7 +2555,7 @@ static void
 gdk_quartz_window_set_decorations (GdkWindow       *window,
 			    GdkWMDecoration  decorations)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
   NSUInteger old_mask, new_mask;
   NSView *old_view;
 
@@ -2683,7 +2683,7 @@ static gboolean
 gdk_quartz_window_get_decorations (GdkWindow       *window,
                                    GdkWMDecoration *decorations)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL (window))
@@ -2713,7 +2713,7 @@ static void
 gdk_quartz_window_set_functions (GdkWindow    *window,
                                  GdkWMFunction functions)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
   gboolean min, max, close;
 
   g_return_if_fail (GDK_IS_WINDOW (window));
@@ -2775,7 +2775,7 @@ gdk_quartz_window_unstick (GdkWindow *window)
 static void
 gdk_quartz_window_maximize (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
   gboolean maximized;
 
   if (GDK_WINDOW_DESTROYED (window) ||
@@ -2800,7 +2800,7 @@ gdk_quartz_window_maximize (GdkWindow *window)
 static void
 gdk_quartz_window_unmaximize (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
   gboolean maximized;
 
   if (GDK_WINDOW_DESTROYED (window) ||
@@ -2825,7 +2825,7 @@ gdk_quartz_window_unmaximize (GdkWindow *window)
 static void
 gdk_quartz_window_iconify (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL (window))
@@ -2854,7 +2854,7 @@ gdk_quartz_window_iconify (GdkWindow *window)
 static void
 gdk_quartz_window_deiconify (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL (window))
@@ -2883,7 +2883,7 @@ gdk_quartz_window_deiconify (GdkWindow *window)
 static gboolean
 window_is_fullscreen (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+  GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
   if (impl &&
@@ -2897,7 +2897,7 @@ window_is_fullscreen (GdkWindow *window)
 static void
 gdk_quartz_window_fullscreen (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL (window))
@@ -2916,7 +2916,7 @@ gdk_quartz_window_fullscreen (GdkWindow *window)
     {
 #endif
       FullscreenSavedGeometry *geometry;
-      GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+      GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
       NSRect frame;
 
       if (GDK_WINDOW_DESTROYED (window) ||
@@ -2964,7 +2964,7 @@ gdk_quartz_window_fullscreen (GdkWindow *window)
 static void
 gdk_quartz_window_unfullscreen (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL (window))
@@ -2982,7 +2982,7 @@ gdk_quartz_window_unfullscreen (GdkWindow *window)
   else
     {
 #endif
-      GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+      GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
       FullscreenSavedGeometry *geometry;
 
       if (GDK_WINDOW_DESTROYED (window) ||
@@ -3052,7 +3052,7 @@ static void
 gdk_quartz_window_set_keep_above (GdkWindow *window,
                                   gboolean   setting)
 {
-  GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+  GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
   gint level;
 
   g_return_if_fail (GDK_IS_WINDOW (window));
@@ -3072,7 +3072,7 @@ static void
 gdk_quartz_window_set_keep_below (GdkWindow *window,
                                   gboolean   setting)
 {
-  GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+  GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
   gint level;
 
   g_return_if_fail (GDK_IS_WINDOW (window));
@@ -3114,7 +3114,7 @@ static void
 gdk_quartz_window_set_opacity (GdkWindow *window,
                                gdouble    opacity)
 {
-  GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+  GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
 
   g_return_if_fail (GDK_IS_WINDOW (window));
   g_return_if_fail (WINDOW_IS_TOPLEVEL (window));
@@ -3139,7 +3139,7 @@ gdk_quartz_window_set_shadow_width (GdkWindow *window,
                                     gint       top,
                                     gint       bottom)
 {
-  GdkWindowImplQuartz *impl = gdk_window_get_quartz_impl (window);
+  GdkWindowImplHaiku *impl = gdk_window_get_quartz_impl (window);
 
   g_return_if_fail (GDK_IS_WINDOW (window));
   g_return_if_fail (WINDOW_IS_TOPLEVEL (window));
@@ -3176,7 +3176,7 @@ gdk_quartz_window_get_input_shape (GdkWindow *window)
 static gint
 gdk_quartz_window_get_scale_factor (GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl;
+  GdkWindowImplHaiku *impl;
 
   if (GDK_WINDOW_DESTROYED (window))
     return 1;
@@ -3191,11 +3191,11 @@ gdk_quartz_window_get_scale_factor (GdkWindow *window)
 }
 
 static void
-gdk_window_impl_quartz_class_init (GdkWindowImplQuartzClass *klass)
+gdk_window_impl_quartz_class_init (GdkWindowImplHaikuClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GdkWindowImplClass *impl_class = GDK_WINDOW_IMPL_CLASS (klass);
-  GdkWindowImplQuartzClass *impl_quartz_class = GDK_WINDOW_IMPL_QUARTZ_CLASS (klass);
+  GdkWindowImplHaikuClass *impl_quartz_class = GDK_WINDOW_IMPL_QUARTZ_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -3290,19 +3290,19 @@ _gdk_window_impl_quartz_get_type (void)
     {
       const GTypeInfo object_info =
 	{
-	  sizeof (GdkWindowImplQuartzClass),
+	  sizeof (GdkWindowImplHaikuClass),
 	  (GBaseInitFunc) NULL,
 	  (GBaseFinalizeFunc) NULL,
 	  (GClassInitFunc) gdk_window_impl_quartz_class_init,
 	  NULL,           /* class_finalize */
 	  NULL,           /* class_data */
-	  sizeof (GdkWindowImplQuartz),
+	  sizeof (GdkWindowImplHaiku),
 	  0,              /* n_preallocs */
 	  (GInstanceInitFunc) gdk_window_impl_quartz_init,
 	};
 
       object_type = g_type_register_static (GDK_TYPE_WINDOW_IMPL,
-                                            "GdkWindowImplQuartz",
+                                            "GdkWindowImplHaiku",
                                             &object_info, 0);
     }
 
@@ -3310,12 +3310,12 @@ _gdk_window_impl_quartz_get_type (void)
 }
 
 CGContextRef
-gdk_quartz_window_get_context (GdkWindowImplQuartz  *window,
+gdk_quartz_window_get_context (GdkWindowImplHaiku  *window,
                                gboolean             antialias)
 {
   if (!GDK_WINDOW_IMPL_QUARTZ_GET_CLASS (window)->get_context)
     {
-      g_warning ("%s doesn't implement GdkWindowImplQuartzClass::get_context()",
+      g_warning ("%s doesn't implement GdkWindowImplHaikuClass::get_context()",
                  G_OBJECT_TYPE_NAME (window));
       return NULL;
     }
@@ -3324,12 +3324,12 @@ gdk_quartz_window_get_context (GdkWindowImplQuartz  *window,
 }
 
 void
-gdk_quartz_window_release_context (GdkWindowImplQuartz  *window,
+gdk_quartz_window_release_context (GdkWindowImplHaiku  *window,
                                    CGContextRef          cg_context)
 {
   if (!GDK_WINDOW_IMPL_QUARTZ_GET_CLASS (window)->release_context)
     {
-      g_warning ("%s doesn't implement GdkWindowImplQuartzClass::release_context()",
+      g_warning ("%s doesn't implement GdkWindowImplHaikuClass::release_context()",
                  G_OBJECT_TYPE_NAME (window));
       return;
     }
@@ -3345,13 +3345,13 @@ gdk_quartz_window_release_context (GdkWindowImplQuartz  *window,
  *
  */
 
-static CGContextRef gdk_root_window_impl_quartz_get_context (GdkWindowImplQuartz *window, gboolean antialias);
-static void gdk_root_window_impl_quartz_release_context (GdkWindowImplQuartz *window, CGContextRef cg_context);
+static CGContextRef gdk_root_window_impl_quartz_get_context (GdkWindowImplHaiku *window, gboolean antialias);
+static void gdk_root_window_impl_quartz_release_context (GdkWindowImplHaiku *window, CGContextRef cg_context);
 
 static void
-gdk_root_window_impl_quartz_class_init (GdkRootWindowImplQuartzClass *klass)
+gdk_root_window_impl_quartz_class_init (GdkRootWindowImplHaikuClass *klass)
 {
-  GdkWindowImplQuartzClass *window_quartz_class = GDK_WINDOW_IMPL_QUARTZ_CLASS (klass);
+  GdkWindowImplHaikuClass *window_quartz_class = GDK_WINDOW_IMPL_QUARTZ_CLASS (klass);
 
   root_window_parent_class = g_type_class_peek_parent (klass);
 
@@ -3360,7 +3360,7 @@ gdk_root_window_impl_quartz_class_init (GdkRootWindowImplQuartzClass *klass)
 }
 
 static void
-gdk_root_window_impl_quartz_init (GdkRootWindowImplQuartz *impl)
+gdk_root_window_impl_quartz_init (GdkRootWindowImplHaiku *impl)
 {
   CGColorSpaceRef colorspace =  CGColorSpaceCreateDeviceRGB ();
   /* Alpha channel Info: Cairo, CGImage, and CVPixelBuffer all use
@@ -3375,7 +3375,7 @@ gdk_root_window_impl_quartz_init (GdkRootWindowImplQuartz *impl)
 }
 
 static void
-gdk_root_window_impl_quartz_dispose (GdkRootWindowImplQuartz *impl)
+gdk_root_window_impl_quartz_dispose (GdkRootWindowImplHaiku *impl)
 {
   g_list_free_full (impl->cg_layers, (GDestroyNotify)CGLayerRelease);
 }
@@ -3389,13 +3389,13 @@ _gdk_root_window_impl_quartz_get_type (void)
     {
       const GTypeInfo object_info =
         {
-          sizeof (GdkRootWindowImplQuartzClass),
+          sizeof (GdkRootWindowImplHaikuClass),
           (GBaseInitFunc) NULL,
           (GBaseFinalizeFunc) NULL,
           (GClassInitFunc) gdk_root_window_impl_quartz_class_init,
           NULL,           /* class_finalize */
           NULL,           /* class_data */
-          sizeof (GdkRootWindowImplQuartz),
+          sizeof (GdkRootWindowImplHaiku),
           0,              /* n_preallocs */
           (GInstanceInitFunc) gdk_root_window_impl_quartz_init,
         };
@@ -3410,10 +3410,10 @@ _gdk_root_window_impl_quartz_get_type (void)
 
 
 static CGContextRef
-gdk_root_window_impl_quartz_get_context (GdkWindowImplQuartz *window_impl,
+gdk_root_window_impl_quartz_get_context (GdkWindowImplHaiku *window_impl,
                                          gboolean             antialias)
 {
-   GdkRootWindowImplQuartz *impl = GDK_ROOT_WINDOW_IMPL_QUARTZ (window_impl);
+   GdkRootWindowImplHaiku *impl = GDK_ROOT_WINDOW_IMPL_QUARTZ (window_impl);
    CGSize size;
    CGLayerRef layer;
 
@@ -3428,7 +3428,7 @@ gdk_root_window_impl_quartz_get_context (GdkWindowImplQuartz *window_impl,
 }
 
 static void
-gdk_root_window_impl_quartz_release_context (GdkWindowImplQuartz *window,
+gdk_root_window_impl_quartz_release_context (GdkWindowImplHaiku *window,
                                              CGContextRef         cg_context)
 {
   CGContextRelease (cg_context);

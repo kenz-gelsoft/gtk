@@ -403,7 +403,7 @@ copy_rectangle_argb32 (cairo_surface_t *dest, cairo_surface_t *source,
 
 -(void)updateLayer
 {
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (gdk_window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (gdk_window->impl);
   cairo_rectangle_int_t impl_rect = {0, 0, 0, 0};
   CGRect layer_bounds = [self.layer bounds];
   CGRect backing_bounds = [self convertRectToBacking: layer_bounds];
@@ -476,7 +476,7 @@ copy_rectangle_argb32 (cairo_surface_t *dest, cairo_surface_t *source,
  */
 -(void)updateTrackingRect
 {
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (gdk_window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (gdk_window->impl);
   NSRect rect;
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= 10500
   NSTrackingArea *trackingArea;

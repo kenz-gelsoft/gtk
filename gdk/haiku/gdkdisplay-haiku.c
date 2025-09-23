@@ -91,7 +91,7 @@ _gdk_quartz_display_add_frame_callback (GdkDisplay             *display,
                                         GdkWindow              *window)
 {
   GdkHaikuDisplay *display_quartz;
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
 
   display_quartz = GDK_QUARTZ_DISPLAY (display);
 
@@ -147,7 +147,7 @@ gdk_quartz_display_frame_cb (gpointer data)
   for (; iter != NULL; iter = iter->next)
     {
       GdkWindow *window = iter->data;
-      GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+      GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
       GdkFrameClock *frame_clock = gdk_window_get_frame_clock (window);
       GdkFrameTimings *timings;
 
@@ -567,7 +567,7 @@ static GdkMonitor *
 gdk_quartz_display_get_monitor_at_window (GdkDisplay *display,
                                           GdkWindow *window)
 {
-  GdkWindowImplQuartz *impl = NULL;
+  GdkWindowImplHaiku *impl = NULL;
   NSWindow *nswindow = NULL;
   NSScreen *screen = NULL;
   GdkMonitor *monitor = NULL;

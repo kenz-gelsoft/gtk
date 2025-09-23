@@ -28,17 +28,17 @@ G_BEGIN_DECLS
 /* Window implementation for Quartz
  */
 
-typedef struct _GdkWindowImplQuartz GdkWindowImplQuartz;
-typedef struct _GdkWindowImplQuartzClass GdkWindowImplQuartzClass;
+typedef struct _GdkWindowImplHaiku GdkWindowImplHaiku;
+typedef struct _GdkWindowImplHaikuClass GdkWindowImplHaikuClass;
 
 #define GDK_TYPE_WINDOW_IMPL_QUARTZ              (_gdk_window_impl_quartz_get_type ())
-#define GDK_WINDOW_IMPL_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_WINDOW_IMPL_QUARTZ, GdkWindowImplQuartz))
-#define GDK_WINDOW_IMPL_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_WINDOW_IMPL_QUARTZ, GdkWindowImplQuartzClass))
+#define GDK_WINDOW_IMPL_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_WINDOW_IMPL_QUARTZ, GdkWindowImplHaiku))
+#define GDK_WINDOW_IMPL_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_WINDOW_IMPL_QUARTZ, GdkWindowImplHaikuClass))
 #define GDK_IS_WINDOW_IMPL_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_WINDOW_IMPL_QUARTZ))
 #define GDK_IS_WINDOW_IMPL_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_WINDOW_IMPL_QUARTZ))
-#define GDK_WINDOW_IMPL_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_WINDOW_IMPL_QUARTZ, GdkWindowImplQuartzClass))
+#define GDK_WINDOW_IMPL_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_WINDOW_IMPL_QUARTZ, GdkWindowImplHaikuClass))
 
-struct _GdkWindowImplQuartz
+struct _GdkWindowImplHaiku
 {
   GdkWindowImpl parent_instance;
 
@@ -70,46 +70,46 @@ struct _GdkWindowImplQuartz
   gint pending_frame_counter;
 };
  
-struct _GdkWindowImplQuartzClass 
+struct _GdkWindowImplHaikuClass 
 {
   GdkWindowImplClass parent_class;
 
-  CGContextRef  (* get_context)     (GdkWindowImplQuartz *window,
+  CGContextRef  (* get_context)     (GdkWindowImplHaiku *window,
                                      gboolean             antialias);
-  void          (* release_context) (GdkWindowImplQuartz *window,
+  void          (* release_context) (GdkWindowImplHaiku *window,
                                      CGContextRef         cg_context);
 };
 
 GType _gdk_window_impl_quartz_get_type (void);
 
-CGContextRef gdk_quartz_window_get_context     (GdkWindowImplQuartz *window,
+CGContextRef gdk_quartz_window_get_context     (GdkWindowImplHaiku *window,
                                                 gboolean             antialias);
-void         gdk_quartz_window_release_context (GdkWindowImplQuartz *window,
+void         gdk_quartz_window_release_context (GdkWindowImplHaiku *window,
                                                 CGContextRef         context);
 
 /* Root window implementation for Quartz
  */
 
-typedef struct _GdkRootWindowImplQuartz GdkRootWindowImplQuartz;
-typedef struct _GdkRootWindowImplQuartzClass GdkRootWindowImplQuartzClass;
+typedef struct _GdkRootWindowImplHaiku GdkRootWindowImplHaiku;
+typedef struct _GdkRootWindowImplHaikuClass GdkRootWindowImplHaikuClass;
 
 #define GDK_TYPE_ROOT_WINDOW_IMPL_QUARTZ              (_gdk_root_window_impl_quartz_get_type ())
-#define GDK_ROOT_WINDOW_IMPL_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_ROOT_WINDOW_IMPL_QUARTZ, GdkRootWindowImplQuartz))
-#define GDK_ROOT_WINDOW_IMPL_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_ROOT_WINDOW_IMPL_QUARTZ, GdkRootWindowImplQuartzClass))
+#define GDK_ROOT_WINDOW_IMPL_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_ROOT_WINDOW_IMPL_QUARTZ, GdkRootWindowImplHaiku))
+#define GDK_ROOT_WINDOW_IMPL_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_ROOT_WINDOW_IMPL_QUARTZ, GdkRootWindowImplHaikuClass))
 #define GDK_IS_ROOT_WINDOW_IMPL_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_ROOT_WINDOW_IMPL_QUARTZ))
 #define GDK_IS_ROOT_WINDOW_IMPL_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_ROOT_WINDOW_IMPL_QUARTZ))
-#define GDK_ROOT_WINDOW_IMPL_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_ROOT_WINDOW_IMPL_QUARTZ, GdkRootWindowImplQuartzClass))
+#define GDK_ROOT_WINDOW_IMPL_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_ROOT_WINDOW_IMPL_QUARTZ, GdkRootWindowImplHaikuClass))
 
-struct _GdkRootWindowImplQuartz
+struct _GdkRootWindowImplHaiku
 {
-  GdkWindowImplQuartz parent_instance;
+  GdkWindowImplHaiku parent_instance;
   CGContextRef cg_context;
   GList* cg_layers;
 };
  
-struct _GdkRootWindowImplQuartzClass 
+struct _GdkRootWindowImplHaikuClass 
 {
-  GdkWindowImplQuartzClass parent_class;
+  GdkWindowImplHaikuClass parent_class;
 };
 
 GType _gdk_root_window_impl_quartz_get_type (void);
