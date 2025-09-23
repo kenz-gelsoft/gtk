@@ -42,7 +42,7 @@ static GdkVisual *
 create_standard_visual (GdkScreen *screen,
                         gint       depth)
 {
-  GdkVisual *visual = g_object_new (GDK_TYPE_QUARTZ_VISUAL, NULL);
+  GdkVisual *visual = g_object_new (GDK_TYPE_HAIKU_VISUAL, NULL);
 
   visual->screen = screen;
 
@@ -62,7 +62,7 @@ create_standard_visual (GdkScreen *screen,
 static GdkVisual *
 create_gray_visual (GdkScreen *screen)
 {
-  GdkVisual *visual = g_object_new (GDK_TYPE_QUARTZ_VISUAL, NULL);
+  GdkVisual *visual = g_object_new (GDK_TYPE_HAIKU_VISUAL, NULL);
 
   visual->screen = screen;
 

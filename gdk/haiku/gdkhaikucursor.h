@@ -28,12 +28,12 @@
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_QUARTZ_CURSOR              (gdk_haiku_cursor_get_type ())
-#define GDK_HAIKU_CURSOR(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_CURSOR, GdkHaikuCursor))
-#define GDK_HAIKU_CURSOR_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_QUARTZ_CURSOR, GdkHaikuCursorClass))
-#define GDK_IS_QUARTZ_CURSOR(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_QUARTZ_CURSOR))
-#define GDK_IS_QUARTZ_CURSOR_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_QUARTZ_CURSOR))
-#define GDK_HAIKU_CURSOR_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_QUARTZ_CURSOR, GdkHaikuCursorClass))
+#define GDK_TYPE_HAIKU_CURSOR              (gdk_haiku_cursor_get_type ())
+#define GDK_HAIKU_CURSOR(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_HAIKU_CURSOR, GdkHaikuCursor))
+#define GDK_HAIKU_CURSOR_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_HAIKU_CURSOR, GdkHaikuCursorClass))
+#define GDK_IS_HAIKU_CURSOR(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_HAIKU_CURSOR))
+#define GDK_IS_HAIKU_CURSOR_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_HAIKU_CURSOR))
+#define GDK_HAIKU_CURSOR_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_HAIKU_CURSOR, GdkHaikuCursorClass))
 
 #ifdef GDK_COMPILATION
 typedef struct _GdkHaikuCursor GdkHaikuCursor;

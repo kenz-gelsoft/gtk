@@ -609,7 +609,7 @@ _gdk_haiku_events_update_focus_window (GdkWindow *window,
 void
 _gdk_haiku_events_send_map_event (GdkWindow *window)
 {
-  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (window->impl);
 
   if (!impl->toplevel)
     return;
@@ -1430,7 +1430,7 @@ test_resize (NSEvent *event, GdkWindow *toplevel, gint x, gint y)
   /* Resizing from the resize indicator only begins if an GDK_HAIKU_LEFT_MOUSE_BUTTON
    * event is received in the resizing area.
    */
-  toplevel_impl = GDK_WINDOW_IMPL_QUARTZ (toplevel->impl);
+  toplevel_impl = GDK_WINDOW_IMPL_HAIKU (toplevel->impl);
   if ([toplevel_impl->toplevel showsResizeIndicator])
   if ([event type] == GDK_HAIKU_LEFT_MOUSE_DOWN &&
       [toplevel_impl->toplevel showsResizeIndicator])
@@ -1629,7 +1629,7 @@ gdk_event_translate (GdkEvent *event,
        event_type == GDK_HAIKU_OTHER_MOUSE_DOWN ||
        event_type == GDK_HAIKU_LEFT_MOUSE_DOWN))
     {
-      GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+      GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (window->impl);
 
       if (![NSApp isActive])
         {

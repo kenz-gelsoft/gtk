@@ -164,7 +164,7 @@
 -(void)checkSendEnterNotify
 {
   GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (window->impl);
 
   /* When a new window has been created, and the mouse
    * is in the window area, we will not receive an NSMouseEntered
@@ -232,7 +232,7 @@ synthesize_configure_event(GdkWindow *window)
   gboolean maximized = gdk_window_get_state (window) & GDK_WINDOW_STATE_MAXIMIZED;
   /* Alignment to 4 pixels is on scaled pixels and these are unscaled pixels so divide by scale to compensate. */
   const gint scale = gdk_window_get_scale_factor (window);
-  const guint align = GDK_WINDOW_QUARTZ_ALIGNMENT / scale;
+  const guint align = GDK_WINDOW_HAIKU_ALIGNMENT / scale;
 
   /* see same in windowDidMove */
   if (maximized && !inMaximizeTransition && !NSEqualRects (lastMaximizedFrame, [self frame]))
@@ -288,7 +288,7 @@ synthesize_configure_event(GdkWindow *window)
 -(BOOL)canBecomeMainWindow
 {
   GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (window->impl);
 
   switch (impl->type_hint)
     {
@@ -317,7 +317,7 @@ synthesize_configure_event(GdkWindow *window)
 -(BOOL)canBecomeKeyWindow
 {
   GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (window->impl);
 
   if (!window->accept_focus)
     return NO;
@@ -355,7 +355,7 @@ synthesize_configure_event(GdkWindow *window)
 - (void)showAndMakeKey:(BOOL)makeKey
 {
   GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (window->impl);
 
   inShowOrHide = YES;
 
@@ -372,7 +372,7 @@ synthesize_configure_event(GdkWindow *window)
 - (void)hide
 {
   GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (window->impl);
 
   inShowOrHide = YES;
   [impl->toplevel orderOut:nil];
@@ -418,7 +418,7 @@ synthesize_configure_event(GdkWindow *window)
 - (BOOL)trackManualMove
 {
   GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (window->impl);
   NSPoint currentLocation;
   NSPoint newOrigin;
   NSRect screenFrame = [[NSScreen mainScreen] visibleFrame];
@@ -632,7 +632,7 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
   if (current_context)
     g_object_unref (current_context);
   
-  current_context = g_object_new (GDK_TYPE_QUARTZ_DRAG_CONTEXT, NULL);
+  current_context = g_object_new (GDK_TYPE_HAIKU_DRAG_CONTEXT, NULL);
   update_context_from_dragging_info (sender);
 
   window = [[self contentView] gdkWindow];
@@ -839,7 +839,7 @@ typedef enum
 {
   NSRect rect;
   GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (window->impl);
 
   /* Allow the window to move up "shadow_top" more than normally allowed
    * by the default impl. This makes it possible to move windows with

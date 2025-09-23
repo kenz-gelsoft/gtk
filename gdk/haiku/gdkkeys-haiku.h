@@ -16,8 +16,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_KEYS_QUARTZ_H__
-#define __GDK_KEYS_QUARTZ_H__
+#ifndef __GDK_KEYS_HAIKU_H__
+#define __GDK_KEYS_HAIKU_H__
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
 typedef enum
   {
@@ -82,4 +82,4 @@ typedef enum
 
 
 #endif
-#endif /* __GDK_KEYS_QUARTZ_H__ */
+#endif /* __GDK_KEYS_HAIKU_H__ */

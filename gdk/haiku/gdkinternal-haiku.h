@@ -16,8 +16,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_INTERNAL_QUARTZ_H__
-#define __GDK_INTERNAL_QUARTZ_H__
+#ifndef __GDK_INTERNAL_HAIKU_H__
+#define __GDK_INTERNAL_HAIKU_H__
 
 #include <AppKit/AppKit.h>
 
@@ -59,7 +59,7 @@ extern GdkWindow *_gdk_root;
 
 extern GdkDragContext *_gdk_haiku_drag_source_context;
 
-#define GDK_WINDOW_IS_QUARTZ(win)        (GDK_IS_WINDOW_IMPL_QUARTZ (((GdkWindow *)win)->impl))
+#define GDK_WINDOW_IS_HAIKU(win)        (GDK_IS_WINDOW_IMPL_HAIKU (((GdkWindow *)win)->impl))
 
 /* Initialization */
 void _gdk_haiku_window_init_windowing      (GdkDisplay *display,
@@ -290,4 +290,4 @@ void        _gdk_haiku_display_add_frame_callback    (GdkDisplay             *di
 void        _gdk_haiku_display_remove_frame_callback (GdkDisplay             *display,
                                                        GdkWindow              *window);
 
-#endif /* __GDK_INTERNAL_QUARTZ_H__ */
+#endif /* __GDK_INTERNAL_HAIKU_H__ */

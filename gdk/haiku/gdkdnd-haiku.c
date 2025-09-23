@@ -44,7 +44,7 @@ _gdk_haiku_window_drag_begin (GdkWindow *window,
   g_assert (_gdk_haiku_drag_source_context == NULL);
 
   /* Create fake context */
-  _gdk_haiku_drag_source_context = g_object_new (GDK_TYPE_QUARTZ_DRAG_CONTEXT,
+  _gdk_haiku_drag_source_context = g_object_new (GDK_TYPE_HAIKU_DRAG_CONTEXT,
                                                   NULL);
   _gdk_haiku_drag_source_context->display = gdk_window_get_display (window);
   _gdk_haiku_drag_source_context->is_source = TRUE;

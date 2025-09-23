@@ -49,7 +49,7 @@ gdk_haiku_cursor_new_from_nscursor (NSCursor      *nscursor,
 {
   GdkHaikuCursor *private;
 
-  private = g_object_new (GDK_TYPE_QUARTZ_CURSOR,
+  private = g_object_new (GDK_TYPE_HAIKU_CURSOR,
                           "cursor-type", cursor_type,
                           "display", _gdk_display,
                           NULL);
@@ -490,7 +490,7 @@ _gdk_haiku_cursor_get_ns_cursor (GdkCursor *cursor)
   if (!cursor)
     return [NSCursor arrowCursor];
 
-  g_return_val_if_fail (GDK_IS_QUARTZ_CURSOR (cursor), NULL);
+  g_return_val_if_fail (GDK_IS_HAIKU_CURSOR (cursor), NULL);
 
   cursor_private = GDK_HAIKU_CURSOR (cursor);
 

@@ -27,12 +27,12 @@ G_BEGIN_DECLS
 
 #include <gdk/gdk.h>
 
-#define GDK_TYPE_QUARTZ_SCREEN              (gdk_haiku_screen_get_type ())
-#define GDK_HAIKU_SCREEN(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_SCREEN, GdkHaikuScreen))
-#define GDK_HAIKU_SCREEN_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_QUARTZ_SCREEN, GdkHaikuScreenClass))
-#define GDK_IS_QUARTZ_SCREEN(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_QUARTZ_SCREEN))
-#define GDK_IS_QUARTZ_SCREEN_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_QUARTZ_SCREEN))
-#define GDK_HAIKU_SCREEN_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_QUARTZ_SCREEN, GdkHaikuScreenClass))
+#define GDK_TYPE_HAIKU_SCREEN              (gdk_haiku_screen_get_type ())
+#define GDK_HAIKU_SCREEN(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_HAIKU_SCREEN, GdkHaikuScreen))
+#define GDK_HAIKU_SCREEN_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_HAIKU_SCREEN, GdkHaikuScreenClass))
+#define GDK_IS_HAIKU_SCREEN(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_HAIKU_SCREEN))
+#define GDK_IS_HAIKU_SCREEN_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_HAIKU_SCREEN))
+#define GDK_HAIKU_SCREEN_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_HAIKU_SCREEN, GdkHaikuScreenClass))
 
 #ifdef GDK_COMPILATION
 typedef struct _GdkHaikuScreen GdkHaikuScreen;

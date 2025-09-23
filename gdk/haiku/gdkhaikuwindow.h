@@ -28,12 +28,12 @@
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_QUARTZ_WINDOW              (gdk_haiku_window_get_type ())
-#define GDK_HAIKU_WINDOW(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_WINDOW, GdkHaikuWindow))
-#define GDK_HAIKU_WINDOW_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_QUARTZ_WINDOW, GdkHaikuWindowClass))
-#define GDK_IS_QUARTZ_WINDOW(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_QUARTZ_WINDOW))
-#define GDK_IS_QUARTZ_WINDOW_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_QUARTZ_WINDOW))
-#define GDK_HAIKU_WINDOW_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_QUARTZ_WINDOW, GdkHaikuWindowClass))
+#define GDK_TYPE_HAIKU_WINDOW              (gdk_haiku_window_get_type ())
+#define GDK_HAIKU_WINDOW(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_HAIKU_WINDOW, GdkHaikuWindow))
+#define GDK_HAIKU_WINDOW_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_HAIKU_WINDOW, GdkHaikuWindowClass))
+#define GDK_IS_HAIKU_WINDOW(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_HAIKU_WINDOW))
+#define GDK_IS_HAIKU_WINDOW_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_HAIKU_WINDOW))
+#define GDK_HAIKU_WINDOW_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_HAIKU_WINDOW, GdkHaikuWindowClass))
 
 #ifdef GDK_COMPILATION
 typedef struct _GdkHaikuWindow GdkHaikuWindow;

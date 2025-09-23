@@ -28,9 +28,9 @@
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_QUARTZ_MONITOR           (gdk_haiku_monitor_get_type ())
-#define GDK_HAIKU_MONITOR(object)        (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_MONITOR, GdkHaikuMonitor))
-#define GDK_IS_QUARTZ_MONITOR(object)     (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_QUARTZ_MONITOR))
+#define GDK_TYPE_HAIKU_MONITOR           (gdk_haiku_monitor_get_type ())
+#define GDK_HAIKU_MONITOR(object)        (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_HAIKU_MONITOR, GdkHaikuMonitor))
+#define GDK_IS_HAIKU_MONITOR(object)     (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_HAIKU_MONITOR))
 
 typedef struct _GdkHaikuMonitor      GdkHaikuMonitor;
 typedef struct _GdkHaikuMonitorClass GdkHaikuMonitorClass;

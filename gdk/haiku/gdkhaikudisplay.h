@@ -28,12 +28,12 @@
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_QUARTZ_DISPLAY              (gdk_haiku_display_get_type ())
-#define GDK_HAIKU_DISPLAY(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_DISPLAY, GdkHaikuDisplay))
-#define GDK_HAIKU_DISPLAY_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_QUARTZ_DISPLAY, GdkHaikuDisplayClass))
-#define GDK_IS_QUARTZ_DISPLAY(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_QUARTZ_DISPLAY))
-#define GDK_IS_QUARTZ_DISPLAY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_QUARTZ_DISPLAY))
-#define GDK_HAIKU_DISPLAY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_QUARTZ_DISPLAY, GdkHaikuDisplayClass))
+#define GDK_TYPE_HAIKU_DISPLAY              (gdk_haiku_display_get_type ())
+#define GDK_HAIKU_DISPLAY(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_HAIKU_DISPLAY, GdkHaikuDisplay))
+#define GDK_HAIKU_DISPLAY_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_HAIKU_DISPLAY, GdkHaikuDisplayClass))
+#define GDK_IS_HAIKU_DISPLAY(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_HAIKU_DISPLAY))
+#define GDK_IS_HAIKU_DISPLAY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_HAIKU_DISPLAY))
+#define GDK_HAIKU_DISPLAY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_HAIKU_DISPLAY, GdkHaikuDisplayClass))
 
 #ifdef GDK_COMPILATION
 typedef struct _GdkHaikuDisplay GdkHaikuDisplay;

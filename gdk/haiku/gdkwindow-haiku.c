@@ -140,9 +140,9 @@ gdk_window_get_haiku_impl (GdkWindow* window)
       embedder = gdk_offscreen_window_get_embedder (window);
     }
 
-  g_return_val_if_fail (GDK_IS_WINDOW_IMPL_QUARTZ (window->impl), NULL);
+  g_return_val_if_fail (GDK_IS_WINDOW_IMPL_HAIKU (window->impl), NULL);
 
-  return GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  return GDK_WINDOW_IMPL_HAIKU (window->impl);
 }
 
 NSView *
@@ -228,7 +228,7 @@ gdk_window_impl_haiku_release_context (GdkWindowImplHaiku *window_impl,
 static void
 gdk_window_impl_haiku_finalize (GObject *object)
 {
-  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (object);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (object);
   GdkDisplay *display = gdk_window_get_display (impl->wrapper);
   GdkSeat *seat = gdk_display_get_default_seat (display);
 
@@ -306,7 +306,7 @@ gdk_haiku_ref_cairo_surface (GdkWindow *window)
       gint height = gdk_window_get_height (impl->wrapper);
       gint scale = gdk_window_get_scale_factor (impl->wrapper);
       gint scaled_width = width * scale;
-      const gint align = GDK_WINDOW_QUARTZ_ALIGNMENT;
+      const gint align = GDK_WINDOW_HAIKU_ALIGNMENT;
 
       if (scaled_width % align)
           scaled_width += align - scaled_width % align; // Surface widths must be 4-pixel aligned
@@ -886,7 +886,7 @@ _gdk_haiku_display_create_window_impl (GdkDisplay    *display,
 
   GDK_HAIKU_ALLOC_POOL;
 
-  impl = g_object_new (GDK_TYPE_WINDOW_IMPL_QUARTZ, NULL);
+  impl = g_object_new (GDK_TYPE_WINDOW_IMPL_HAIKU, NULL);
   window->impl = GDK_WINDOW_IMPL (impl);
   impl->wrapper = window;
 
@@ -931,7 +931,7 @@ _gdk_haiku_display_create_window_impl (GdkDisplay    *display,
         int nx, ny;
         const char *title;
         const gint scale = gdk_window_get_scale_factor (window);
-        const guint align = GDK_WINDOW_QUARTZ_ALIGNMENT / scale;
+        const guint align = GDK_WINDOW_HAIKU_ALIGNMENT / scale;
 
         /* initWithContentRect will place on the mainScreen by default.
          * We want to select the screen to place on ourselves.  We need
@@ -3195,7 +3195,7 @@ gdk_window_impl_haiku_class_init (GdkWindowImplHaikuClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GdkWindowImplClass *impl_class = GDK_WINDOW_IMPL_CLASS (klass);
-  GdkWindowImplHaikuClass *impl_haiku_class = GDK_WINDOW_IMPL_QUARTZ_CLASS (klass);
+  GdkWindowImplHaikuClass *impl_haiku_class = GDK_WINDOW_IMPL_HAIKU_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -3313,21 +3313,21 @@ CGContextRef
 gdk_haiku_window_get_context (GdkWindowImplHaiku  *window,
                                gboolean             antialias)
 {
-  if (!GDK_WINDOW_IMPL_QUARTZ_GET_CLASS (window)->get_context)
+  if (!GDK_WINDOW_IMPL_HAIKU_GET_CLASS (window)->get_context)
     {
       g_warning ("%s doesn't implement GdkWindowImplHaikuClass::get_context()",
                  G_OBJECT_TYPE_NAME (window));
       return NULL;
     }
 
-  return GDK_WINDOW_IMPL_QUARTZ_GET_CLASS (window)->get_context (window, antialias);
+  return GDK_WINDOW_IMPL_HAIKU_GET_CLASS (window)->get_context (window, antialias);
 }
 
 void
 gdk_haiku_window_release_context (GdkWindowImplHaiku  *window,
                                    CGContextRef          cg_context)
 {
-  if (!GDK_WINDOW_IMPL_QUARTZ_GET_CLASS (window)->release_context)
+  if (!GDK_WINDOW_IMPL_HAIKU_GET_CLASS (window)->release_context)
     {
       g_warning ("%s doesn't implement GdkWindowImplHaikuClass::release_context()",
                  G_OBJECT_TYPE_NAME (window));
@@ -3335,7 +3335,7 @@ gdk_haiku_window_release_context (GdkWindowImplHaiku  *window,
     }
 
   g_return_if_fail (cg_context);
-  GDK_WINDOW_IMPL_QUARTZ_GET_CLASS (window)->release_context (window, cg_context);
+  GDK_WINDOW_IMPL_HAIKU_GET_CLASS (window)->release_context (window, cg_context);
 }
 
 /* macOS doesn't define a root window, but Gdk needs one for two
@@ -3351,7 +3351,7 @@ static void gdk_root_window_impl_haiku_release_context (GdkWindowImplHaiku *wind
 static void
 gdk_root_window_impl_haiku_class_init (GdkRootWindowImplHaikuClass *klass)
 {
-  GdkWindowImplHaikuClass *window_haiku_class = GDK_WINDOW_IMPL_QUARTZ_CLASS (klass);
+  GdkWindowImplHaikuClass *window_haiku_class = GDK_WINDOW_IMPL_HAIKU_CLASS (klass);
 
   root_window_parent_class = g_type_class_peek_parent (klass);
 
@@ -3400,7 +3400,7 @@ _gdk_root_window_impl_haiku_get_type (void)
           (GInstanceInitFunc) gdk_root_window_impl_haiku_init,
         };
 
-      object_type = g_type_register_static (GDK_TYPE_WINDOW_IMPL_QUARTZ,
+      object_type = g_type_register_static (GDK_TYPE_WINDOW_IMPL_HAIKU,
                                             "GdkRootWindowQuartz",
                                             &object_info, 0);
     }
@@ -3413,7 +3413,7 @@ static CGContextRef
 gdk_root_window_impl_haiku_get_context (GdkWindowImplHaiku *window_impl,
                                          gboolean             antialias)
 {
-   GdkRootWindowImplHaiku *impl = GDK_ROOT_WINDOW_IMPL_QUARTZ (window_impl);
+   GdkRootWindowImplHaiku *impl = GDK_ROOT_WINDOW_IMPL_HAIKU (window_impl);
    CGSize size;
    CGLayerRef layer;
 

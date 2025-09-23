@@ -16,8 +16,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_PRIVATE_QUARTZ_H__
-#define __GDK_PRIVATE_QUARTZ_H__
+#ifndef __GDK_PRIVATE_HAIKU_H__
+#define __GDK_PRIVATE_HAIKU_H__
 
 
 #include <gdk/gdk.h>
@@ -26,9 +26,9 @@
 
 #include "config.h"
 
-#define GDK_WINDOW_IS_QUARTZ(win)        (GDK_IS_WINDOW_IMPL_QUARTZ (((GdkWindow *)win)->impl))
+#define GDK_WINDOW_IS_HAIKU(win)        (GDK_IS_WINDOW_IMPL_HAIKU (((GdkWindow *)win)->impl))
 /* Cairo surface widths must be 4-pixel byte aligned so that the image will transfer to the CPU. */
-#define GDK_WINDOW_QUARTZ_ALIGNMENT 16
+#define GDK_WINDOW_HAIKU_ALIGNMENT 16
 
 /* Display */
 
@@ -37,4 +37,4 @@ GdkDisplay *    _gdk_haiku_display_open (const gchar *name);
 /* Window Impl */
 void _gdk_haiku_unref_cairo_surface (GdkWindow *window);
 
-#endif /* __GDK_PRIVATE_QUARTZ_H__ */
+#endif /* __GDK_PRIVATE_HAIKU_H__ */

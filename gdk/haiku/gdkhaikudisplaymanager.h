@@ -28,8 +28,8 @@
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_QUARTZ_DISPLAY_MANAGER    (gdk_haiku_display_manager_get_type ())
-#define GDK_HAIKU_DISPLAY_MANAGER(object) (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_DISPLAY_MANAGER, GdkHaikuDisplayManager))
+#define GDK_TYPE_HAIKU_DISPLAY_MANAGER    (gdk_haiku_display_manager_get_type ())
+#define GDK_HAIKU_DISPLAY_MANAGER(object) (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_HAIKU_DISPLAY_MANAGER, GdkHaikuDisplayManager))
 
 #ifdef GDK_COMPILATION
 typedef struct _GdkHaikuDisplayManager GdkHaikuDisplayManager;

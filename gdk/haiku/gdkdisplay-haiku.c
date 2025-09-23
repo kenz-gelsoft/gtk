@@ -81,7 +81,7 @@ gdk_haiku_display_get_default_group (GdkDisplay *display)
 GdkDeviceManager *
 _gdk_device_manager_new (GdkDisplay *display)
 {
-  return g_object_new (GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE,
+  return g_object_new (GDK_TYPE_HAIKU_DEVICE_MANAGER_CORE,
                        "display", display,
                        NULL);
 }
@@ -91,7 +91,7 @@ _gdk_haiku_display_add_frame_callback (GdkDisplay             *display,
                                         GdkWindow              *window)
 {
   GdkHaikuDisplay *display_haiku;
-  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+  GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (window->impl);
 
   display_haiku = GDK_HAIKU_DISPLAY (display);
 
@@ -147,7 +147,7 @@ gdk_haiku_display_frame_cb (gpointer data)
   for (; iter != NULL; iter = iter->next)
     {
       GdkWindow *window = iter->data;
-      GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
+      GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (window->impl);
       GdkFrameClock *frame_clock = gdk_window_get_frame_clock (window);
       GdkFrameTimings *timings;
 
@@ -490,7 +490,7 @@ display_reconfiguration_callback (CGDirectDisplayID            cg_display,
                                              same_monitor,
                                              &index))
         {
-          monitor = g_object_new (GDK_TYPE_QUARTZ_MONITOR,
+          monitor = g_object_new (GDK_TYPE_HAIKU_MONITOR,
                                   "display", display, NULL);
           monitor->id = cg_display;
           g_ptr_array_add (display->monitors, monitor);
@@ -586,7 +586,7 @@ gdk_haiku_display_get_monitor_at_window (GdkDisplay *display,
   if (!onscreen_window)
     return NULL;
 
-  impl = GDK_WINDOW_IMPL_QUARTZ (onscreen_window->impl);
+  impl = GDK_WINDOW_IMPL_HAIKU (onscreen_window->impl);
   nswindow = impl->toplevel;
   screen = [nswindow screen];
 
@@ -625,7 +625,7 @@ gdk_haiku_display_init (GdkHaikuDisplay *display)
   display->monitors = g_ptr_array_new_full (n_displays, g_object_unref);
   for (disp = 0; disp < n_displays; ++disp)
     {
-      GdkHaikuMonitor *monitor = g_object_new (GDK_TYPE_QUARTZ_MONITOR,
+      GdkHaikuMonitor *monitor = g_object_new (GDK_TYPE_HAIKU_MONITOR,
                                                        "display", display, NULL);
       monitor->id = displays[disp];
       g_ptr_array_add (display->monitors, monitor);
@@ -665,7 +665,7 @@ gdk_haiku_display_class_init (GdkHaikuDisplayClass *class)
   object_class->finalize = gdk_haiku_display_finalize;
   object_class->dispose = gdk_haiku_display_dispose;
 
-  display_class->window_type = GDK_TYPE_QUARTZ_WINDOW;
+  display_class->window_type = GDK_TYPE_HAIKU_WINDOW;
 
   display_class->get_name = gdk_haiku_display_get_name;
   display_class->get_default_screen = gdk_haiku_display_get_default_screen;

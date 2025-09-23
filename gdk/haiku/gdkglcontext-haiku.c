@@ -152,7 +152,7 @@ gdk_haiku_window_create_gl_context (GdkWindow     *window,
   GDK_NOTE (OPENGL,
             g_print ("Created NSOpenGLContext[%p]\n", ctx));
 
-  context = g_object_new (GDK_TYPE_QUARTZ_GL_CONTEXT,
+  context = g_object_new (GDK_TYPE_HAIKU_GL_CONTEXT,
                           "window", window,
                           "display", display,
                           "shared-context", share,
