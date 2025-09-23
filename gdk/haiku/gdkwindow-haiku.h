@@ -19,8 +19,8 @@
 #ifndef __GDK_WINDOW_QUARTZ_H__
 #define __GDK_WINDOW_QUARTZ_H__
 
-#import <gdk/quartz/GdkHaikuView.h>
-#import <gdk/quartz/GdkHaikuNSWindow.h>
+#import <gdk/haiku/GdkHaikuView.h>
+#import <gdk/haiku/GdkHaikuNSWindow.h>
 #include "gdk/gdkwindowimpl.h"
 
 G_BEGIN_DECLS

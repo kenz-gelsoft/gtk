@@ -55,17 +55,17 @@ G_END_DECLS
 
 #define __GDKQUARTZ_H_INSIDE__
 
-#include <gdk/quartz/gdkhaikucursor.h>
-#include <gdk/quartz/gdkhaikudevice-core.h>
-#include <gdk/quartz/gdkhaikudevicemanager-core.h>
-#include <gdk/quartz/gdkhaikudisplay.h>
-#include <gdk/quartz/gdkhaikudisplaymanager.h>
-#include <gdk/quartz/gdkhaikukeys.h>
-#include <gdk/quartz/gdkhaikumonitor.h>
-#include <gdk/quartz/gdkhaikuscreen.h>
-#include <gdk/quartz/gdkhaikuutils.h>
-#include <gdk/quartz/gdkhaikuvisual.h>
-#include <gdk/quartz/gdkhaikuwindow.h>
+#include <gdk/haiku/gdkhaikucursor.h>
+#include <gdk/haiku/gdkhaikudevice-core.h>
+#include <gdk/haiku/gdkhaikudevicemanager-core.h>
+#include <gdk/haiku/gdkhaikudisplay.h>
+#include <gdk/haiku/gdkhaikudisplaymanager.h>
+#include <gdk/haiku/gdkhaikukeys.h>
+#include <gdk/haiku/gdkhaikumonitor.h>
+#include <gdk/haiku/gdkhaikuscreen.h>
+#include <gdk/haiku/gdkhaikuutils.h>
+#include <gdk/haiku/gdkhaikuvisual.h>
+#include <gdk/haiku/gdkhaikuwindow.h>
 
 #undef __GDKQUARTZ_H_INSIDE__
 

@@ -25,7 +25,7 @@
 
 #include <AppKit/AppKit.h>
 #include <gdk/gdk.h>
-#include <gdk/quartz/gdkhaiku.h>
+#include <gdk/haiku/gdkhaiku.h>
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101400
 #define GDK_QUARTZ_FILE_PBOARD_TYPE    NSURLPboardType

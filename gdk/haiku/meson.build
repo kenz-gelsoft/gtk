@@ -42,7 +42,7 @@ gdk_haiku_public_headers = files(
   'gdkhaikuwindow.h',
 )
 
-install_headers(gdk_haiku_public_headers, subdir: 'gtk-3.0/gdk/quartz')
+install_headers(gdk_haiku_public_headers, subdir: 'gtk-3.0/gdk/haiku')
 install_headers('gdkhaiku.h', subdir: 'gtk-3.0/gdk')
 
 core_graphics_dep = dependency('appleframeworks', modules : 'CoreGraphics', required : true)
