@@ -23,11 +23,11 @@
 #include <gdk/gdkseatdefaultprivate.h>
 #include <gdk/gdkdevicemanagerprivate.h>
 #include <gdk/gdkdisplayprivate.h>
-#include "gdkdevicemanager-core-quartz.h"
+#include "gdkdevicemanager-core-haiku.h"
 #include "gdkquartzdevice-core.h"
 #include "gdkkeysyms.h"
-#include "gdkprivate-quartz.h"
-#include "gdkinternal-quartz.h"
+#include "gdkprivate-haiku.h"
+#include "gdkinternal-haiku.h"
 
 typedef enum
 {

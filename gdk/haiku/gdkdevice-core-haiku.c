@@ -24,9 +24,9 @@
 #import "GdkHaikuView.h"
 #include "gdkquartzwindow.h"
 #include "gdkquartzcursor.h"
-#include "gdkprivate-quartz.h"
+#include "gdkprivate-haiku.h"
 #include "gdkquartzdevice-core.h"
-#include "gdkinternal-quartz.h"
+#include "gdkinternal-haiku.h"
 #include "gdkquartz-cocoa-access.h"
 
 struct _GdkHaikuDeviceCore

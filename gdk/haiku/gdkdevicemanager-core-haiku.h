@@ -1,4 +1,4 @@
-/* gdkdevicemanager-quartz.h
+/* gdkdevicemanager-haiku.h
  *
  * Copyright (C) 2009 Carlos Garnacho <carlosg@gnome.org>
  * Copyright (C) 2010  Kristian Rietveld  <kris@gtk.org>

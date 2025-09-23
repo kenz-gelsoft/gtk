@@ -1,4 +1,4 @@
-/* gdkevents-quartz.c
+/* gdkevents-haiku.c
  *
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998-2002 Tor Lillqvist
@@ -33,12 +33,12 @@
 #include "gdkkeysyms.h"
 #include "gdkquartz.h"
 #include "gdkquartzdisplay.h"
-#include "gdkprivate-quartz.h"
-#include "gdkinternal-quartz.h"
+#include "gdkprivate-haiku.h"
+#include "gdkinternal-haiku.h"
 #include "gdkquartz-cocoa-access.h"
 #include "gdkquartzdevicemanager-core.h"
 #include "gdkquartzkeys.h"
-#include "gdkkeys-quartz.h"
+#include "gdkkeys-haiku.h"
 
 #define GRIP_WIDTH 15
 #define GRIP_HEIGHT 15

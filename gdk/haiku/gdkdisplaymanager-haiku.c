@@ -1,5 +1,5 @@
 /* GDK - The GIMP Drawing Kit
- * gdkdisplaymanager-quartz.c
+ * gdkdisplaymanager-haiku.c
  *
  * Copyright (C) 2005 Imendio AB
  * Copyright 2010 Red Hat, Inc.
@@ -26,7 +26,7 @@
 
 #include "gdkquartzdisplay.h"
 #include "gdkquartzdisplaymanager.h"
-#include "gdkprivate-quartz.h"
+#include "gdkprivate-haiku.h"
 
 #include "gdkdisplaymanagerprivate.h"
 #include "gdkinternals.h"

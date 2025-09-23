@@ -1,4 +1,4 @@
-/* gdkproperty-quartz.c
+/* gdkproperty-haiku.c
  *
  * Copyright (C) 2005 Imendio AB
  *

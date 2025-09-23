@@ -1,4 +1,4 @@
-/* gdkkeys-quartz.c
+/* gdkkeys-haiku.c
  *
  * Copyright (C) 2000 Red Hat, Inc.
  * Copyright (C) 2005 Imendio AB
@@ -55,8 +55,8 @@
 #include "gdkquartzkeys.h"
 #include "gdkkeysprivate.h"
 #include "gdkkeysyms.h"
-#include "gdkkeys-quartz.h"
-#include "gdkinternal-quartz.h"
+#include "gdkkeys-haiku.h"
+#include "gdkinternal-haiku.h"
 
 #define NUM_KEYCODES 128
 #define KEYVALS_PER_KEYCODE 4

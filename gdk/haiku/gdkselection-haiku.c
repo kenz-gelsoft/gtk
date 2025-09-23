@@ -1,4 +1,4 @@
-/* gdkselection-quartz.c
+/* gdkselection-haiku.c
  *
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998-2002 Tor Lillqvist
@@ -23,7 +23,7 @@
 #include "gdkselection.h"
 #include "gdkproperty.h"
 #include "gdkquartz.h"
-#include "gdkinternal-quartz.h"
+#include "gdkinternal-haiku.h"
 #include "gdkquartz-gtk-only.h"
 
 gboolean

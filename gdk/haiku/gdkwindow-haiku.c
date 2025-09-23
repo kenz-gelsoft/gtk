@@ -1,4 +1,4 @@
-/* gdkwindow-quartz.c
+/* gdkwindow-haiku.c
  *
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 2005-2007 Imendio AB
@@ -25,20 +25,20 @@
 #include <gdk/gdkframeclockprivate.h>
 
 #include "gdkwindowimpl.h"
-#include "gdkwindow-quartz.h"
-#include "gdkprivate-quartz.h"
-#include "gdkglcontext-quartz.h"
+#include "gdkwindow-haiku.h"
+#include "gdkprivate-haiku.h"
+#include "gdkglcontext-haiku.h"
 #include "gdkquartzglcontext.h"
 #include "gdkquartzscreen.h"
 #include "gdkquartzcursor.h"
 #include "gdkquartz-cocoa-access.h"
-#include "gdkinternal-quartz.h"
+#include "gdkinternal-haiku.h"
 
 #include <Carbon/Carbon.h>
 #include <AvailabilityMacros.h>
 
 #include <sys/time.h>
-#include <cairo-quartz.h>
+#include <cairo-haiku.h>
 
 static gpointer parent_class;
 static gpointer root_window_parent_class;
@@ -617,7 +617,7 @@ _gdk_haiku_window_is_ancestor (GdkWindow *ancestor,
 }
 
 
-/* See notes on top of gdkscreen-quartz.c */
+/* See notes on top of gdkscreen-haiku.c */
 void
 _gdk_haiku_window_gdk_xy_to_xy (gint  gdk_x,
                                  gint  gdk_y,
@@ -690,7 +690,7 @@ find_child_window_helper (GdkWindow *window,
       /* Special-case the root window. We have to include the title
        * bar in the checks, otherwise the window below the title bar
        * will be found i.e. events punch through. (If we can find a
-       * better way to deal with the events in gdkevents-quartz, this
+       * better way to deal with the events in gdkevents-haiku, this
        * might not be needed.)
        */
       if (child_impl && window == _gdk_root)
@@ -2472,7 +2472,7 @@ gdk_haiku_window_begin_resize_drag (GdkWindow     *window,
 
   if (!(impl && impl->toplevel))
     {
-      g_warning ("Can't call gdk_window_begin_resize_drag on non-quartz or non-toplevel window");
+      g_warning ("Can't call gdk_window_begin_resize_drag on non-haiku or non-toplevel window");
       return;
     }
 
@@ -2497,7 +2497,7 @@ gdk_haiku_window_begin_move_drag (GdkWindow *window,
 
   if (!(impl && impl->toplevel))
     {
-      g_warning ("Can't call gdk_window_begin_move_drag on non-quartz or non-toplevel window");
+      g_warning ("Can't call gdk_window_begin_move_drag on non-haiku or non-toplevel window");
       return;
     }
 

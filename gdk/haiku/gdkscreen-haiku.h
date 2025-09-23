@@ -1,4 +1,4 @@
-/* gdkscreen-quartz.h
+/* gdkscreen-haiku.h
  *
  * Copyright (C) 2009,2010  Kristian Rietveld  <kris@gtk.org>
  *

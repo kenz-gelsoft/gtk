@@ -1,4 +1,4 @@
-/* gdkscreen-quartz.c
+/* gdkscreen-haiku.c
  *
  * Copyright (C) 2005 Imendio AB
  * Copyright (C) 2009,2010  Kristian Rietveld  <kris@gtk.org>
@@ -22,10 +22,10 @@
 #define GDK_DISABLE_DEPRECATION_WARNINGS 1
 #include <gdk/gdk.h>
 
-#include "gdkprivate-quartz.h"
-#include "gdkdisplay-quartz.h"
-#include "gdkmonitor-quartz.h"
-#include "gdkinternal-quartz.h"
+#include "gdkprivate-haiku.h"
+#include "gdkdisplay-haiku.h"
+#include "gdkmonitor-haiku.h"
+#include "gdkinternal-haiku.h"
 
 /* A couple of notes about this file are in order.  In GDK, a
  * GdkScreen can contain multiple monitors.  A GdkScreen has an
@@ -56,7 +56,7 @@
  * coordinate space.  Such coordinates are mapped to their respective
  * position in the GdkScreen root window (_gdk_haiku_window_xy_to_gdk_xy)
  * and vice versa (_gdk_haiku_window_gdk_xy_to_xy).  Both functions can
- * be found in gdkwindow-quartz.c.  Note that Cocoa coordinates can have
+ * be found in gdkwindow-haiku.c.  Note that Cocoa coordinates can have
  * negative values (in case a monitor is located left or below of screen 0),
  * but GDK coordinates can *not*!
  */
@@ -143,7 +143,7 @@ _gdk_haiku_screen_update_window_sizes (GdkScreen *screen)
   /* The size of the root window is so that it can contain all
    * monitors attached to this machine.  The monitors are laid out
    * within this root window.  We calculate the size of the root window
-   * and the positions of the different monitors in gdkscreen-quartz.c.
+   * and the positions of the different monitors in gdkscreen-haiku.c.
    *
    * This data is updated when the monitor configuration is changed.
    */

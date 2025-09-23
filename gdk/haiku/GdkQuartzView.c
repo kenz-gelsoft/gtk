@@ -21,10 +21,10 @@
 #include "config.h"
 #import "GdkHaikuView.h"
 #include "gdkquartzwindow.h"
-#include "gdkprivate-quartz.h"
+#include "gdkprivate-haiku.h"
 #include "gdkquartz.h"
-#include "gdkinternal-quartz.h"
-#include <cairo/cairo-quartz.h>
+#include "gdkinternal-haiku.h"
+#include <cairo/cairo-haiku.h>
 #import <AppKit/AppKit.h>
 #import <IOSurface/IOSurface.h>
 

@@ -1,6 +1,6 @@
 /* GDK - The GIMP Drawing Kit
  *
- * gdkglcontext-quartz.c: Quartz specific OpenGL wrappers
+ * gdkglcontext-haiku.c: Quartz specific OpenGL wrappers
  *
  * Copyright © 2014  Emmanuele Bassi
  * Copyright © 2014  Alexander Larsson
@@ -22,12 +22,12 @@
 
 #include "config.h"
 
-#include "gdkglcontext-quartz.h"
+#include "gdkglcontext-haiku.h"
 
 #include "gdkquartzdisplay.h"
 #include "gdkquartzglcontext.h"
 #include "gdkquartzwindow.h"
-#include "gdkprivate-quartz.h"
+#include "gdkprivate-haiku.h"
 #include "gdkquartz-cocoa-access.h"
 
 #include "gdkinternals.h"

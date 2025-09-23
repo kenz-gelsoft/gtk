@@ -6,8 +6,8 @@
 #include <sys/uio.h>
 #include <unistd.h>
 
-#include "gdkprivate-quartz.h"
-#include "gdkinternal-quartz.h"
+#include "gdkprivate-haiku.h"
+#include "gdkinternal-haiku.h"
 #include <gdk/gdkdisplayprivate.h>
 
 /* 

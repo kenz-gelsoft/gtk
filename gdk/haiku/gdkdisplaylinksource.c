@@ -23,7 +23,7 @@
 
 #include <mach/mach_time.h>
 
-#include "gdkinternal-quartz.h"
+#include "gdkinternal-haiku.h"
 #include "gdkdisplaylinksource.h"
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200

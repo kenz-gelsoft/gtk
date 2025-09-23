@@ -1,4 +1,4 @@
-/* gdkdnd-quartz.c
+/* gdkdnd-haiku.c
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -19,8 +19,8 @@
 #include "config.h"
 #include "gdkdnd.h"
 #include "gdkquartzdnd.h"
-#include "gdkprivate-quartz.h"
-#include "gdkinternal-quartz.h"
+#include "gdkprivate-haiku.h"
+#include "gdkinternal-haiku.h"
 #include "gdkquartz-gtk-only.h"
 
 G_DEFINE_TYPE (GdkHaikuDragContext, gdk_haiku_drag_context, GDK_TYPE_DRAG_CONTEXT)

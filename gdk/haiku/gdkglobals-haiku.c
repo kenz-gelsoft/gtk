@@ -1,4 +1,4 @@
-/* gdkglobals-quartz.c
+/* gdkglobals-haiku.c
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -20,7 +20,7 @@
 #include "gdktypes.h"
 #include "gdkprivate.h"
 #include "gdkquartz.h"
-#include "gdkinternal-quartz.h"
+#include "gdkinternal-haiku.h"
 
 GdkDisplay *_gdk_display = NULL;
 GdkScreen *_gdk_screen = NULL;

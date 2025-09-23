@@ -1,4 +1,4 @@
-/* gdkutils-quartz.c
+/* gdkutils-haiku.c
  *
  * Copyright (C) 2005 Imendio AB
  * Copyright (C) 2010  Kristian Rietveld  <kris@gtk.org>

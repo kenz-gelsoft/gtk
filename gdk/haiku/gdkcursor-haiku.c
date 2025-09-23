@@ -1,4 +1,4 @@
-/* gdkcursor-quartz.c
+/* gdkcursor-haiku.c
  *
  * Copyright (C) 2005-2007 Imendio AB
  *
@@ -22,8 +22,8 @@
 #include "gdkcursor.h"
 #include "gdkcursorprivate.h"
 #include "gdkquartzcursor.h"
-#include "gdkprivate-quartz.h"
-#include "gdkinternal-quartz.h"
+#include "gdkprivate-haiku.h"
+#include "gdkinternal-haiku.h"
 #include "gdkquartz-gtk-only.h"
 
 #include "xcursors.h"

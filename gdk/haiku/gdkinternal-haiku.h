@@ -1,4 +1,4 @@
-/* gdkinternal-quartz.h
+/* gdkinternal-haiku.h
  *
  * Copyright (C) 2005-2007 Imendio AB
  *
@@ -44,10 +44,10 @@ typedef float CGFloat;
 
 #include "../gdkprivate.h"
 #include "gdkquartz.h"
-#include "gdkdevicemanager-core-quartz.h"
-#include "gdkdnd-quartz.h"
-#include "gdkscreen-quartz.h"
-#include "gdkwindow-quartz.h"
+#include "gdkdevicemanager-core-haiku.h"
+#include "gdkdnd-haiku.h"
+#include "gdkscreen-haiku.h"
+#include "gdkwindow-haiku.h"
 
 #include <gdk/gdk.h>
 

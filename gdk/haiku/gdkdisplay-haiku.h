@@ -1,5 +1,5 @@
 /*
- * gdkdisplay-quartz.h
+ * gdkdisplay-haiku.h
  *
  * Copyright 2017 Tom Schoonjans 
  *

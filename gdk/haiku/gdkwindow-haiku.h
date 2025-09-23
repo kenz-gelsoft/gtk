@@ -1,4 +1,4 @@
-/* gdkdrawable-quartz.h
+/* gdkdrawable-haiku.h
  *
  * Copyright (C) 2005 Imendio AB
  *

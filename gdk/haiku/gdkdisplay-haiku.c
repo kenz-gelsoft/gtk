@@ -1,4 +1,4 @@
-/* gdkdisplay-quartz.c
+/* gdkdisplay-haiku.c
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -23,7 +23,7 @@
 #include <gdk/gdkmonitorprivate.h>
 #include <gdk/gdkframeclockprivate.h>
 
-#include "gdkprivate-quartz.h"
+#include "gdkprivate-haiku.h"
 #include "gdkquartzscreen.h"
 #include "gdkquartzwindow.h"
 #include "gdkquartzdisplay.h"
@@ -31,10 +31,10 @@
 #include "gdkscreen.h"
 #include "gdkmonitorprivate.h"
 #include "gdkdisplaylinksource.h"
-#include "gdkdisplay-quartz.h"
-#include "gdkmonitor-quartz.h"
-#include "gdkglcontext-quartz.h"
-#include "gdkinternal-quartz.h"
+#include "gdkdisplay-haiku.h"
+#include "gdkmonitor-haiku.h"
+#include "gdkglcontext-haiku.h"
+#include "gdkinternal-haiku.h"
 #include "gdkwindow.h"
 
 /* Note about coordinates: There are three coordinate systems at play:

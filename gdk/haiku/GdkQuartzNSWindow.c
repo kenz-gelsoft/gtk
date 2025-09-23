@@ -19,9 +19,9 @@
 #include "config.h"
 #import "GdkHaikuNSWindow.h"
 #include "gdkquartzwindow.h"
-#include "gdkdnd-quartz.h"
-#include "gdkprivate-quartz.h"
-#include "gdkinternal-quartz.h"
+#include "gdkdnd-haiku.h"
+#include "gdkprivate-haiku.h"
+#include "gdkinternal-haiku.h"
 #include "gdkquartzdnd.h"
 
 @implementation GdkHaikuNSWindow
@@ -440,7 +440,7 @@ synthesize_configure_event(GdkWindow *window)
   return YES;
 }
 
-/* Used by gdkevents-quartz.c to decide if our sendEvent() handler above
+/* Used by gdkevents-haiku.c to decide if our sendEvent() handler above
  * will see the event or if it will be subjected to standard processing
  * by GDK.
 */

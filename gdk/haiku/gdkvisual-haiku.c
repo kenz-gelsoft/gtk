@@ -1,4 +1,4 @@
-/* gdkvisual-quartz.c
+/* gdkvisual-haiku.c
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -20,7 +20,7 @@
 
 #include "gdkvisualprivate.h"
 #include "gdkquartzvisual.h"
-#include "gdkprivate-quartz.h"
+#include "gdkprivate-haiku.h"
 
 
 struct _GdkHaikuVisual

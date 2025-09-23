@@ -20,9 +20,9 @@
 #include <glib.h>
 #include <gio/gio.h>
 
-#include "gdkmonitor-quartz.h"
-#include "gdkdisplay-quartz.h"
-#include "gdkinternal-quartz.h"
+#include "gdkmonitor-haiku.h"
+#include "gdkdisplay-haiku.h"
+#include "gdkinternal-haiku.h"
 
 G_DEFINE_TYPE (GdkHaikuMonitor, gdk_haiku_monitor, GDK_TYPE_MONITOR)
 
