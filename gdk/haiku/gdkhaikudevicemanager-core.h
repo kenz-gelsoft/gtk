@@ -15,8 +15,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_QUARTZ_DEVICE_MANAGER_CORE_H__
-#define __GDK_QUARTZ_DEVICE_MANAGER_CORE_H__
+#ifndef __GDK_HAIKU_DEVICE_MANAGER_CORE_H__
+#define __GDK_HAIKU_DEVICE_MANAGER_CORE_H__
 
 #if !defined(__GDKQUARTZ_H_INSIDE__) && !defined (GDK_COMPILATION)
 #error "Only <gdk/gdkhaiku.h> can be included directly."
@@ -27,11 +27,11 @@
 G_BEGIN_DECLS
 
 #define GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE         (gdk_haiku_device_manager_core_get_type ())
-#define GDK_QUARTZ_DEVICE_MANAGER_CORE(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE, GdkHaikuDeviceManagerCore))
-#define GDK_QUARTZ_DEVICE_MANAGER_CORE_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST ((c), GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE, GdkHaikuDeviceManagerCoreClass))
+#define GDK_HAIKU_DEVICE_MANAGER_CORE(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE, GdkHaikuDeviceManagerCore))
+#define GDK_HAIKU_DEVICE_MANAGER_CORE_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST ((c), GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE, GdkHaikuDeviceManagerCoreClass))
 #define GDK_IS_QUARTZ_DEVICE_MANAGER_CORE(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE))
 #define GDK_IS_QUARTZ_DEVICE_MANAGER_CORE_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE ((c), GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE))
-#define GDK_QUARTZ_DEVICE_MANAGER_CORE_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE, GdkHaikuDeviceManagerCoreClass))
+#define GDK_HAIKU_DEVICE_MANAGER_CORE_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE, GdkHaikuDeviceManagerCoreClass))
 
 typedef struct _GdkHaikuDeviceManagerCore GdkHaikuDeviceManagerCore;
 typedef struct _GdkHaikuDeviceManagerCoreClass GdkHaikuDeviceManagerCoreClass;
@@ -43,4 +43,4 @@ GType gdk_haiku_device_manager_core_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 
-#endif /* __GDK_QUARTZ_DEVICE_MANAGER_CORE_H__ */
+#endif /* __GDK_HAIKU_DEVICE_MANAGER_CORE_H__ */

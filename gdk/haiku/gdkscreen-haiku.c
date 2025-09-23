@@ -96,7 +96,7 @@ gdk_haiku_screen_init (GdkHaikuScreen *haiku_screen)
 static void
 gdk_haiku_screen_dispose (GObject *object)
 {
-  GdkHaikuScreen *screen = GDK_QUARTZ_SCREEN (object);
+  GdkHaikuScreen *screen = GDK_HAIKU_SCREEN (object);
 
   if (screen->screen_changed_id)
     {
@@ -123,7 +123,7 @@ gdk_haiku_screen_calculate_layout (GdkHaikuScreen *screen,
                                     GdkHaikuDisplay *display)
 {
   if (!display)
-    display = GDK_QUARTZ_DISPLAY (gdk_screen_get_display (GDK_SCREEN (screen)));
+    display = GDK_HAIKU_DISPLAY (gdk_screen_get_display (GDK_SCREEN (screen)));
 
 /* Display geometry is the origin and size in AppKit coordinates. AppKit computes */
   screen->width = (int)trunc (display->geometry.size.width);
@@ -210,13 +210,13 @@ gdk_haiku_screen_get_number (GdkScreen *screen)
 static gint
 gdk_haiku_screen_get_width (GdkScreen *screen)
 {
-  return GDK_QUARTZ_SCREEN (screen)->width;
+  return GDK_HAIKU_SCREEN (screen)->width;
 }
 
 static gint
 gdk_haiku_screen_get_height (GdkScreen *screen)
 {
-  return GDK_QUARTZ_SCREEN (screen)->height;
+  return GDK_HAIKU_SCREEN (screen)->height;
 }
 
 static gchar *
@@ -246,13 +246,13 @@ gdk_haiku_screen_is_composited (GdkScreen *screen)
 static gint
 gdk_haiku_screen_get_width_mm (GdkScreen *screen)
 {
-  return GDK_QUARTZ_SCREEN (screen)->mm_width;
+  return GDK_HAIKU_SCREEN (screen)->mm_width;
 }
 
 static gint
 gdk_haiku_screen_get_height_mm (GdkScreen *screen)
 {
-  return GDK_QUARTZ_SCREEN (screen)->mm_height;
+  return GDK_HAIKU_SCREEN (screen)->mm_height;
 }
 
 static void

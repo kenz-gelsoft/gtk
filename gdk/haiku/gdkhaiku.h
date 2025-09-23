@@ -17,8 +17,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_QUARTZ_H__
-#define __GDK_QUARTZ_H__
+#ifndef __GDK_HAIKU_H__
+#define __GDK_HAIKU_H__
 
 #include <gdk/gdk.h>
 #include <gdk/gdkprivate.h>
@@ -69,4 +69,4 @@ G_END_DECLS
 
 #undef __GDKQUARTZ_H_INSIDE__
 
-#endif /* __GDK_QUARTZ_H__ */
+#endif /* __GDK_HAIKU_H__ */

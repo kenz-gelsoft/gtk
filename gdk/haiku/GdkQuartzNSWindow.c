@@ -618,7 +618,7 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
 {
   g_assert (current_context != NULL);
 
-  GDK_QUARTZ_DRAG_CONTEXT (current_context)->dragging_info = sender;
+  GDK_HAIKU_DRAG_CONTEXT (current_context)->dragging_info = sender;
   current_context->suggested_action = drag_operation_to_drag_action ([sender draggingSourceOperationMask]);
   current_context->actions = current_context->suggested_action;
 }
@@ -810,12 +810,12 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
 typedef enum
 {
- GDK_QUARTZ_FULL_SCREEN_MASK = NSFullScreenWindowMask,
+ GDK_HAIKU_FULL_SCREEN_MASK = NSFullScreenWindowMask,
 } GdkHaikuFullScreen;
 #else
 typedef enum
 {
- GDK_QUARTZ_FULL_SCREEN_MASK = NSWindowStyleMaskFullScreen,
+ GDK_HAIKU_FULL_SCREEN_MASK = NSWindowStyleMaskFullScreen,
 } GdkHaikuFullScreen;
 #endif
 - (void)setStyleMask:(NSUInteger)styleMask
@@ -823,11 +823,11 @@ typedef enum
   gboolean was_fullscreen;
   gboolean is_fullscreen;
 
-  was_fullscreen = (([self styleMask] & GDK_QUARTZ_FULL_SCREEN_MASK) != 0);
+  was_fullscreen = (([self styleMask] & GDK_HAIKU_FULL_SCREEN_MASK) != 0);
 
   [super setStyleMask:styleMask];
 
-  is_fullscreen = (([self styleMask] & GDK_QUARTZ_FULL_SCREEN_MASK) != 0);
+  is_fullscreen = (([self styleMask] & GDK_HAIKU_FULL_SCREEN_MASK) != 0);
 
   if (was_fullscreen != is_fullscreen)
     _gdk_haiku_window_update_fullscreen_state ([[self contentView] gdkWindow]);

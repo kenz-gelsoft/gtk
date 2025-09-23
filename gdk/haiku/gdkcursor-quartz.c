@@ -114,7 +114,7 @@ create_builtin_cursor (GdkCursorType cursor_type)
   if (cursor)
     return cursor;
 
-  GDK_QUARTZ_ALLOC_POOL;
+  GDK_HAIKU_ALLOC_POOL;
 
   src_width = xcursors[cursor_type].width;
   src_height = xcursors[cursor_type].height;
@@ -182,7 +182,7 @@ create_builtin_cursor (GdkCursorType cursor_type)
 
   cached_xcursors[cursor_type] = g_object_ref (cursor);
 
-  GDK_QUARTZ_RELEASE_POOL;
+  GDK_HAIKU_RELEASE_POOL;
 
   return cursor;
 }
@@ -264,7 +264,7 @@ _gdk_haiku_display_get_cursor_for_surface (GdkDisplay      *display,
   double x_scale;
   double y_scale;
 
-  GDK_QUARTZ_ALLOC_POOL;
+  GDK_HAIKU_ALLOC_POOL;
 
   pixbuf = gdk_pixbuf_get_from_surface (surface, 0, 0,
 					cairo_image_surface_get_width (surface),
@@ -281,7 +281,7 @@ _gdk_haiku_display_get_cursor_for_surface (GdkDisplay      *display,
 
   g_object_unref (pixbuf);
 
-  GDK_QUARTZ_RELEASE_POOL;
+  GDK_HAIKU_RELEASE_POOL;
 
   return cursor;
 }
@@ -426,7 +426,7 @@ static cairo_surface_t *gdk_haiku_cursor_get_surface (GdkCursor *cursor,
 static void
 gdk_haiku_cursor_finalize (GObject *object)
 {
-  GdkHaikuCursor *private = GDK_QUARTZ_CURSOR (object);
+  GdkHaikuCursor *private = GDK_HAIKU_CURSOR (object);
 
   if (private->nscursor)
     [private->nscursor release];
@@ -492,7 +492,7 @@ _gdk_haiku_cursor_get_ns_cursor (GdkCursor *cursor)
 
   g_return_val_if_fail (GDK_IS_QUARTZ_CURSOR (cursor), NULL);
 
-  cursor_private = GDK_QUARTZ_CURSOR (cursor);
+  cursor_private = GDK_HAIKU_CURSOR (cursor);
 
   return cursor_private->nscursor;
 }

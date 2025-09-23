@@ -17,8 +17,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_QUARTZ_UTILS_H__
-#define __GDK_QUARTZ_UTILS_H__
+#ifndef __GDK_HAIKU_UTILS_H__
+#define __GDK_HAIKU_UTILS_H__
 
 #if !defined (__GDKQUARTZ_H_INSIDE__) && !defined (GDK_COMPILATION)
 #error "Only <gdk/gdkhaiku.h> can be included directly."
@@ -33,4 +33,4 @@ gunichar  gdk_haiku_get_key_equivalent                         (guint           
 
 G_END_DECLS
 
-#endif /* __GDK_QUARTZ_UTILS_H__ */
+#endif /* __GDK_HAIKU_UTILS_H__ */

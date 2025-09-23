@@ -16,8 +16,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_QUARTZ_GTK_ONLY_H__
-#define __GDK_QUARTZ_GTK_ONLY_H__
+#ifndef __GDK_HAIKU_GTK_ONLY_H__
+#define __GDK_HAIKU_GTK_ONLY_H__
 
 #if !(defined (GTK_COMPILATION) || defined (GDK_COMPILATION))
 #error "This API is for use only in Gtk internal code."
@@ -28,17 +28,17 @@
 #include <gdk/haiku/gdkhaiku.h>
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101400
-#define GDK_QUARTZ_FILE_PBOARD_TYPE    NSURLPboardType
-#define GDK_QUARTZ_URL_PBOARD_TYPE     NSURLPboardType
-#define GDK_QUARTZ_COLOR_PBOARD_TYPE   NSColorPboardType
-#define GDK_QUARTZ_STRING_PBOARD_TYPE  NSStringPboardType
-#define GDK_QUARTZ_TIFF_PBOARD_TYPE    NSTIFFPboardType
+#define GDK_HAIKU_FILE_PBOARD_TYPE    NSURLPboardType
+#define GDK_HAIKU_URL_PBOARD_TYPE     NSURLPboardType
+#define GDK_HAIKU_COLOR_PBOARD_TYPE   NSColorPboardType
+#define GDK_HAIKU_STRING_PBOARD_TYPE  NSStringPboardType
+#define GDK_HAIKU_TIFF_PBOARD_TYPE    NSTIFFPboardType
 #else
-#define GDK_QUARTZ_FILE_PBOARD_TYPE    NSPasteboardTypeFileURL
-#define GDK_QUARTZ_URL_PBOARD_TYPE     NSPasteboardTypeURL
-#define GDK_QUARTZ_COLOR_PBOARD_TYPE   NSPasteboardTypeColor
-#define GDK_QUARTZ_STRING_PBOARD_TYPE  NSPasteboardTypeString
-#define GDK_QUARTZ_TIFF_PBOARD_TYPE    NSPasteboardTypeTIFF
+#define GDK_HAIKU_FILE_PBOARD_TYPE    NSPasteboardTypeFileURL
+#define GDK_HAIKU_URL_PBOARD_TYPE     NSPasteboardTypeURL
+#define GDK_HAIKU_COLOR_PBOARD_TYPE   NSPasteboardTypeColor
+#define GDK_HAIKU_STRING_PBOARD_TYPE  NSPasteboardTypeString
+#define GDK_HAIKU_TIFF_PBOARD_TYPE    NSPasteboardTypeTIFF
 #endif
 
 /* Drag and Drop/Clipboard */

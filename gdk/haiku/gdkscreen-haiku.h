@@ -16,8 +16,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_QUARTZ_SCREEN__
-#define __GDK_QUARTZ_SCREEN__
+#ifndef __GDK_HAIKU_SCREEN__
+#define __GDK_HAIKU_SCREEN__
 
 #include <gdkscreenprivate.h>
 
@@ -50,4 +50,4 @@ struct _GdkHaikuScreenClass
 
 G_END_DECLS
 
-#endif /* __GDK_QUARTZ_SCREEN__ */
+#endif /* __GDK_HAIKU_SCREEN__ */

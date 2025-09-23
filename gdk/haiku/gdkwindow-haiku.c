@@ -58,25 +58,25 @@ typedef struct
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
 typedef enum
 {
- GDK_QUARTZ_BORDERLESS_WINDOW = NSBorderlessWindowMask,
- GDK_QUARTZ_CLOSABLE_WINDOW = NSClosableWindowMask,
+ GDK_HAIKU_BORDERLESS_WINDOW = NSBorderlessWindowMask,
+ GDK_HAIKU_CLOSABLE_WINDOW = NSClosableWindowMask,
 #if MAC_OS_X_VERSION_MIN_REQUIRED > 1060
  /* Added in 10.7. Apple's docs are wrong to say it's from earlier. */
- GDK_QUARTZ_FULLSCREEN_WINDOW = NSFullScreenWindowMask,
+ GDK_HAIKU_FULLSCREEN_WINDOW = NSFullScreenWindowMask,
 #endif
- GDK_QUARTZ_MINIATURIZABLE_WINDOW = NSMiniaturizableWindowMask,
- GDK_QUARTZ_RESIZABLE_WINDOW = NSResizableWindowMask,
- GDK_QUARTZ_TITLED_WINDOW = NSTitledWindowMask,
+ GDK_HAIKU_MINIATURIZABLE_WINDOW = NSMiniaturizableWindowMask,
+ GDK_HAIKU_RESIZABLE_WINDOW = NSResizableWindowMask,
+ GDK_HAIKU_TITLED_WINDOW = NSTitledWindowMask,
 } GdkHaikuWindowMask;
 #else
 typedef enum
 {
- GDK_QUARTZ_BORDERLESS_WINDOW = NSWindowStyleMaskBorderless,
- GDK_QUARTZ_CLOSABLE_WINDOW = NSWindowStyleMaskClosable,
- GDK_QUARTZ_FULLSCREEN_WINDOW = NSWindowStyleMaskFullScreen,
- GDK_QUARTZ_MINIATURIZABLE_WINDOW = NSWindowStyleMaskMiniaturizable,
- GDK_QUARTZ_RESIZABLE_WINDOW = NSWindowStyleMaskResizable,
- GDK_QUARTZ_TITLED_WINDOW = NSWindowStyleMaskTitled,
+ GDK_HAIKU_BORDERLESS_WINDOW = NSWindowStyleMaskBorderless,
+ GDK_HAIKU_CLOSABLE_WINDOW = NSWindowStyleMaskClosable,
+ GDK_HAIKU_FULLSCREEN_WINDOW = NSWindowStyleMaskFullScreen,
+ GDK_HAIKU_MINIATURIZABLE_WINDOW = NSWindowStyleMaskMiniaturizable,
+ GDK_HAIKU_RESIZABLE_WINDOW = NSWindowStyleMaskResizable,
+ GDK_HAIKU_TITLED_WINDOW = NSWindowStyleMaskTitled,
 } GdkHaikuWindowMask;
 #endif
 
@@ -562,9 +562,9 @@ _gdk_haiku_window_debug_highlight (GdkWindow *window, gint number)
 
   debug_window[number] = [[NSWindow alloc] initWithContentRect:rect
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
-                                                     styleMask:(NSUInteger)GDK_QUARTZ_BORDERLESS_WINDOW
+                                                     styleMask:(NSUInteger)GDK_HAIKU_BORDERLESS_WINDOW
 #else
-                                                     styleMask:(NSWindowStyleMask)GDK_QUARTZ_BORDERLESS_WINDOW
+                                                     styleMask:(NSWindowStyleMask)GDK_HAIKU_BORDERLESS_WINDOW
 #endif
 			                               backing:NSBackingStoreBuffered
 			                                 defer:NO];
@@ -624,7 +624,7 @@ _gdk_haiku_window_gdk_xy_to_xy (gint  gdk_x,
                                  gint *ns_x,
                                  gint *ns_y)
 {
-  GdkHaikuScreen *screen_haiku = GDK_QUARTZ_SCREEN (_gdk_screen);
+  GdkHaikuScreen *screen_haiku = GDK_HAIKU_SCREEN (_gdk_screen);
 
   if (ns_y)
     *ns_y = screen_haiku->orig_y - gdk_y;
@@ -639,7 +639,7 @@ _gdk_haiku_window_xy_to_gdk_xy (gint  ns_x,
                                  gint *gdk_x,
                                  gint *gdk_y)
 {
-  GdkHaikuScreen *screen_haiku = GDK_QUARTZ_SCREEN (_gdk_screen);
+  GdkHaikuScreen *screen_haiku = GDK_HAIKU_SCREEN (_gdk_screen);
 
   if (gdk_y)
     *gdk_y = screen_haiku->orig_y - ns_y;
@@ -826,7 +826,7 @@ get_nsscreen_for_point (gint x, gint y)
   NSArray *screens;
   NSScreen *screen = NULL;
 
-  GDK_QUARTZ_ALLOC_POOL;
+  GDK_HAIKU_ALLOC_POOL;
 
   screens = [NSScreen screens];
 
@@ -842,7 +842,7 @@ get_nsscreen_for_point (gint x, gint y)
         }
     }
 
-  GDK_QUARTZ_RELEASE_POOL;
+  GDK_HAIKU_RELEASE_POOL;
 
   return screen;
 }
@@ -884,7 +884,7 @@ _gdk_haiku_display_create_window_impl (GdkDisplay    *display,
   GdkWindowTypeHint    type_hint = GDK_WINDOW_TYPE_HINT_NORMAL;
   GdkFrameClock *frame_clock;
 
-  GDK_QUARTZ_ALLOC_POOL;
+  GDK_HAIKU_ALLOC_POOL;
 
   impl = g_object_new (GDK_TYPE_WINDOW_IMPL_QUARTZ, NULL);
   window->impl = GDK_WINDOW_IMPL (impl);
@@ -955,14 +955,14 @@ _gdk_haiku_display_create_window_impl (GdkDisplay    *display,
         if (window->window_type == GDK_WINDOW_TEMP ||
             type_hint == GDK_WINDOW_TYPE_HINT_SPLASHSCREEN)
           {
-            style_mask = GDK_QUARTZ_BORDERLESS_WINDOW;
+            style_mask = GDK_HAIKU_BORDERLESS_WINDOW;
           }
         else
           {
-            style_mask = (GDK_QUARTZ_TITLED_WINDOW |
-                          GDK_QUARTZ_CLOSABLE_WINDOW |
-                          GDK_QUARTZ_MINIATURIZABLE_WINDOW |
-                          GDK_QUARTZ_RESIZABLE_WINDOW);
+            style_mask = (GDK_HAIKU_TITLED_WINDOW |
+                          GDK_HAIKU_CLOSABLE_WINDOW |
+                          GDK_HAIKU_MINIATURIZABLE_WINDOW |
+                          GDK_HAIKU_RESIZABLE_WINDOW);
           }
 
 	impl->toplevel = [[GdkHaikuNSWindow alloc] initWithContentRect:content_rect 
@@ -1026,7 +1026,7 @@ _gdk_haiku_display_create_window_impl (GdkDisplay    *display,
       g_assert_not_reached ();
     }
 
-  GDK_QUARTZ_RELEASE_POOL;
+  GDK_HAIKU_RELEASE_POOL;
 
   if (attributes_mask & GDK_WA_TYPE_HINT)
     gdk_window_set_type_hint (window, attributes->type_hint);
@@ -1049,7 +1049,7 @@ _gdk_haiku_window_update_position (GdkWindow *window)
   if (!impl)
     return;
 
-  GDK_QUARTZ_ALLOC_POOL;
+  GDK_HAIKU_ALLOC_POOL;
 
   frame_rect = [impl->toplevel frame];
   content_rect = [impl->toplevel contentRectForFrameRect:frame_rect];
@@ -1058,7 +1058,7 @@ _gdk_haiku_window_update_position (GdkWindow *window)
                                    content_rect.origin.y + content_rect.size.height,
                                    &window->x, &window->y);
 
-  GDK_QUARTZ_RELEASE_POOL;
+  GDK_HAIKU_RELEASE_POOL;
 }
 
 void
@@ -1137,7 +1137,7 @@ gdk_haiku_window_destroy (GdkWindow *window,
 
   if (!recursing && !foreign_destroy)
     {
-      GDK_QUARTZ_ALLOC_POOL;
+      GDK_HAIKU_ALLOC_POOL;
 
       if (impl->toplevel)
 	[impl->toplevel close];
@@ -1147,7 +1147,7 @@ gdk_haiku_window_destroy (GdkWindow *window,
       impl->view = NULL;
       impl->toplevel = NULL;
 
-      GDK_QUARTZ_RELEASE_POOL;
+      GDK_HAIKU_RELEASE_POOL;
     }
 }
 
@@ -1169,7 +1169,7 @@ gdk_window_haiku_show (GdkWindow *window, gboolean already_mapped)
   if (!impl)
     return;
 
-  GDK_QUARTZ_ALLOC_POOL;
+  GDK_HAIKU_ALLOC_POOL;
 
   if (!GDK_WINDOW_IS_MAPPED (window))
     focus_on_map = window->focus_on_map;
@@ -1206,7 +1206,7 @@ gdk_window_haiku_show (GdkWindow *window, gboolean already_mapped)
   if (impl->transient_for && !GDK_WINDOW_DESTROYED (impl->transient_for))
     _gdk_haiku_window_attach_to_parent (window);
 
-  GDK_QUARTZ_RELEASE_POOL;
+  GDK_HAIKU_RELEASE_POOL;
 }
 
 /* Temporarily unsets the parent window, if the window is a
@@ -1378,7 +1378,7 @@ move_resize_window_internal (GdkWindow *window,
       window->height = height;
     }
 
-  GDK_QUARTZ_ALLOC_POOL;
+  GDK_HAIKU_ALLOC_POOL;
 
   if (impl->toplevel)
     {
@@ -1452,9 +1452,9 @@ move_resize_window_internal (GdkWindow *window,
     }
 
   if (window->gl_paint_context != NULL)
-    [GDK_QUARTZ_GL_CONTEXT (window->gl_paint_context)->gl_context update];
+    [GDK_HAIKU_GL_CONTEXT (window->gl_paint_context)->gl_context update];
 
-  GDK_QUARTZ_RELEASE_POOL;
+  GDK_HAIKU_RELEASE_POOL;
 }
 
 static inline void
@@ -1594,7 +1594,7 @@ update_toplevel_order (void)
   if (!root_impl || root_impl->sorted_children)
     return;
 
-  GDK_QUARTZ_ALLOC_POOL;
+  GDK_HAIKU_ALLOC_POOL;
 
   enumerator = [[NSApp orderedWindows] objectEnumerator];
   while ((nswindow = [enumerator nextObject]))
@@ -1608,7 +1608,7 @@ update_toplevel_order (void)
       toplevels = g_list_prepend (toplevels, window);
     }
 
-  GDK_QUARTZ_RELEASE_POOL;
+  GDK_HAIKU_RELEASE_POOL;
 
   root_impl->sorted_children = g_list_reverse (toplevels);
 }
@@ -1785,7 +1785,7 @@ gdk_window_haiku_get_geometry (GdkWindow *window,
        * windows with borders and the root relative coordinates
        * otherwise.
        */
-      if ([impl->toplevel styleMask] == GDK_QUARTZ_BORDERLESS_WINDOW)
+      if ([impl->toplevel styleMask] == GDK_HAIKU_BORDERLESS_WINDOW)
         {
           _gdk_haiku_window_xy_to_gdk_xy (ns_rect.origin.x,
                                            ns_rect.origin.y + ns_rect.size.height,
@@ -2089,9 +2089,9 @@ gdk_haiku_window_set_title (GdkWindow   *window,
 
   if (impl && impl->toplevel)
     {
-      GDK_QUARTZ_ALLOC_POOL;
+      GDK_HAIKU_ALLOC_POOL;
       [impl->toplevel setTitle:[NSString stringWithUTF8String:title]];
-      GDK_QUARTZ_RELEASE_POOL;
+      GDK_HAIKU_RELEASE_POOL;
     }
 }
 
@@ -2128,7 +2128,7 @@ gdk_haiku_window_set_transient_for (GdkWindow *window,
   if (!(window_impl && window_impl->toplevel))
     return;
 
-  GDK_QUARTZ_ALLOC_POOL;
+  GDK_HAIKU_ALLOC_POOL;
 
   if (window_impl->transient_for)
     {
@@ -2163,7 +2163,7 @@ gdk_haiku_window_set_transient_for (GdkWindow *window,
         }
     }
   
-  GDK_QUARTZ_RELEASE_POOL;
+  GDK_HAIKU_RELEASE_POOL;
 }
 
 static void
@@ -2227,10 +2227,10 @@ gdk_haiku_window_focus (GdkWindow *window,
 
   if (window->accept_focus && window->window_type != GDK_WINDOW_TEMP)
     {
-      GDK_QUARTZ_ALLOC_POOL;
+      GDK_HAIKU_ALLOC_POOL;
       [impl->toplevel makeKeyAndOrderFront:impl->toplevel];
       clear_toplevel_order ();
-      GDK_QUARTZ_RELEASE_POOL;
+      GDK_HAIKU_RELEASE_POOL;
     }
 }
 
@@ -2343,11 +2343,11 @@ _gdk_haiku_window_set_collection_behavior (NSWindow *nswindow,
 {
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= 101100
-#define GDK_QUARTZ_ALLOWS_TILING NSWindowCollectionBehaviorFullScreenAllowsTiling
-#define GDK_QUARTZ_DISALLOWS_TILING NSWindowCollectionBehaviorFullScreenDisallowsTiling
+#define GDK_HAIKU_ALLOWS_TILING NSWindowCollectionBehaviorFullScreenAllowsTiling
+#define GDK_HAIKU_DISALLOWS_TILING NSWindowCollectionBehaviorFullScreenDisallowsTiling
 #else
-#define GDK_QUARTZ_ALLOWS_TILING 1 << 11
-#define GDK_QUARTZ_DISALLOWS_TILING 1 << 12
+#define GDK_HAIKU_ALLOWS_TILING 1 << 11
+#define GDK_HAIKU_DISALLOWS_TILING 1 << 12
 #endif
   if (gdk_haiku_osx_version() >= GDK_OSX_LION)
     {
@@ -2358,22 +2358,22 @@ _gdk_haiku_window_set_collection_behavior (NSWindow *nswindow,
         case GDK_WINDOW_TYPE_HINT_NORMAL:
         case GDK_WINDOW_TYPE_HINT_SPLASHSCREEN:
           behavior &= ~(NSWindowCollectionBehaviorFullScreenAuxiliary &
-                        GDK_QUARTZ_DISALLOWS_TILING);
+                        GDK_HAIKU_DISALLOWS_TILING);
           behavior |= (NSWindowCollectionBehaviorFullScreenPrimary |
-                       GDK_QUARTZ_ALLOWS_TILING);
+                       GDK_HAIKU_ALLOWS_TILING);
 
           break;
         default:
           behavior &= ~(NSWindowCollectionBehaviorFullScreenPrimary &
-                        GDK_QUARTZ_ALLOWS_TILING);
+                        GDK_HAIKU_ALLOWS_TILING);
           behavior |= (NSWindowCollectionBehaviorFullScreenAuxiliary |
-                       GDK_QUARTZ_DISALLOWS_TILING);
+                       GDK_HAIKU_DISALLOWS_TILING);
           break;
         }
       [nswindow setCollectionBehavior:behavior];
     }
-#undef GDK_QUARTZ_ALLOWS_TILING
-#undef GDK_QUARTZ_DISALLOWS_TILING
+#undef GDK_HAIKU_ALLOWS_TILING
+#undef GDK_HAIKU_DISALLOWS_TILING
 #endif
 }
 
@@ -2569,20 +2569,20 @@ gdk_haiku_window_set_decorations (GdkWindow       *window,
       (impl &&
        impl->type_hint == GDK_WINDOW_TYPE_HINT_SPLASHSCREEN ))
     {
-      new_mask = GDK_QUARTZ_BORDERLESS_WINDOW;
+      new_mask = GDK_HAIKU_BORDERLESS_WINDOW;
     }
   else if (decorations == 0) {
-      new_mask = GDK_QUARTZ_BORDERLESS_WINDOW | GDK_QUARTZ_MINIATURIZABLE_WINDOW;
+      new_mask = GDK_HAIKU_BORDERLESS_WINDOW | GDK_HAIKU_MINIATURIZABLE_WINDOW;
     }
   else
     {
       /* FIXME: Honor other GDK_DECOR_* flags. */
-      new_mask = (GDK_QUARTZ_TITLED_WINDOW | GDK_QUARTZ_CLOSABLE_WINDOW |
-                  GDK_QUARTZ_MINIATURIZABLE_WINDOW |
-                  GDK_QUARTZ_RESIZABLE_WINDOW);
+      new_mask = (GDK_HAIKU_TITLED_WINDOW | GDK_HAIKU_CLOSABLE_WINDOW |
+                  GDK_HAIKU_MINIATURIZABLE_WINDOW |
+                  GDK_HAIKU_RESIZABLE_WINDOW);
     }
 
-  GDK_QUARTZ_ALLOC_POOL;
+  GDK_HAIKU_ALLOC_POOL;
 
   old_mask = [impl->toplevel styleMask];
 
@@ -2597,14 +2597,14 @@ gdk_haiku_window_set_decorations (GdkWindow       *window,
       /* Properly update the size of the window when the titlebar is
        * added or removed.
        */
-      if (old_mask == GDK_QUARTZ_BORDERLESS_WINDOW &&
-          new_mask != GDK_QUARTZ_BORDERLESS_WINDOW)
+      if (old_mask == GDK_HAIKU_BORDERLESS_WINDOW &&
+          new_mask != GDK_HAIKU_BORDERLESS_WINDOW)
         {
           rect = [NSWindow frameRectForContentRect:rect styleMask:new_mask];
 
         }
-      else if (old_mask != GDK_QUARTZ_BORDERLESS_WINDOW &&
-               new_mask == GDK_QUARTZ_BORDERLESS_WINDOW)
+      else if (old_mask != GDK_HAIKU_BORDERLESS_WINDOW &&
+               new_mask == GDK_HAIKU_BORDERLESS_WINDOW)
         {
           rect = [NSWindow contentRectForFrameRect:rect styleMask:old_mask];
         }
@@ -2621,13 +2621,13 @@ gdk_haiku_window_set_decorations (GdkWindow       *window,
           [(id<CanSetStyleMask>)impl->toplevel setStyleMask:new_mask];
 
           /* It appears that unsetting and then resetting
-           * GDK_QUARTZ_TITLED_WINDOW does not reset the title in the
+           * GDK_HAIKU_TITLED_WINDOW does not reset the title in the
            * title bar as might be expected.
            *
            * In theory we only need to set this if new_mask includes
-           * GDK_QUARTZ_TITLED_WINDOW. This behaved extremely oddly when
+           * GDK_HAIKU_TITLED_WINDOW. This behaved extremely oddly when
            * conditionalized upon that and since it has no side effects (i.e.
-           * if GDK_QUARTZ_TITLED_WINDOW is not requested, the title will not be
+           * if GDK_HAIKU_TITLED_WINDOW is not requested, the title will not be
            * displayed) just do it unconditionally. We also must null check
            * 'title' before setting it to avoid crashing.
            */
@@ -2660,7 +2660,7 @@ gdk_haiku_window_set_decorations (GdkWindow       *window,
           [impl->toplevel setContentView:old_view];
         }
 
-      if (new_mask == GDK_QUARTZ_BORDERLESS_WINDOW)
+      if (new_mask == GDK_HAIKU_BORDERLESS_WINDOW)
         {
           [impl->toplevel setContentSize:rect.size];
         }
@@ -2676,7 +2676,7 @@ gdk_haiku_window_set_decorations (GdkWindow       *window,
       [old_view release];
     }
 
-  GDK_QUARTZ_RELEASE_POOL;
+  GDK_HAIKU_RELEASE_POOL;
 }
 
 static gboolean
@@ -2695,7 +2695,7 @@ gdk_haiku_window_get_decorations (GdkWindow       *window,
     {
       /* Borderless is 0, so we can't check it as a bit being set. */
       if (impl &&
-          [impl->toplevel styleMask] == GDK_QUARTZ_BORDERLESS_WINDOW)
+          [impl->toplevel styleMask] == GDK_HAIKU_BORDERLESS_WINDOW)
         {
           *decorations = 0;
         }
@@ -2738,19 +2738,19 @@ gdk_haiku_window_set_functions (GdkWindow    *window,
       NSUInteger mask = [impl->toplevel styleMask];
 
       if (min)
-        mask = mask | GDK_QUARTZ_MINIATURIZABLE_WINDOW;
+        mask = mask | GDK_HAIKU_MINIATURIZABLE_WINDOW;
       else
-        mask = mask & ~GDK_QUARTZ_MINIATURIZABLE_WINDOW;
+        mask = mask & ~GDK_HAIKU_MINIATURIZABLE_WINDOW;
 
       if (max)
-        mask = mask | GDK_QUARTZ_RESIZABLE_WINDOW;
+        mask = mask | GDK_HAIKU_RESIZABLE_WINDOW;
       else
-        mask = mask & ~GDK_QUARTZ_RESIZABLE_WINDOW;
+        mask = mask & ~GDK_HAIKU_RESIZABLE_WINDOW;
 
       if (close)
-        mask = mask | GDK_QUARTZ_CLOSABLE_WINDOW;
+        mask = mask | GDK_HAIKU_CLOSABLE_WINDOW;
       else
-        mask = mask & ~GDK_QUARTZ_CLOSABLE_WINDOW;
+        mask = mask & ~GDK_HAIKU_CLOSABLE_WINDOW;
 
       [impl->toplevel setStyleMask:mask];
     }
@@ -2788,12 +2788,12 @@ gdk_haiku_window_maximize (GdkWindow *window)
   if (GDK_WINDOW_IS_MAPPED (window) &&
       impl)
     {
-      GDK_QUARTZ_ALLOC_POOL;
+      GDK_HAIKU_ALLOC_POOL;
 
       if (impl->toplevel && !maximized)
         [impl->toplevel zoom:nil];
 
-      GDK_QUARTZ_RELEASE_POOL;
+      GDK_HAIKU_RELEASE_POOL;
     }
 }
 
@@ -2813,12 +2813,12 @@ gdk_haiku_window_unmaximize (GdkWindow *window)
   if (GDK_WINDOW_IS_MAPPED (window) &&
       impl)
     {
-      GDK_QUARTZ_ALLOC_POOL;
+      GDK_HAIKU_ALLOC_POOL;
 
       if (impl->toplevel && maximized)
         [impl->toplevel zoom:nil];
 
-      GDK_QUARTZ_RELEASE_POOL;
+      GDK_HAIKU_RELEASE_POOL;
     }
 }
 
@@ -2836,12 +2836,12 @@ gdk_haiku_window_iconify (GdkWindow *window)
   if (GDK_WINDOW_IS_MAPPED (window) &&
       impl)
     {
-      GDK_QUARTZ_ALLOC_POOL;
+      GDK_HAIKU_ALLOC_POOL;
 
       if (impl->toplevel)
 	[impl->toplevel miniaturize:nil];
 
-      GDK_QUARTZ_RELEASE_POOL;
+      GDK_HAIKU_RELEASE_POOL;
     }
   else
     {
@@ -2865,12 +2865,12 @@ gdk_haiku_window_deiconify (GdkWindow *window)
   if (GDK_WINDOW_IS_MAPPED (window) &&
       impl)
     {
-      GDK_QUARTZ_ALLOC_POOL;
+      GDK_HAIKU_ALLOC_POOL;
 
       if (impl->toplevel)
 	[impl->toplevel deminiaturize:nil];
 
-      GDK_QUARTZ_RELEASE_POOL;
+      GDK_HAIKU_RELEASE_POOL;
     }
   else
     {
@@ -2888,7 +2888,7 @@ window_is_fullscreen (GdkWindow *window)
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
   if (impl &&
       gdk_haiku_osx_version() >= GDK_OSX_LION)
-    return ([impl->toplevel styleMask] & GDK_QUARTZ_FULLSCREEN_WINDOW) != 0;
+    return ([impl->toplevel styleMask] & GDK_HAIKU_FULLSCREEN_WINDOW) != 0;
   else
 #endif
     return g_object_get_data (G_OBJECT (window), FULLSCREEN_DATA) != NULL;

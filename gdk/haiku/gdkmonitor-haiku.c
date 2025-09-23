@@ -30,7 +30,7 @@ static void
 gdk_haiku_monitor_get_workarea (GdkMonitor   *monitor,
                                  GdkRectangle *dest)
 {
-  GDK_QUARTZ_ALLOC_POOL;
+  GDK_HAIKU_ALLOC_POOL;
 
   NSArray *array = [NSScreen screens];
   NSScreen* screen = NULL;
@@ -38,7 +38,7 @@ gdk_haiku_monitor_get_workarea (GdkMonitor   *monitor,
     {
       CGDirectDisplayID screen_id =
         [[[obj deviceDescription] objectForKey:@"NSScreenNumber"] unsignedIntValue];
-      GdkHaikuMonitor *q_mon = GDK_QUARTZ_MONITOR (monitor);
+      GdkHaikuMonitor *q_mon = GDK_HAIKU_MONITOR (monitor);
       if (screen_id == q_mon->id)
         {
           screen = obj;
@@ -49,7 +49,7 @@ gdk_haiku_monitor_get_workarea (GdkMonitor   *monitor,
   if (screen)
     {
       GdkHaikuDisplay *display =
-        GDK_QUARTZ_DISPLAY (gdk_monitor_get_display (monitor));
+        GDK_HAIKU_DISPLAY (gdk_monitor_get_display (monitor));
       NSRect rect = [screen visibleFrame];
       dest->x = (int)trunc (display->geometry.origin.x + rect.origin.x);
       dest->y = (int)trunc (display->geometry.origin.y -
@@ -60,7 +60,7 @@ gdk_haiku_monitor_get_workarea (GdkMonitor   *monitor,
   else
     *dest = monitor->geometry;
 
-  GDK_QUARTZ_RELEASE_POOL;
+  GDK_HAIKU_RELEASE_POOL;
 }
 
 static void

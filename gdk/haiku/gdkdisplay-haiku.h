@@ -17,8 +17,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_QUARTZ_DISPLAY__
-#define __GDK_QUARTZ_DISPLAY__
+#ifndef __GDK_HAIKU_DISPLAY__
+#define __GDK_HAIKU_DISPLAY__
 
 #include <AppKit/AppKit.h>
 
@@ -118,4 +118,4 @@ gchar *     _gdk_haiku_display_utf8_to_string_target      (GdkDisplay     *displ
                                                             const gchar    *str);
 G_END_DECLS
 
-#endif  /* __GDK_QUARTZ_DISPLAY__ */
+#endif  /* __GDK_HAIKU_DISPLAY__ */

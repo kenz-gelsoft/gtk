@@ -93,7 +93,7 @@ _gdk_haiku_display_add_frame_callback (GdkDisplay             *display,
   GdkHaikuDisplay *display_haiku;
   GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
 
-  display_haiku = GDK_QUARTZ_DISPLAY (display);
+  display_haiku = GDK_HAIKU_DISPLAY (display);
 
   impl->frame_link.data = window;
   impl->frame_link.next = display_haiku->windows_awaiting_frame;
@@ -108,7 +108,7 @@ void
 _gdk_haiku_display_remove_frame_callback (GdkDisplay             *display,
                                            GdkWindow              *window)
 {
-  GdkHaikuDisplay *display_haiku = GDK_QUARTZ_DISPLAY (display);
+  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
   GSList *link;
 
   link = g_slist_find (display_haiku->windows_awaiting_frame, window);
@@ -185,7 +185,7 @@ gdk_haiku_display_frame_cb (gpointer data)
 static void
 gdk_haiku_display_init_display_link (GdkDisplay *display)
 {
-  GdkHaikuDisplay *display_haiku = GDK_QUARTZ_DISPLAY (display);
+  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
 
   display_haiku->frame_source = gdk_display_link_source_new ();
   g_source_set_callback (display_haiku->frame_source,
@@ -232,9 +232,9 @@ gdk_haiku_display_get_name (GdkDisplay *display)
 
   if (!display_name)
     {
-      GDK_QUARTZ_ALLOC_POOL;
+      GDK_HAIKU_ALLOC_POOL;
       display_name = g_strdup ([[[NSHost currentHost] name] UTF8String]);
-      GDK_QUARTZ_RELEASE_POOL;
+      GDK_HAIKU_RELEASE_POOL;
     }
 
   return display_name;
@@ -391,7 +391,7 @@ static void
 configure_monitor (GdkMonitor       *monitor,
                    GdkHaikuDisplay *display)
 {
-  GdkHaikuMonitor *haiku_monitor = GDK_QUARTZ_MONITOR (monitor);
+  GdkHaikuMonitor *haiku_monitor = GDK_HAIKU_MONITOR (monitor);
   CGSize disp_size = CGDisplayScreenSize (haiku_monitor->id);
   gint width = (int)trunc (disp_size.width);
   gint height = (int)trunc (disp_size.height);
@@ -460,7 +460,7 @@ display_rect (GdkHaikuDisplay *display)
 static gboolean
 same_monitor (gconstpointer a, gconstpointer b)
 {
-  GdkHaikuMonitor *mon_a = GDK_QUARTZ_MONITOR (a);
+  GdkHaikuMonitor *mon_a = GDK_HAIKU_MONITOR (a);
   CGDirectDisplayID disp_id = (CGDirectDisplayID)GPOINTER_TO_INT (b);
   if (!mon_a)
     return FALSE;
@@ -530,7 +530,7 @@ display_reconfiguration_callback (CGDirectDisplayID            cg_display,
 static int
 gdk_haiku_display_get_n_monitors (GdkDisplay *display)
 {
-  GdkHaikuDisplay *haiku_display = GDK_QUARTZ_DISPLAY (display);
+  GdkHaikuDisplay *haiku_display = GDK_HAIKU_DISPLAY (display);
   return haiku_display->monitors->len;
 }
 
@@ -538,7 +538,7 @@ static GdkMonitor *
 gdk_haiku_display_get_monitor (GdkDisplay *display,
                                 int         monitor_num)
 {
-  GdkHaikuDisplay *haiku_display = GDK_QUARTZ_DISPLAY (display);
+  GdkHaikuDisplay *haiku_display = GDK_HAIKU_DISPLAY (display);
   int n_displays = gdk_haiku_display_get_n_monitors (display);
 
   if (monitor_num >= 0 && monitor_num < n_displays)
@@ -550,7 +550,7 @@ gdk_haiku_display_get_monitor (GdkDisplay *display,
 static GdkMonitor *
 gdk_haiku_display_get_primary_monitor (GdkDisplay *display)
 {
-  GdkHaikuDisplay *haiku_display = GDK_QUARTZ_DISPLAY (display);
+  GdkHaikuDisplay *haiku_display = GDK_HAIKU_DISPLAY (display);
   CGDirectDisplayID primary_id = CGMainDisplayID ();
   GdkMonitor *monitor = NULL;
   guint index;
@@ -592,7 +592,7 @@ gdk_haiku_display_get_monitor_at_window (GdkDisplay *display,
 
   if (screen)
   {
-    GdkHaikuDisplay *haiku_display = GDK_QUARTZ_DISPLAY (display);
+    GdkHaikuDisplay *haiku_display = GDK_HAIKU_DISPLAY (display);
     guint index;
     CGDirectDisplayID disp_id =
       [[[screen deviceDescription]
@@ -641,7 +641,7 @@ gdk_haiku_display_init (GdkHaikuDisplay *display)
 static void
 gdk_haiku_display_dispose (GObject *object)
 {
-  GdkHaikuDisplay *haiku_display = GDK_QUARTZ_DISPLAY (object);
+  GdkHaikuDisplay *haiku_display = GDK_HAIKU_DISPLAY (object);
 
   g_ptr_array_free (haiku_display->monitors, TRUE);
   CGDisplayRemoveReconfigurationCallback (display_reconfiguration_callback,

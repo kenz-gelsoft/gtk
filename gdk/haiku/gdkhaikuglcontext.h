@@ -19,8 +19,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_QUARTZ_GL_CONTEXT_H__
-#define __GDK_QUARTZ_GL_CONTEXT_H__
+#ifndef __GDK_HAIKU_GL_CONTEXT_H__
+#define __GDK_HAIKU_GL_CONTEXT_H__
 
 #if !defined (__GDKQUARTZ_H_INSIDE__) && !defined (GDK_COMPILATION)
 #error "Only <gdk/gdkhaiku.h> can be included directly."
@@ -31,8 +31,8 @@
 G_BEGIN_DECLS
 
 #define GDK_TYPE_QUARTZ_GL_CONTEXT   (gdk_haiku_gl_context_get_type ())
-#define GDK_QUARTZ_GL_CONTEXT(obj)   (G_TYPE_CHECK_INSTANCE_CAST ((obj), GDK_TYPE_QUARTZ_GL_CONTEXT, GdkHaikuGLContext))
-#define GDK_QUARTZ_IS_GL_CONTEXT(obj)  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GDK_TYPE_QUARTZ_GL_CONTEXT))
+#define GDK_HAIKU_GL_CONTEXT(obj)   (G_TYPE_CHECK_INSTANCE_CAST ((obj), GDK_TYPE_QUARTZ_GL_CONTEXT, GdkHaikuGLContext))
+#define GDK_HAIKU_IS_GL_CONTEXT(obj)  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GDK_TYPE_QUARTZ_GL_CONTEXT))
 
 typedef struct _GdkHaikuGLContext   GdkHaikuGLContext;
 typedef struct _GdkHaikuGLContextClass  GdkHaikuGLContextClass;
@@ -42,4 +42,4 @@ GType gdk_haiku_gl_context_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 
-#endif /* __GDK_QUARTZ_GL_CONTEXT_H__ */
+#endif /* __GDK_HAIKU_GL_CONTEXT_H__ */

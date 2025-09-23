@@ -17,8 +17,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_QUARTZ_CURSOR_H__
-#define __GDK_QUARTZ_CURSOR_H__
+#ifndef __GDK_HAIKU_CURSOR_H__
+#define __GDK_HAIKU_CURSOR_H__
 
 #if !defined(__GDKQUARTZ_H_INSIDE__) && !defined (GDK_COMPILATION)
 #error "Only <gdk/gdkhaiku.h> can be included directly."
@@ -29,11 +29,11 @@
 G_BEGIN_DECLS
 
 #define GDK_TYPE_QUARTZ_CURSOR              (gdk_haiku_cursor_get_type ())
-#define GDK_QUARTZ_CURSOR(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_CURSOR, GdkHaikuCursor))
-#define GDK_QUARTZ_CURSOR_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_QUARTZ_CURSOR, GdkHaikuCursorClass))
+#define GDK_HAIKU_CURSOR(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_CURSOR, GdkHaikuCursor))
+#define GDK_HAIKU_CURSOR_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_QUARTZ_CURSOR, GdkHaikuCursorClass))
 #define GDK_IS_QUARTZ_CURSOR(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_QUARTZ_CURSOR))
 #define GDK_IS_QUARTZ_CURSOR_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_QUARTZ_CURSOR))
-#define GDK_QUARTZ_CURSOR_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_QUARTZ_CURSOR, GdkHaikuCursorClass))
+#define GDK_HAIKU_CURSOR_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_QUARTZ_CURSOR, GdkHaikuCursorClass))
 
 #ifdef GDK_COMPILATION
 typedef struct _GdkHaikuCursor GdkHaikuCursor;
@@ -47,4 +47,4 @@ GType gdk_haiku_cursor_get_type (void);
 
 G_END_DECLS
 
-#endif /* __GDK_QUARTZ_CURSOR_H__ */
+#endif /* __GDK_HAIKU_CURSOR_H__ */

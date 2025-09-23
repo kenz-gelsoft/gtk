@@ -17,8 +17,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_QUARTZ_DEVICE_MANAGER_CORE__
-#define __GDK_QUARTZ_DEVICE_MANAGER_CORE__
+#ifndef __GDK_HAIKU_DEVICE_MANAGER_CORE__
+#define __GDK_HAIKU_DEVICE_MANAGER_CORE__
 
 #include <gdkdevicemanagerprivate.h>
 #include "gdkhaikudevicemanager-core.h"
@@ -49,4 +49,4 @@ GdkDevice *_gdk_haiku_device_manager_core_device_for_ns_event (GdkDeviceManager 
 
 G_END_DECLS
 
-#endif /* __GDK_QUARTZ_DEVICE_MANAGER__ */
+#endif /* __GDK_HAIKU_DEVICE_MANAGER__ */

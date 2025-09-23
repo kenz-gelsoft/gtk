@@ -373,7 +373,7 @@ _gdk_haiku_device_core_set_active (GdkDevice  *device,
                                     gboolean    active,
                                     NSUInteger  device_id)
 {
-  GdkHaikuDeviceCore *self = GDK_QUARTZ_DEVICE_CORE (device);
+  GdkHaikuDeviceCore *self = GDK_HAIKU_DEVICE_CORE (device);
 
   self->active = active;
   self->device_id = device_id;
@@ -383,7 +383,7 @@ gboolean
 _gdk_haiku_device_core_is_active (GdkDevice  *device,
                                    NSUInteger  device_id)
 {
-  GdkHaikuDeviceCore *self = GDK_QUARTZ_DEVICE_CORE (device);
+  GdkHaikuDeviceCore *self = GDK_HAIKU_DEVICE_CORE (device);
 
   return (self->active && self->device_id == device_id);
 }
@@ -392,11 +392,11 @@ void
 _gdk_haiku_device_core_set_unique (GdkDevice          *device,
                                     unsigned long long  unique_id)
 {
-  GDK_QUARTZ_DEVICE_CORE (device)->unique_id = unique_id;
+  GDK_HAIKU_DEVICE_CORE (device)->unique_id = unique_id;
 }
 
 unsigned long long
 _gdk_haiku_device_core_get_unique (GdkDevice *device)
 {
-  return GDK_QUARTZ_DEVICE_CORE (device)->unique_id;
+  return GDK_HAIKU_DEVICE_CORE (device)->unique_id;
 }

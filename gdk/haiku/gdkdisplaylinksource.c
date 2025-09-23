@@ -27,9 +27,9 @@
 #include "gdkdisplaylinksource.h"
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
-#define GDK_QUARTZ_APPLICATION_DEFINED NSApplicationDefined
+#define GDK_HAIKU_APPLICATION_DEFINED NSApplicationDefined
 #else
-#define GDK_QUARTZ_APPLICATION_DEFINED NSEventTypeApplicationDefined
+#define GDK_HAIKU_APPLICATION_DEFINED NSEventTypeApplicationDefined
 #endif
 
 static gint64 host_to_frame_clock_time (gint64 host_time);
@@ -132,13 +132,13 @@ gdk_display_link_source_frame_cb (CVDisplayLinkRef   display_link,
        * the select thread which would then send this message as
        * well. Lots of extra work.
        */
-      event = [NSEvent otherEventWithType: GDK_QUARTZ_APPLICATION_DEFINED
+      event = [NSEvent otherEventWithType: GDK_HAIKU_APPLICATION_DEFINED
                                  location: NSZeroPoint
                             modifierFlags: 0
                                 timestamp: 0
                              windowNumber: 0
                                   context: nil
-                                  subtype: GDK_QUARTZ_EVENT_SUBTYPE_EVENTLOOP
+                                  subtype: GDK_HAIKU_EVENT_SUBTYPE_EVENTLOOP
                                     data1: 0
                                     data2: 0];
 

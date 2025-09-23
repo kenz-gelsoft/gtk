@@ -32,13 +32,13 @@
 typedef enum
 {
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
-  GDK_QUARTZ_POINTER_DEVICE_TYPE_CURSOR = NSCursorPointingDevice,
-  GDK_QUARTZ_POINTER_DEVICE_TYPE_ERASER = NSEraserPointingDevice,
-  GDK_QUARTZ_POINTER_DEVICE_TYPE_PEN = NSPenPointingDevice,
+  GDK_HAIKU_POINTER_DEVICE_TYPE_CURSOR = NSCursorPointingDevice,
+  GDK_HAIKU_POINTER_DEVICE_TYPE_ERASER = NSEraserPointingDevice,
+  GDK_HAIKU_POINTER_DEVICE_TYPE_PEN = NSPenPointingDevice,
 #else
-  GDK_QUARTZ_POINTER_DEVICE_TYPE_CURSOR = NSPointingDeviceTypeCursor,
-  GDK_QUARTZ_POINTER_DEVICE_TYPE_ERASER = NSPointingDeviceTypeEraser,
-  GDK_QUARTZ_POINTER_DEVICE_TYPE_PEN = NSPointingDeviceTypePen,
+  GDK_HAIKU_POINTER_DEVICE_TYPE_CURSOR = NSPointingDeviceTypeCursor,
+  GDK_HAIKU_POINTER_DEVICE_TYPE_ERASER = NSPointingDeviceTypeEraser,
+  GDK_HAIKU_POINTER_DEVICE_TYPE_PEN = NSPointingDeviceTypePen,
 #endif
 } GdkHaikuPointerDeviceType;
 
@@ -108,7 +108,7 @@ gdk_haiku_device_manager_core_finalize (GObject *object)
 {
   GdkHaikuDeviceManagerCore *haiku_device_manager_core;
 
-  haiku_device_manager_core = GDK_QUARTZ_DEVICE_MANAGER_CORE (object);
+  haiku_device_manager_core = GDK_HAIKU_DEVICE_MANAGER_CORE (object);
 
   g_object_unref (haiku_device_manager_core->core_pointer);
   g_object_unref (haiku_device_manager_core->core_keyboard);
@@ -125,7 +125,7 @@ gdk_haiku_device_manager_core_constructed (GObject *object)
   GdkDisplay *display;
   GdkSeat *seat;
 
-  device_manager = GDK_QUARTZ_DEVICE_MANAGER_CORE (object);
+  device_manager = GDK_HAIKU_DEVICE_MANAGER_CORE (object);
   display = gdk_device_manager_get_display (GDK_DEVICE_MANAGER (object));
   device_manager->core_pointer = create_core_pointer (GDK_DEVICE_MANAGER (device_manager), display);
   device_manager->core_keyboard = create_core_keyboard (GDK_DEVICE_MANAGER (device_manager), display);
@@ -147,7 +147,7 @@ gdk_haiku_device_manager_core_list_devices (GdkDeviceManager *device_manager,
   GList *devices = NULL;
   GList *l;
 
-  self = GDK_QUARTZ_DEVICE_MANAGER_CORE (device_manager);
+  self = GDK_HAIKU_DEVICE_MANAGER_CORE (device_manager);
 
   if (type == GDK_DEVICE_TYPE_MASTER)
     {
@@ -245,21 +245,21 @@ void
 _gdk_haiku_device_manager_register_device_for_ns_event (GdkDeviceManager *device_manager,
                                                          NSEvent          *nsevent)
 {
-  GdkHaikuDeviceManagerCore *self = GDK_QUARTZ_DEVICE_MANAGER_CORE (device_manager);
+  GdkHaikuDeviceManagerCore *self = GDK_HAIKU_DEVICE_MANAGER_CORE (device_manager);
   GList *l = NULL;
   GdkInputSource input_source = GDK_SOURCE_MOUSE;
   GdkDevice *device = NULL;
 
   /* Only handle device updates for proximity events */
-  if ([nsevent type] != GDK_QUARTZ_EVENT_TABLET_PROXIMITY &&
-      [nsevent subtype] != GDK_QUARTZ_EVENT_SUBTYPE_TABLET_PROXIMITY)
+  if ([nsevent type] != GDK_HAIKU_EVENT_TABLET_PROXIMITY &&
+      [nsevent subtype] != GDK_HAIKU_EVENT_SUBTYPE_TABLET_PROXIMITY)
     return;
 
-  if ([nsevent pointingDeviceType] == GDK_QUARTZ_POINTER_DEVICE_TYPE_PEN)
+  if ([nsevent pointingDeviceType] == GDK_HAIKU_POINTER_DEVICE_TYPE_PEN)
     input_source = GDK_SOURCE_PEN;
-  else if ([nsevent pointingDeviceType] == GDK_QUARTZ_POINTER_DEVICE_TYPE_CURSOR)
+  else if ([nsevent pointingDeviceType] == GDK_HAIKU_POINTER_DEVICE_TYPE_CURSOR)
     input_source = GDK_SOURCE_CURSOR;
-  else if ([nsevent pointingDeviceType] == GDK_QUARTZ_POINTER_DEVICE_TYPE_ERASER)
+  else if ([nsevent pointingDeviceType] == GDK_HAIKU_POINTER_DEVICE_TYPE_ERASER)
     input_source = GDK_SOURCE_ERASER;
 
   for (l = self->known_tablet_devices; l; l = g_list_next (l))
@@ -346,12 +346,12 @@ GdkDevice *
 _gdk_haiku_device_manager_core_device_for_ns_event (GdkDeviceManager *device_manager,
                                                      NSEvent          *nsevent)
 {
-  GdkHaikuDeviceManagerCore *self = GDK_QUARTZ_DEVICE_MANAGER_CORE (device_manager);
+  GdkHaikuDeviceManagerCore *self = GDK_HAIKU_DEVICE_MANAGER_CORE (device_manager);
   GdkDevice *device = NULL;
 
-  if ([nsevent type] == GDK_QUARTZ_EVENT_TABLET_PROXIMITY ||
-      [nsevent subtype] == GDK_QUARTZ_EVENT_SUBTYPE_TABLET_PROXIMITY ||
-      [nsevent subtype] == GDK_QUARTZ_EVENT_SUBTYPE_TABLET_POINT)
+  if ([nsevent type] == GDK_HAIKU_EVENT_TABLET_PROXIMITY ||
+      [nsevent subtype] == GDK_HAIKU_EVENT_SUBTYPE_TABLET_PROXIMITY ||
+      [nsevent subtype] == GDK_HAIKU_EVENT_SUBTYPE_TABLET_POINT)
     {
       /* Find the device based on deviceID */
       GList *l = NULL;

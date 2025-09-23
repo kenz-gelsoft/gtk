@@ -70,7 +70,7 @@ gdk_haiku_gl_context_end_frame (GdkGLContext *context,
                                  cairo_region_t *painted,
                                  cairo_region_t *damage)
 {
-  GdkHaikuGLContext *context_haiku = GDK_QUARTZ_GL_CONTEXT (context);
+  GdkHaikuGLContext *context_haiku = GDK_HAIKU_GL_CONTEXT (context);
 
   [context_haiku->gl_context flushBuffer];
 }
@@ -125,7 +125,7 @@ gdk_haiku_window_create_gl_context (GdkWindow     *window,
     }
 
   ctx = [[NSOpenGLContext alloc] initWithFormat:format
-                                 shareContext:share ? GDK_QUARTZ_GL_CONTEXT (share)->gl_context : nil];
+                                 shareContext:share ? GDK_HAIKU_GL_CONTEXT (share)->gl_context : nil];
   if (ctx == NULL)
     {
       g_set_error_literal (error, GDK_GL_ERROR,
@@ -167,7 +167,7 @@ gdk_haiku_window_create_gl_context (GdkWindow     *window,
 static void
 gdk_haiku_gl_context_dispose (GObject *gobject)
 {
-  GdkHaikuGLContext *context_haiku = GDK_QUARTZ_GL_CONTEXT (gobject);
+  GdkHaikuGLContext *context_haiku = GDK_HAIKU_GL_CONTEXT (gobject);
 
   if (context_haiku->gl_context != NULL)
     {
@@ -183,7 +183,7 @@ gboolean
 gdk_haiku_display_is_gl_context_current (GdkDisplay   *display,
                                           GdkGLContext *context)
 {
-  GdkHaikuGLContext *context_haiku = GDK_QUARTZ_GL_CONTEXT (context);
+  GdkHaikuGLContext *context_haiku = GDK_HAIKU_GL_CONTEXT (context);
 
   return context_haiku->gl_context == [NSOpenGLContext currentContext];
 }
@@ -200,7 +200,7 @@ gdk_haiku_display_make_gl_context_current (GdkDisplay   *display,
       return TRUE;
     }
 
-  context_haiku = GDK_QUARTZ_GL_CONTEXT (context);
+  context_haiku = GDK_HAIKU_GL_CONTEXT (context);
 
   [context_haiku->gl_context makeCurrentContext];
 

@@ -281,15 +281,15 @@ get_keyboard_modifiers_from_ns_flags (NSUInteger nsflags)
 {
   GdkModifierType modifiers = 0;
 
-  if (nsflags & GDK_QUARTZ_ALPHA_SHIFT_KEY_MASK)
+  if (nsflags & GDK_HAIKU_ALPHA_SHIFT_KEY_MASK)
     modifiers |= GDK_LOCK_MASK;
-  if (nsflags & GDK_QUARTZ_SHIFT_KEY_MASK)
+  if (nsflags & GDK_HAIKU_SHIFT_KEY_MASK)
     modifiers |= GDK_SHIFT_MASK;
-  if (nsflags & GDK_QUARTZ_CONTROL_KEY_MASK)
+  if (nsflags & GDK_HAIKU_CONTROL_KEY_MASK)
     modifiers |= GDK_CONTROL_MASK;
-  if (nsflags & GDK_QUARTZ_ALTERNATE_KEY_MASK)
+  if (nsflags & GDK_HAIKU_ALTERNATE_KEY_MASK)
     modifiers |= GDK_MOD1_MASK;
-  if (nsflags & GDK_QUARTZ_COMMAND_KEY_MASK)
+  if (nsflags & GDK_HAIKU_COMMAND_KEY_MASK)
     modifiers |= GDK_MOD2_MASK;
 
   return modifiers;
@@ -307,31 +307,31 @@ get_event_mask_from_ns_event (NSEvent *nsevent)
 {
   switch ([nsevent type])
     {
-    case GDK_QUARTZ_LEFT_MOUSE_DOWN:
-    case GDK_QUARTZ_RIGHT_MOUSE_DOWN:
-    case GDK_QUARTZ_OTHER_MOUSE_DOWN:
+    case GDK_HAIKU_LEFT_MOUSE_DOWN:
+    case GDK_HAIKU_RIGHT_MOUSE_DOWN:
+    case GDK_HAIKU_OTHER_MOUSE_DOWN:
       return GDK_BUTTON_PRESS_MASK;
-    case GDK_QUARTZ_LEFT_MOUSE_UP:
-    case GDK_QUARTZ_RIGHT_MOUSE_UP:
-    case GDK_QUARTZ_OTHER_MOUSE_UP:
+    case GDK_HAIKU_LEFT_MOUSE_UP:
+    case GDK_HAIKU_RIGHT_MOUSE_UP:
+    case GDK_HAIKU_OTHER_MOUSE_UP:
       return GDK_BUTTON_RELEASE_MASK;
-    case GDK_QUARTZ_MOUSE_MOVED:
+    case GDK_HAIKU_MOUSE_MOVED:
       return GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK;
-    case GDK_QUARTZ_SCROLL_WHEEL:
+    case GDK_HAIKU_SCROLL_WHEEL:
       /* Since applications that want button press events can get
        * scroll events on X11 (since scroll wheel events are really
        * button press events there), we need to use GDK_BUTTON_PRESS_MASK too.
        */
       return GDK_SCROLL_MASK | GDK_BUTTON_PRESS_MASK;
-    case GDK_QUARTZ_LEFT_MOUSE_DRAGGED:
+    case GDK_HAIKU_LEFT_MOUSE_DRAGGED:
       return (GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK |
 	      GDK_BUTTON_MOTION_MASK | GDK_BUTTON1_MOTION_MASK | 
 	      GDK_BUTTON1_MASK);
-    case GDK_QUARTZ_RIGHT_MOUSE_DRAGGED:
+    case GDK_HAIKU_RIGHT_MOUSE_DRAGGED:
       return (GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK |
 	      GDK_BUTTON_MOTION_MASK | GDK_BUTTON3_MOTION_MASK | 
 	      GDK_BUTTON3_MASK);
-    case GDK_QUARTZ_OTHER_MOUSE_DRAGGED:
+    case GDK_HAIKU_OTHER_MOUSE_DRAGGED:
       {
 	GdkEventMask mask;
 
@@ -348,9 +348,9 @@ get_event_mask_from_ns_event (NSEvent *nsevent)
     case NSEventTypeMagnify:
     case NSEventTypeRotate:
       return GDK_TOUCHPAD_GESTURE_MASK;
-    case GDK_QUARTZ_KEY_DOWN:
-    case GDK_QUARTZ_KEY_UP:
-    case GDK_QUARTZ_FLAGS_CHANGED:
+    case GDK_HAIKU_KEY_DOWN:
+    case GDK_HAIKU_KEY_UP:
+    case GDK_HAIKU_FLAGS_CHANGED:
       {
         switch (_gdk_haiku_keys_event_type (nsevent))
 	  {
@@ -366,10 +366,10 @@ get_event_mask_from_ns_event (NSEvent *nsevent)
       }
       break;
 
-    case GDK_QUARTZ_MOUSE_ENTERED:
+    case GDK_HAIKU_MOUSE_ENTERED:
       return GDK_ENTER_NOTIFY_MASK;
 
-    case GDK_QUARTZ_MOUSE_EXITED:
+    case GDK_HAIKU_MOUSE_EXITED:
       return GDK_LEAVE_NOTIFY_MASK;
 
     default:
@@ -399,9 +399,9 @@ is_mouse_button_press_event (NSEventType type)
 {
   switch ((int)type)
     {
-      case GDK_QUARTZ_LEFT_MOUSE_DOWN:
-      case GDK_QUARTZ_RIGHT_MOUSE_DOWN:
-      case GDK_QUARTZ_OTHER_MOUSE_DOWN:
+      case GDK_HAIKU_LEFT_MOUSE_DOWN:
+      case GDK_HAIKU_RIGHT_MOUSE_DOWN:
+      case GDK_HAIKU_OTHER_MOUSE_DOWN:
         return TRUE;
     default:
       return FALSE;
@@ -776,7 +776,7 @@ find_toplevel_for_mouse_event (NSEvent    *nsevent,
        * gdk gets confused about getting e.g. button presses with no
        * window (the title bar is not known to it).
        */
-      if (event_type != GDK_QUARTZ_MOUSE_MOVED)
+      if (event_type != GDK_HAIKU_MOUSE_MOVED)
         if (*y < 0)
           return NULL;
 
@@ -826,23 +826,23 @@ find_window_for_ns_event (NSEvent *nsevent,
 
   switch (event_type)
     {
-    case GDK_QUARTZ_LEFT_MOUSE_DOWN:
-    case GDK_QUARTZ_RIGHT_MOUSE_DOWN:
-    case GDK_QUARTZ_OTHER_MOUSE_DOWN:
-    case GDK_QUARTZ_LEFT_MOUSE_UP:
-    case GDK_QUARTZ_RIGHT_MOUSE_UP:
-    case GDK_QUARTZ_OTHER_MOUSE_UP:
-    case GDK_QUARTZ_MOUSE_MOVED:
-    case GDK_QUARTZ_SCROLL_WHEEL:
-    case GDK_QUARTZ_LEFT_MOUSE_DRAGGED:
-    case GDK_QUARTZ_RIGHT_MOUSE_DRAGGED:
-    case GDK_QUARTZ_OTHER_MOUSE_DRAGGED:
+    case GDK_HAIKU_LEFT_MOUSE_DOWN:
+    case GDK_HAIKU_RIGHT_MOUSE_DOWN:
+    case GDK_HAIKU_OTHER_MOUSE_DOWN:
+    case GDK_HAIKU_LEFT_MOUSE_UP:
+    case GDK_HAIKU_RIGHT_MOUSE_UP:
+    case GDK_HAIKU_OTHER_MOUSE_UP:
+    case GDK_HAIKU_MOUSE_MOVED:
+    case GDK_HAIKU_SCROLL_WHEEL:
+    case GDK_HAIKU_LEFT_MOUSE_DRAGGED:
+    case GDK_HAIKU_RIGHT_MOUSE_DRAGGED:
+    case GDK_HAIKU_OTHER_MOUSE_DRAGGED:
     case NSEventTypeMagnify:
     case NSEventTypeRotate:
       return find_toplevel_for_mouse_event (nsevent, x, y);
 
-    case GDK_QUARTZ_MOUSE_ENTERED:
-    case GDK_QUARTZ_MOUSE_EXITED:
+    case GDK_HAIKU_MOUSE_ENTERED:
+    case GDK_HAIKU_MOUSE_EXITED:
       /* Only handle our own entered/exited events, not the ones for the
        * titlebar buttons.
        */
@@ -875,7 +875,7 @@ find_window_for_ns_event (NSEvent *nsevent,
                screen_point.y >= frame.origin.y - 1 &&
                screen_point.y <= frame.origin.y + frame.size.height + 1;
 
-          if ((event_type == GDK_QUARTZ_MOUSE_ENTERED && inside) ||
+          if ((event_type == GDK_HAIKU_MOUSE_ENTERED && inside) ||
               at_edge)
             return toplevel;
           else
@@ -884,9 +884,9 @@ find_window_for_ns_event (NSEvent *nsevent,
 
       return NULL;
 
-    case GDK_QUARTZ_KEY_DOWN:
-    case GDK_QUARTZ_KEY_UP:
-    case GDK_QUARTZ_FLAGS_CHANGED:
+    case GDK_HAIKU_KEY_DOWN:
+    case GDK_HAIKU_KEY_UP:
+    case GDK_HAIKU_FLAGS_CHANGED:
       return find_toplevel_for_keyboard_event (nsevent);
 
     default:
@@ -1059,16 +1059,16 @@ fill_button_event (GdkWindow *window,
 
   switch ((int)[nsevent type])
     {
-    case GDK_QUARTZ_LEFT_MOUSE_DOWN:
-    case GDK_QUARTZ_RIGHT_MOUSE_DOWN:
-    case GDK_QUARTZ_OTHER_MOUSE_DOWN:
+    case GDK_HAIKU_LEFT_MOUSE_DOWN:
+    case GDK_HAIKU_RIGHT_MOUSE_DOWN:
+    case GDK_HAIKU_OTHER_MOUSE_DOWN:
       type = GDK_BUTTON_PRESS;
       state &= ~get_mouse_button_modifiers_from_ns_event (nsevent);
       break;
 
-    case GDK_QUARTZ_LEFT_MOUSE_UP:
-    case GDK_QUARTZ_RIGHT_MOUSE_UP:
-    case GDK_QUARTZ_OTHER_MOUSE_UP:
+    case GDK_HAIKU_LEFT_MOUSE_UP:
+    case GDK_HAIKU_RIGHT_MOUSE_UP:
+    case GDK_HAIKU_OTHER_MOUSE_UP:
       type = GDK_BUTTON_RELEASE;
       state |= get_mouse_button_modifiers_from_ns_event (nsevent);
       break;
@@ -1080,7 +1080,7 @@ fill_button_event (GdkWindow *window,
   event_device = _gdk_haiku_device_manager_core_device_for_ns_event (gdk_display_get_device_manager (_gdk_display),
                                                                       nsevent);
 
-  if ([nsevent subtype] == GDK_QUARTZ_EVENT_SUBTYPE_TABLET_POINT)
+  if ([nsevent subtype] == GDK_HAIKU_EVENT_SUBTYPE_TABLET_POINT)
     {
       axes = g_new (gdouble, TABLET_AXES);
 
@@ -1123,7 +1123,7 @@ fill_motion_event (GdkWindow *window,
   event_device = _gdk_haiku_device_manager_core_device_for_ns_event (gdk_display_get_device_manager (_gdk_display),
                                                                       nsevent);
 
-  if ([nsevent subtype] == GDK_QUARTZ_EVENT_SUBTYPE_TABLET_POINT)
+  if ([nsevent subtype] == GDK_HAIKU_EVENT_SUBTYPE_TABLET_POINT)
     {
       axes = g_new (gdouble, TABLET_AXES);
 
@@ -1200,7 +1200,7 @@ fill_key_event (GdkWindow    *window,
   event->key.state = get_keyboard_modifiers_from_ns_event (nsevent);
   event->key.hardware_keycode = [nsevent keyCode];
   gdk_event_set_scancode (event, [nsevent keyCode]);
-  event->key.group = ([nsevent modifierFlags] & GDK_QUARTZ_ALTERNATE_KEY_MASK) ? 1 : 0;
+  event->key.group = ([nsevent modifierFlags] & GDK_HAIKU_ALTERNATE_KEY_MASK) ? 1 : 0;
   event->key.keyval = GDK_KEY_VoidSymbol;
 
   gdk_event_set_device (event, gdk_seat_get_keyboard (seat));
@@ -1320,7 +1320,7 @@ synthesize_crossing_event (GdkWindow *window,
 {
   switch ([nsevent type])
     {
-    case GDK_QUARTZ_MOUSE_ENTERED:
+    case GDK_HAIKU_MOUSE_ENTERED:
       /* Enter events are considered always to be from another toplevel
        * window, this shouldn't negatively affect any app or gtk code,
        * and is the only way to make GtkMenu work. EEK EEK EEK.
@@ -1336,7 +1336,7 @@ synthesize_crossing_event (GdkWindow *window,
                            GDK_NOTIFY_NONLINEAR);
       return TRUE;
 
-    case GDK_QUARTZ_MOUSE_EXITED:
+    case GDK_HAIKU_MOUSE_EXITED:
       /* See above */
       if (!(window->event_mask & GDK_LEAVE_NOTIFY_MASK))
         return FALSE;
@@ -1427,12 +1427,12 @@ test_resize (NSEvent *event, GdkWindow *toplevel, gint x, gint y)
   GdkWindowImplHaiku *toplevel_impl;
   gboolean lion;
 
-  /* Resizing from the resize indicator only begins if an GDK_QUARTZ_LEFT_MOUSE_BUTTON
+  /* Resizing from the resize indicator only begins if an GDK_HAIKU_LEFT_MOUSE_BUTTON
    * event is received in the resizing area.
    */
   toplevel_impl = GDK_WINDOW_IMPL_QUARTZ (toplevel->impl);
   if ([toplevel_impl->toplevel showsResizeIndicator])
-  if ([event type] == GDK_QUARTZ_LEFT_MOUSE_DOWN &&
+  if ([event type] == GDK_HAIKU_LEFT_MOUSE_DOWN &&
       [toplevel_impl->toplevel showsResizeIndicator])
     {
       NSRect frame;
@@ -1471,9 +1471,9 @@ test_resize (NSEvent *event, GdkWindow *toplevel, gint x, gint y)
    */
   lion = gdk_haiku_osx_version () >= GDK_OSX_LION;
   if (lion &&
-      ([event type] == GDK_QUARTZ_LEFT_MOUSE_DOWN ||
-       [event type] == GDK_QUARTZ_RIGHT_MOUSE_DOWN ||
-       [event type] == GDK_QUARTZ_OTHER_MOUSE_DOWN))
+      ([event type] == GDK_HAIKU_LEFT_MOUSE_DOWN ||
+       [event type] == GDK_HAIKU_RIGHT_MOUSE_DOWN ||
+       [event type] == GDK_HAIKU_OTHER_MOUSE_DOWN))
     {
       if (x < GDK_LION_RESIZE ||
           x > toplevel->width - GDK_LION_RESIZE ||
@@ -1485,11 +1485,11 @@ test_resize (NSEvent *event, GdkWindow *toplevel, gint x, gint y)
 }
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
-#define GDK_QUARTZ_APP_KIT_DEFINED NSAppKitDefined
-#define GDK_QUARTZ_APPLICATION_DEACTIVATED NSApplicationDeactivatedEventType
+#define GDK_HAIKU_APP_KIT_DEFINED NSAppKitDefined
+#define GDK_HAIKU_APPLICATION_DEACTIVATED NSApplicationDeactivatedEventType
 #else
-#define GDK_QUARTZ_APP_KIT_DEFINED NSEventTypeAppKitDefined
-#define GDK_QUARTZ_APPLICATION_DEACTIVATED NSEventSubtypeApplicationDeactivated
+#define GDK_HAIKU_APP_KIT_DEFINED NSEventTypeAppKitDefined
+#define GDK_HAIKU_APPLICATION_DEACTIVATED NSEventSubtypeApplicationDeactivated
 #endif
 
 static gboolean
@@ -1507,9 +1507,9 @@ gdk_event_translate (GdkEvent *event,
    * grabs when the application loses focus (gets deactivated).
    */
   event_type = [nsevent type];
-  if (event_type == GDK_QUARTZ_APP_KIT_DEFINED)
+  if (event_type == GDK_HAIKU_APP_KIT_DEFINED)
     {
-      if ([nsevent subtype] ==  GDK_QUARTZ_APPLICATION_DEACTIVATED)
+      if ([nsevent subtype] ==  GDK_HAIKU_APPLICATION_DEACTIVATED)
         _gdk_haiku_events_break_all_grabs (get_time_from_ns_event (nsevent));
 
       /* This could potentially be used to break grabs when clicking
@@ -1537,7 +1537,7 @@ gdk_event_translate (GdkEvent *event,
   /* We need to register the proximity event from any point on the screen
    * to properly register the devices
    */
-  if (event_type == GDK_QUARTZ_EVENT_TABLET_PROXIMITY)
+  if (event_type == GDK_HAIKU_EVENT_TABLET_PROXIMITY)
     {
       _gdk_haiku_device_manager_register_device_for_ns_event (gdk_display_get_device_manager (_gdk_display),
                                                                nsevent);
@@ -1554,7 +1554,7 @@ gdk_event_translate (GdkEvent *event,
     {
       GdkWindow *toplevel = NULL;
 
-      if (event_type == GDK_QUARTZ_MOUSE_MOVED)
+      if (event_type == GDK_HAIKU_MOUSE_MOVED)
         {
           /* Motion events received after clicking the menu bar do not have the
            * window field set.  Instead of giving up on the event immediately,
@@ -1625,9 +1625,9 @@ gdk_event_translate (GdkEvent *event,
    * native apps). If the app is active, we focus the window and then handle
    * the event, also to match native apps.
    */
-  if ((event_type == GDK_QUARTZ_RIGHT_MOUSE_DOWN ||
-       event_type == GDK_QUARTZ_OTHER_MOUSE_DOWN ||
-       event_type == GDK_QUARTZ_LEFT_MOUSE_DOWN))
+  if ((event_type == GDK_HAIKU_RIGHT_MOUSE_DOWN ||
+       event_type == GDK_HAIKU_OTHER_MOUSE_DOWN ||
+       event_type == GDK_HAIKU_LEFT_MOUSE_DOWN))
     {
       GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
 
@@ -1653,23 +1653,23 @@ gdk_event_translate (GdkEvent *event,
 
   switch (event_type)
     {
-    case GDK_QUARTZ_LEFT_MOUSE_DOWN:
-    case GDK_QUARTZ_RIGHT_MOUSE_DOWN:
-    case GDK_QUARTZ_OTHER_MOUSE_DOWN:
-    case GDK_QUARTZ_LEFT_MOUSE_UP:
-    case GDK_QUARTZ_RIGHT_MOUSE_UP:
-    case GDK_QUARTZ_OTHER_MOUSE_UP:
+    case GDK_HAIKU_LEFT_MOUSE_DOWN:
+    case GDK_HAIKU_RIGHT_MOUSE_DOWN:
+    case GDK_HAIKU_OTHER_MOUSE_DOWN:
+    case GDK_HAIKU_LEFT_MOUSE_UP:
+    case GDK_HAIKU_RIGHT_MOUSE_UP:
+    case GDK_HAIKU_OTHER_MOUSE_UP:
       fill_button_event (window, event, nsevent, x, y, x_root, y_root);
       break;
 
-    case GDK_QUARTZ_LEFT_MOUSE_DRAGGED:
-    case GDK_QUARTZ_RIGHT_MOUSE_DRAGGED:
-    case GDK_QUARTZ_OTHER_MOUSE_DRAGGED:
-    case GDK_QUARTZ_MOUSE_MOVED:
+    case GDK_HAIKU_LEFT_MOUSE_DRAGGED:
+    case GDK_HAIKU_RIGHT_MOUSE_DRAGGED:
+    case GDK_HAIKU_OTHER_MOUSE_DRAGGED:
+    case GDK_HAIKU_MOUSE_MOVED:
       fill_motion_event (window, event, nsevent, x, y, x_root, y_root);
       break;
 
-    case GDK_QUARTZ_SCROLL_WHEEL:
+    case GDK_HAIKU_SCROLL_WHEEL:
       {
         GdkScrollDirection direction;
 	float dx;
@@ -1746,17 +1746,17 @@ gdk_event_translate (GdkEvent *event,
         return_val = FALSE;
       break;
 #endif
-    case GDK_QUARTZ_MOUSE_EXITED:
+    case GDK_HAIKU_MOUSE_EXITED:
       if (WINDOW_IS_TOPLEVEL (window))
           [[NSCursor arrowCursor] set];
       /* fall through */
-    case GDK_QUARTZ_MOUSE_ENTERED:
+    case GDK_HAIKU_MOUSE_ENTERED:
       return_val = synthesize_crossing_event (window, event, nsevent, x, y, x_root, y_root);
       break;
 
-    case GDK_QUARTZ_KEY_DOWN:
-    case GDK_QUARTZ_KEY_UP:
-    case GDK_QUARTZ_FLAGS_CHANGED:
+    case GDK_HAIKU_KEY_DOWN:
+    case GDK_HAIKU_KEY_UP:
+    case GDK_HAIKU_FLAGS_CHANGED:
       {
         GdkEventType type;
 
@@ -1851,7 +1851,7 @@ _gdk_haiku_screen_get_setting (GdkScreen   *screen,
       NSUserDefaults *defaults;
       float t;
 
-      GDK_QUARTZ_ALLOC_POOL;
+      GDK_HAIKU_ALLOC_POOL;
 
       defaults = [NSUserDefaults standardUserDefaults];
             
@@ -1862,7 +1862,7 @@ _gdk_haiku_screen_get_setting (GdkScreen   *screen,
 	  t = 0.5;
 	}
 
-      GDK_QUARTZ_RELEASE_POOL;
+      GDK_HAIKU_RELEASE_POOL;
 
       g_value_set_int (value, t * 1000);
 
@@ -1874,7 +1874,7 @@ _gdk_haiku_screen_get_setting (GdkScreen   *screen,
       char *str;
       gint size;
 
-      GDK_QUARTZ_ALLOC_POOL;
+      GDK_HAIKU_ALLOC_POOL;
 
       name = [[NSFont systemFontOfSize:0] familyName];
       size = (gint)[[NSFont userFontOfSize:0] pointSize];
@@ -1892,30 +1892,30 @@ _gdk_haiku_screen_get_setting (GdkScreen   *screen,
       g_value_set_string (value, str);
       g_free (str);
 
-      GDK_QUARTZ_RELEASE_POOL;
+      GDK_HAIKU_RELEASE_POOL;
 
       return TRUE;
     }
   else if (strcmp (name, "gtk-primary-button-warps-slider") == 0)
     {
-      GDK_QUARTZ_ALLOC_POOL;
+      GDK_HAIKU_ALLOC_POOL;
 
       BOOL setting = [[NSUserDefaults standardUserDefaults] boolForKey:@"AppleScrollerPagingBehavior"];
 
       /* If the Apple property is YES, it means "warp" */
       g_value_set_boolean (value, setting == YES);
 
-      GDK_QUARTZ_RELEASE_POOL;
+      GDK_HAIKU_RELEASE_POOL;
 
       return TRUE;
     }
   else if (strcmp (name, "gtk-shell-shows-desktop") == 0)
     {
-      GDK_QUARTZ_ALLOC_POOL;
+      GDK_HAIKU_ALLOC_POOL;
 
       g_value_set_boolean (value, TRUE);
 
-      GDK_QUARTZ_RELEASE_POOL;
+      GDK_HAIKU_RELEASE_POOL;
 
       return TRUE;
     }

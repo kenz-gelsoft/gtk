@@ -156,12 +156,12 @@ static const char *const state_names[]  = {
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
 typedef enum
   {
-   GDK_QUARTZ_EVENT_MASK_ANY = NSAnyEventMask,
+   GDK_HAIKU_EVENT_MASK_ANY = NSAnyEventMask,
   } GdkHaikuEventMask;
 #else
 typedef enum
   {
-   GDK_QUARTZ_EVENT_MASK_ANY = NSEventMaskAny,
+   GDK_HAIKU_EVENT_MASK_ANY = NSEventMaskAny,
   } GdkHaikuEventMask;
 #endif
 
@@ -306,9 +306,9 @@ select_thread_func (void *arg)
 }
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
-#define GDK_QUARTZ_APPLICATION_DEFINED NSApplicationDefined
+#define GDK_HAIKU_APPLICATION_DEFINED NSApplicationDefined
 #else
-#define GDK_QUARTZ_APPLICATION_DEFINED NSEventTypeApplicationDefined
+#define GDK_HAIKU_APPLICATION_DEFINED NSEventTypeApplicationDefined
 #endif
 
 static void 
@@ -317,13 +317,13 @@ got_fd_activity (void *info)
   NSEvent *event;
 
   /* Post a message so we'll break out of the message loop */
-  event = [NSEvent otherEventWithType: GDK_QUARTZ_APPLICATION_DEFINED
+  event = [NSEvent otherEventWithType: GDK_HAIKU_APPLICATION_DEFINED
 	                     location: NSZeroPoint
 	                modifierFlags: 0
 	                    timestamp: 0
 	                 windowNumber: 0
 	                      context: nil
-                              subtype: GDK_QUARTZ_EVENT_SUBTYPE_EVENTLOOP
+                              subtype: GDK_HAIKU_EVENT_SUBTYPE_EVENTLOOP
 	                        data1: 0 
 	                        data2: 0];
 
@@ -734,9 +734,9 @@ static GSourceFuncs event_funcs = {
  ************************************************************/
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
-#define GDK_QUARTZ_EVENT_MASK_ANY NSAnyEventMask
+#define GDK_HAIKU_EVENT_MASK_ANY NSAnyEventMask
 #else
-#define GDK_QUARTZ_EVENT_MASK_ANY NSEventMaskAny
+#define GDK_HAIKU_EVENT_MASK_ANY NSEventMaskAny
 #endif
 
 static gint
@@ -764,7 +764,7 @@ poll_func (GPollFD *ufds,
     limit_date = [NSDate dateWithTimeIntervalSinceNow:timeout_/1000.0];
 
   getting_events++;
-  event = [NSApp nextEventMatchingMask: GDK_QUARTZ_EVENT_MASK_ANY
+  event = [NSApp nextEventMatchingMask: GDK_HAIKU_EVENT_MASK_ANY
 	                     untilDate: limit_date
 	                        inMode: NSDefaultRunLoopMode
                                dequeue: YES];
@@ -783,8 +783,8 @@ poll_func (GPollFD *ufds,
     n_ready = select_thread_collect_poll (ufds, nfds);
       
   if (event &&
-      [event type] == GDK_QUARTZ_APPLICATION_DEFINED &&
-      [event subtype] == GDK_QUARTZ_EVENT_SUBTYPE_EVENTLOOP)
+      [event type] == GDK_HAIKU_APPLICATION_DEFINED &&
+      [event subtype] == GDK_HAIKU_EVENT_SUBTYPE_EVENTLOOP)
     {
       /* Just used to wake us up; if an event and a FD arrived at the same
        * time; could have come from a previous iteration in some cases,

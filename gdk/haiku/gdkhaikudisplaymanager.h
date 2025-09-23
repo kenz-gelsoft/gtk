@@ -17,8 +17,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_QUARTZ_DISPLAY_MANAGER_H__
-#define __GDK_QUARTZ_DISPLAY_MANAGER_H__
+#ifndef __GDK_HAIKU_DISPLAY_MANAGER_H__
+#define __GDK_HAIKU_DISPLAY_MANAGER_H__
 
 #if !defined(__GDKQUARTZ_H_INSIDE__) && !defined (GDK_COMPILATION)
 #error "Only <gdk/gdkhaiku.h> can be included directly."
@@ -29,7 +29,7 @@
 G_BEGIN_DECLS
 
 #define GDK_TYPE_QUARTZ_DISPLAY_MANAGER    (gdk_haiku_display_manager_get_type ())
-#define GDK_QUARTZ_DISPLAY_MANAGER(object) (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_DISPLAY_MANAGER, GdkHaikuDisplayManager))
+#define GDK_HAIKU_DISPLAY_MANAGER(object) (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_DISPLAY_MANAGER, GdkHaikuDisplayManager))
 
 #ifdef GDK_COMPILATION
 typedef struct _GdkHaikuDisplayManager GdkHaikuDisplayManager;
@@ -44,4 +44,4 @@ GType gdk_haiku_display_manager_get_type (void);
 
 G_END_DECLS
 
-#endif /* __GDK_QUARTZ_DISPLAY_MANAGER_H__ */
+#endif /* __GDK_HAIKU_DISPLAY_MANAGER_H__ */

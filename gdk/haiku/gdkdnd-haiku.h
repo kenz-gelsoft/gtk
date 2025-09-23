@@ -17,8 +17,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_QUARTZ_DND__
-#define __GDK_QUARTZ_DND__
+#ifndef __GDK_HAIKU_DND__
+#define __GDK_HAIKU_DND__
 
 #include <gdkdndprivate.h>
 
@@ -41,4 +41,4 @@ struct _GdkHaikuDragContextClass
 
 G_END_DECLS
 
-#endif /* __GDK_QUARTZ_DND__ */
+#endif /* __GDK_HAIKU_DND__ */

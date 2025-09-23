@@ -20,8 +20,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_QUARTZ_GL_CONTEXT__
-#define __GDK_QUARTZ_GL_CONTEXT__
+#ifndef __GDK_HAIKU_GL_CONTEXT__
+#define __GDK_HAIKU_GL_CONTEXT__
 
 #include "gdkglcontextprivate.h"
 #include "gdkdisplayprivate.h"
@@ -63,4 +63,4 @@ gboolean        gdk_haiku_display_make_gl_context_current         (GdkDisplay   
 
 G_END_DECLS
 
-#endif /* __GDK_QUARTZ_GL_CONTEXT__ */
+#endif /* __GDK_HAIKU_GL_CONTEXT__ */

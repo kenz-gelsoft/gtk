@@ -16,8 +16,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GDK_QUARTZ_COCOA_ACCESS_H__
-#define __GDK_QUARTZ_COCOA_ACCESS_H__
+#ifndef __GDK_HAIKU_COCOA_ACCESS_H__
+#define __GDK_HAIKU_COCOA_ACCESS_H__
 
 #ifndef __OBJC__
 #error "This header declares Cocoa types and can be included only from source files compiled with Objective-C."

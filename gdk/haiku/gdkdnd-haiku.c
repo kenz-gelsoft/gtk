@@ -154,7 +154,7 @@ gdk_haiku_drag_context_drop_status (GdkDragContext *context)
 id
 gdk_haiku_drag_context_get_dragging_info_libgtk_only (GdkDragContext *context)
 {
-  return GDK_QUARTZ_DRAG_CONTEXT (context)->dragging_info;
+  return GDK_HAIKU_DRAG_CONTEXT (context)->dragging_info;
 }
 
 static void

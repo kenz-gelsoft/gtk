@@ -39,8 +39,8 @@ typedef unsigned int NSUInteger;
 typedef float CGFloat;
 #endif
 
-#define GDK_QUARTZ_ALLOC_POOL NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]
-#define GDK_QUARTZ_RELEASE_POOL [pool release]
+#define GDK_HAIKU_ALLOC_POOL NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]
+#define GDK_HAIKU_RELEASE_POOL [pool release]
 
 #include "../gdkprivate.h"
 #include "gdkhaiku.h"
@@ -72,17 +72,17 @@ NSCursor   *_gdk_haiku_cursor_get_ns_cursor        (GdkCursor *cursor);
 
 /* Events */
 typedef enum {
-  GDK_QUARTZ_EVENT_SUBTYPE_EVENTLOOP
+  GDK_HAIKU_EVENT_SUBTYPE_EVENTLOOP
 } GdkHaikuEventSubType;
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= 101300
-#define GDK_QUARTZ_EVENT_TABLET_PROXIMITY NSEventTypeTabletProximity
-#define GDK_QUARTZ_EVENT_SUBTYPE_TABLET_PROXIMITY NSEventSubtypeTabletProximity
-#define GDK_QUARTZ_EVENT_SUBTYPE_TABLET_POINT NSEventSubtypeTabletPoint
+#define GDK_HAIKU_EVENT_TABLET_PROXIMITY NSEventTypeTabletProximity
+#define GDK_HAIKU_EVENT_SUBTYPE_TABLET_PROXIMITY NSEventSubtypeTabletProximity
+#define GDK_HAIKU_EVENT_SUBTYPE_TABLET_POINT NSEventSubtypeTabletPoint
 #else
-#define GDK_QUARTZ_EVENT_TABLET_PROXIMITY NSTabletProximity
-#define GDK_QUARTZ_EVENT_SUBTYPE_TABLET_PROXIMITY NSTabletProximityEventSubtype
-#define GDK_QUARTZ_EVENT_SUBTYPE_TABLET_POINT NSTabletPointEventSubtype
+#define GDK_HAIKU_EVENT_TABLET_PROXIMITY NSTabletProximity
+#define GDK_HAIKU_EVENT_SUBTYPE_TABLET_PROXIMITY NSTabletProximityEventSubtype
+#define GDK_HAIKU_EVENT_SUBTYPE_TABLET_POINT NSTabletPointEventSubtype
 #endif
 
 void         _gdk_haiku_events_update_focus_window    (GdkWindow *new_window,
