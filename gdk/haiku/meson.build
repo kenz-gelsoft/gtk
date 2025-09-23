@@ -49,10 +49,10 @@ core_graphics_dep = dependency('appleframeworks', modules : 'CoreGraphics', requ
 appkit_dep = dependency('appleframeworks', modules : 'AppKit', required : true)
 cocoa_dep = dependency('appleframeworks', modules : 'Cocoa', required : true)
 carbon_dep = dependency('appleframeworks', modules : 'Carbon', required : true)
-quartzcore_dep = dependency('appleframeworks', modules : 'QuartzCore', required : true)
+haiku_dep = dependency('appleframeworks', modules : 'QuartzCore', required : true)
 iosurface_dep = dependency('appleframeworks', modules: 'IOSurface', required: true)
 
-gdk_haiku_deps = [ core_graphics_dep, appkit_dep, cocoa_dep, carbon_dep, quartzcore_dep, iosurface_dep ]
+gdk_haiku_deps = [ core_graphics_dep, appkit_dep, cocoa_dep, carbon_dep, haiku_dep, iosurface_dep ]
 
 libgdk_haiku = static_library('gdk-haiku',
   gdk_haiku_sources, gdkconfig, gdkenum_h,
