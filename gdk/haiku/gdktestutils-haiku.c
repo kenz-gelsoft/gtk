@@ -21,13 +21,13 @@
 #include <gdk/gdkinternals.h>
 
 void
-_gdk_quartz_window_sync_rendering (GdkWindow *window)
+_gdk_haiku_window_sync_rendering (GdkWindow *window)
 {
   /* FIXME: Find out if there is a way to implement this on quartz. */
 }
 
 gboolean
-_gdk_quartz_window_simulate_key (GdkWindow      *window,
+_gdk_haiku_window_simulate_key (GdkWindow      *window,
                                  gint            x,
                                  gint            y,
                                  guint           keyval,
@@ -46,7 +46,7 @@ _gdk_quartz_window_simulate_key (GdkWindow      *window,
 }
 
 gboolean
-_gdk_quartz_window_simulate_button (GdkWindow      *window,
+_gdk_haiku_window_simulate_button (GdkWindow      *window,
                                     gint            x,
                                     gint            y,
                                     guint           button, /*1..3*/

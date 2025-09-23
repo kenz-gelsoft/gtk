@@ -105,7 +105,7 @@
   rect = g_object_get_data (G_OBJECT (gdk_window), GIC_CURSOR_RECT);
   if (rect)
     {
-      _gdk_quartz_window_gdk_xy_to_xy (rect->x, rect->y + rect->height,
+      _gdk_haiku_window_gdk_xy_to_xy (rect->x, rect->y + rect->height,
 				       &ns_x, &ns_y);
 
       return NSMakeRect (ns_x, ns_y, rect->width, rect->height);
@@ -192,7 +192,7 @@
   if (!GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (gdk_window),
                                             TIC_IN_KEY_DOWN)))
     {
-      _gdk_quartz_synthesize_null_key_event(gdk_window);
+      _gdk_haiku_synthesize_null_key_event(gdk_window);
     }
 }
 
@@ -256,7 +256,7 @@
   if (!GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (gdk_window),
                                             TIC_IN_KEY_DOWN)))
     {
-      _gdk_quartz_synthesize_null_key_event(gdk_window);
+      _gdk_haiku_synthesize_null_key_event(gdk_window);
     }
 }
 /* --------------------------------------------------------------- */
@@ -318,7 +318,7 @@
    * has the additional cost of an 8-bit (ARGB) to 10-bit conversion.
    * Let's disable this mode to regain the lost performance.
    */
-  if(gdk_quartz_osx_version() >= GDK_OSX_BIGSUR)
+  if(gdk_haiku_osx_version() >= GDK_OSX_BIGSUR)
   {
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= 101100
     CALayer* layer = self.layer;
@@ -457,7 +457,7 @@ copy_rectangle_argb32 (cairo_surface_t *dest, cairo_surface_t *source,
 
   cairo_surface_destroy (cvpb_surface);
   cairo_region_destroy (bounds_region);
-  _gdk_quartz_unref_cairo_surface (gdk_window); // reffed in gdk_window_impl_quartz_begin_paint
+  _gdk_haiku_unref_cairo_surface (gdk_window); // reffed in gdk_window_impl_quartz_begin_paint
   CVPixelBufferUnlockBaseAddress (pixels, 0);
 
   --impl->in_paint_rect_count;
@@ -558,7 +558,7 @@ copy_rectangle_argb32 (cairo_surface_t *dest, cairo_surface_t *source,
 {
   if (layer == self.layer && window == self.window)
     {
-      _gdk_quartz_unref_cairo_surface (gdk_window);
+      _gdk_haiku_unref_cairo_surface (gdk_window);
       [self setNeedsDisplay: YES];
     }
   return YES;
@@ -570,7 +570,7 @@ copy_rectangle_argb32 (cairo_surface_t *dest, cairo_surface_t *source,
   if (GDK_WINDOW_DESTROYED (gdk_window))
     return;
 
-  _gdk_quartz_unref_cairo_surface (gdk_window);
+  _gdk_haiku_unref_cairo_surface (gdk_window);
   [super setFrame: frame];
 
   if ([self window])

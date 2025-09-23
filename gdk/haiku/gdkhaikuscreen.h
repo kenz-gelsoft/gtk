@@ -27,7 +27,7 @@ G_BEGIN_DECLS
 
 #include <gdk/gdk.h>
 
-#define GDK_TYPE_QUARTZ_SCREEN              (gdk_quartz_screen_get_type ())
+#define GDK_TYPE_QUARTZ_SCREEN              (gdk_haiku_screen_get_type ())
 #define GDK_QUARTZ_SCREEN(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_SCREEN, GdkHaikuScreen))
 #define GDK_QUARTZ_SCREEN_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_QUARTZ_SCREEN, GdkHaikuScreenClass))
 #define GDK_IS_QUARTZ_SCREEN(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_QUARTZ_SCREEN))
@@ -43,7 +43,7 @@ typedef struct _GdkHaikuScreenClass GdkHaikuScreenClass;
 
 
 GDK_AVAILABLE_IN_ALL
-GType      gdk_quartz_screen_get_type (void);
+GType      gdk_haiku_screen_get_type (void);
 
 G_END_DECLS
 

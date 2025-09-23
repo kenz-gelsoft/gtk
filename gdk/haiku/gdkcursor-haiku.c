@@ -44,7 +44,7 @@ struct _GdkHaikuCursorClass
 static GdkCursor *cached_xcursors[G_N_ELEMENTS (xcursors)];
 
 static GdkCursor *
-gdk_quartz_cursor_new_from_nscursor (NSCursor      *nscursor,
+gdk_haiku_cursor_new_from_nscursor (NSCursor      *nscursor,
                                      GdkCursorType  cursor_type)
 {
   GdkHaikuCursor *private;
@@ -70,7 +70,7 @@ create_blank_cursor (void)
                                hotSpot:NSMakePoint(0.0, 0.0)];
   [nsimage release];
 
-  return gdk_quartz_cursor_new_from_nscursor (nscursor, GDK_BLANK_CURSOR);
+  return gdk_haiku_cursor_new_from_nscursor (nscursor, GDK_BLANK_CURSOR);
 }
 
 static gboolean
@@ -178,7 +178,7 @@ create_builtin_cursor (GdkCursorType cursor_type)
   nscursor = [[NSCursor alloc] initWithImage:image hotSpot:hotspot];
   [image release];
 
-  cursor = gdk_quartz_cursor_new_from_nscursor (nscursor, GDK_CURSOR_IS_PIXMAP);
+  cursor = gdk_haiku_cursor_new_from_nscursor (nscursor, GDK_CURSOR_IS_PIXMAP);
 
   cached_xcursors[cursor_type] = g_object_ref (cursor);
 
@@ -188,7 +188,7 @@ create_builtin_cursor (GdkCursorType cursor_type)
 }
 
 GdkCursor*
-_gdk_quartz_display_get_cursor_for_type (GdkDisplay    *display,
+_gdk_haiku_display_get_cursor_for_type (GdkDisplay    *display,
                                          GdkCursorType  cursor_type)
 {
   NSCursor *nscursor;
@@ -247,12 +247,12 @@ _gdk_quartz_display_get_cursor_for_type (GdkDisplay    *display,
     }
 
   [nscursor retain];
-  return gdk_quartz_cursor_new_from_nscursor (nscursor, cursor_type);
+  return gdk_haiku_cursor_new_from_nscursor (nscursor, cursor_type);
 }
 
 
 GdkCursor *
-_gdk_quartz_display_get_cursor_for_surface (GdkDisplay      *display,
+_gdk_haiku_display_get_cursor_for_surface (GdkDisplay      *display,
 					    cairo_surface_t *surface,
 					    gdouble          x,
 					    gdouble          y)
@@ -272,12 +272,12 @@ _gdk_quartz_display_get_cursor_for_surface (GdkDisplay      *display,
   cairo_surface_get_device_scale (surface,
                                   &x_scale,
                                   &y_scale);
-  image = gdk_quartz_pixbuf_to_ns_image_libgtk_only (pixbuf);
+  image = gdk_haiku_pixbuf_to_ns_image_libgtk_only (pixbuf);
   NSImageRep *rep = [[image representations] objectAtIndex:0];
   [image setSize:NSMakeSize(rep.pixelsWide / x_scale, rep.pixelsHigh / y_scale)];
   nscursor = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(x / x_scale, y / y_scale)];
 
-  cursor = gdk_quartz_cursor_new_from_nscursor (nscursor, GDK_CURSOR_IS_PIXMAP);
+  cursor = gdk_haiku_cursor_new_from_nscursor (nscursor, GDK_CURSOR_IS_PIXMAP);
 
   g_object_unref (pixbuf);
 
@@ -393,7 +393,7 @@ static const struct CursorsByName cursors_by_name[] = {
 };
 
 GdkCursor*
-_gdk_quartz_display_get_cursor_for_name (GdkDisplay  *display,
+_gdk_haiku_display_get_cursor_for_name (GdkDisplay  *display,
                                          const gchar *name)
 {
   NSCursor *nscursor;
@@ -414,17 +414,17 @@ _gdk_quartz_display_get_cursor_for_name (GdkDisplay  *display,
   nscursor = [[gdkCoreCursor class] performSelector:selector];
 
   [nscursor retain];
-  return gdk_quartz_cursor_new_from_nscursor (nscursor, GDK_CURSOR_IS_PIXMAP);
+  return gdk_haiku_cursor_new_from_nscursor (nscursor, GDK_CURSOR_IS_PIXMAP);
 }
 
-G_DEFINE_TYPE (GdkHaikuCursor, gdk_quartz_cursor, GDK_TYPE_CURSOR)
+G_DEFINE_TYPE (GdkHaikuCursor, gdk_haiku_cursor, GDK_TYPE_CURSOR)
 
-static cairo_surface_t *gdk_quartz_cursor_get_surface (GdkCursor *cursor,
+static cairo_surface_t *gdk_haiku_cursor_get_surface (GdkCursor *cursor,
 						       gdouble *x_hot,
 						       gdouble *y_hot);
 
 static void
-gdk_quartz_cursor_finalize (GObject *object)
+gdk_haiku_cursor_finalize (GObject *object)
 {
   GdkHaikuCursor *private = GDK_QUARTZ_CURSOR (object);
 
@@ -434,36 +434,36 @@ gdk_quartz_cursor_finalize (GObject *object)
 }
 
 static void
-gdk_quartz_cursor_class_init (GdkHaikuCursorClass *quartz_cursor_class)
+gdk_haiku_cursor_class_init (GdkHaikuCursorClass *quartz_cursor_class)
 {
   GdkCursorClass *cursor_class = GDK_CURSOR_CLASS (quartz_cursor_class);
   GObjectClass *object_class = G_OBJECT_CLASS (quartz_cursor_class);
 
-  object_class->finalize = gdk_quartz_cursor_finalize;
+  object_class->finalize = gdk_haiku_cursor_finalize;
 
-  cursor_class->get_surface = gdk_quartz_cursor_get_surface;
+  cursor_class->get_surface = gdk_haiku_cursor_get_surface;
 }
 
 static void
-gdk_quartz_cursor_init (GdkHaikuCursor *cursor)
+gdk_haiku_cursor_init (GdkHaikuCursor *cursor)
 {
 }
 
 
 gboolean
-_gdk_quartz_display_supports_cursor_alpha (GdkDisplay *display)
+_gdk_haiku_display_supports_cursor_alpha (GdkDisplay *display)
 {
   return TRUE;
 }
 
 gboolean
-_gdk_quartz_display_supports_cursor_color (GdkDisplay *display)
+_gdk_haiku_display_supports_cursor_color (GdkDisplay *display)
 {
   return TRUE;
 }
 
 void
-_gdk_quartz_display_get_default_cursor_size (GdkDisplay *display,
+_gdk_haiku_display_get_default_cursor_size (GdkDisplay *display,
                                              guint      *width,
                                              guint      *height)
 {
@@ -473,7 +473,7 @@ _gdk_quartz_display_get_default_cursor_size (GdkDisplay *display,
 }
 
 void
-_gdk_quartz_display_get_maximal_cursor_size (GdkDisplay *display,
+_gdk_haiku_display_get_maximal_cursor_size (GdkDisplay *display,
                                              guint       *width,
                                              guint       *height)
 {
@@ -483,7 +483,7 @@ _gdk_quartz_display_get_maximal_cursor_size (GdkDisplay *display,
 }
 
 NSCursor *
-_gdk_quartz_cursor_get_ns_cursor (GdkCursor *cursor)
+_gdk_haiku_cursor_get_ns_cursor (GdkCursor *cursor)
 {
   GdkHaikuCursor *cursor_private;
 
@@ -498,7 +498,7 @@ _gdk_quartz_cursor_get_ns_cursor (GdkCursor *cursor)
 }
 
 static cairo_surface_t *
-gdk_quartz_cursor_get_surface (GdkCursor *cursor,
+gdk_haiku_cursor_get_surface (GdkCursor *cursor,
 			       gdouble *x_hot,
 			       gdouble *y_hot)
 {

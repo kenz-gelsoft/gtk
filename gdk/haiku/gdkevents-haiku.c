@@ -70,7 +70,7 @@ static GdkWindow *find_toplevel_under_pointer   (GdkDisplay *display,
 
 
 static void
-gdk_quartz_ns_notification_callback (CFNotificationCenterRef  center,
+gdk_haiku_ns_notification_callback (CFNotificationCenterRef  center,
                                      void                    *observer,
                                      CFStringRef              name,
                                      const void              *object,
@@ -97,7 +97,7 @@ gdk_quartz_ns_notification_callback (CFNotificationCenterRef  center,
 }
 
 static void
-gdk_quartz_events_init_notifications (void)
+gdk_haiku_events_init_notifications (void)
 {
   static gboolean notifications_initialized = FALSE;
 
@@ -114,30 +114,30 @@ gdk_quartz_events_init_notifications (void)
    */
   CFNotificationCenterAddObserver (CFNotificationCenterGetDistributedCenter (),
                                    NULL,
-                                   &gdk_quartz_ns_notification_callback,
+                                   &gdk_haiku_ns_notification_callback,
                                    CFSTR ("AppleNoRedisplayAppearancePreferenceChanged"),
                                    NULL,
                                    CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 void
-_gdk_quartz_events_init (void)
+_gdk_haiku_events_init (void)
 {
-  _gdk_quartz_event_loop_init ();
-  gdk_quartz_events_init_notifications ();
+  _gdk_haiku_event_loop_init ();
+  gdk_haiku_events_init_notifications ();
 
   current_keyboard_window = g_object_ref (_gdk_root);
 }
 
 gboolean
-_gdk_quartz_display_has_pending (GdkDisplay *display)
+_gdk_haiku_display_has_pending (GdkDisplay *display)
 {
   return (_gdk_event_queue_find_first (display) ||
-         (_gdk_quartz_event_loop_check_pending ()));
+         (_gdk_haiku_event_loop_check_pending ()));
 }
 
 void
-_gdk_quartz_events_break_all_grabs (guint32 time)
+_gdk_haiku_events_break_all_grabs (guint32 time)
 {
   GdkSeat *seat = gdk_display_get_default_seat (_gdk_display);
   gdk_seat_ungrab (seat);
@@ -352,7 +352,7 @@ get_event_mask_from_ns_event (NSEvent *nsevent)
     case GDK_QUARTZ_KEY_UP:
     case GDK_QUARTZ_FLAGS_CHANGED:
       {
-        switch (_gdk_quartz_keys_event_type (nsevent))
+        switch (_gdk_haiku_keys_event_type (nsevent))
 	  {
 	  case GDK_KEY_PRESS:
 	    return GDK_KEY_PRESS_MASK;
@@ -388,7 +388,7 @@ get_window_point_from_screen_point (GdkWindow *window,
   NSPoint point;
   GdkHaikuNSWindow *nswindow;
 
-  nswindow = (GdkHaikuNSWindow*)gdk_quartz_window_get_nswindow (window);
+  nswindow = (GdkHaikuNSWindow*)gdk_haiku_window_get_nswindow (window);
   point = [nswindow convertPointFromScreen:screen_point];
   *x = point.x;
   *y = window->height - point.y;
@@ -462,7 +462,7 @@ get_toplevel_from_ns_event (NSEvent *nsevent,
            * Because we cannot ingest this event into GDK, we have to do it
            * here, not very nice.
            */
-          _gdk_quartz_events_break_all_grabs (get_time_from_ns_event (nsevent));
+          _gdk_haiku_events_break_all_grabs (get_time_from_ns_event (nsevent));
 
           /* Check if the event occurred on the titlebar. If it did,
            * explicitly return NULL to prevent going through the
@@ -541,7 +541,7 @@ generate_motion_event (GdkWindow *window)
 
   screen_point = [NSEvent mouseLocation];
 
-  _gdk_quartz_window_nspoint_to_gdk_xy (screen_point, &x_root, &y_root);
+  _gdk_haiku_window_nspoint_to_gdk_xy (screen_point, &x_root, &y_root);
   get_window_point_from_screen_point (window, screen_point, &x, &y);
 
   event->any.type = GDK_MOTION_NOTIFY;
@@ -552,8 +552,8 @@ generate_motion_event (GdkWindow *window)
   event->motion.x_root = x_root;
   event->motion.y_root = y_root;
   /* FIXME event->axes */
-  event->motion.state = _gdk_quartz_events_get_current_keyboard_modifiers () |
-                        _gdk_quartz_events_get_current_mouse_modifiers ();
+  event->motion.state = _gdk_haiku_events_get_current_keyboard_modifiers () |
+                        _gdk_haiku_events_get_current_mouse_modifiers ();
   event->motion.is_hint = FALSE;
   gdk_event_set_device (event, gdk_seat_get_pointer (seat));
   gdk_event_set_seat (event, seat);
@@ -563,7 +563,7 @@ generate_motion_event (GdkWindow *window)
 
 /* Note: Used to both set a new focus window and to unset the old one. */
 void
-_gdk_quartz_events_update_focus_window (GdkWindow *window,
+_gdk_haiku_events_update_focus_window (GdkWindow *window,
 					gboolean   got_focus)
 {
   GdkEvent *event;
@@ -607,7 +607,7 @@ _gdk_quartz_events_update_focus_window (GdkWindow *window,
 }
 
 void
-_gdk_quartz_events_send_map_event (GdkWindow *window)
+_gdk_haiku_events_send_map_event (GdkWindow *window)
 {
   GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_QUARTZ (window->impl);
 
@@ -642,7 +642,7 @@ find_toplevel_under_pointer (GdkDisplay *display,
     {
       gint gdk_x = 0, gdk_y = 0;
       GdkDevice *pointer = gdk_seat_get_pointer(seat);
-      _gdk_quartz_window_nspoint_to_gdk_xy (screen_point, &gdk_x, &gdk_y);
+      _gdk_haiku_window_nspoint_to_gdk_xy (screen_point, &gdk_x, &gdk_y);
       toplevel = gdk_device_get_window_at_position (pointer, &gdk_x, &gdk_y);
 
       if (toplevel && ! WINDOW_IS_TOPLEVEL (toplevel))
@@ -820,7 +820,7 @@ find_window_for_ns_event (NSEvent *nsevent,
   toplevel = get_toplevel_from_ns_event (nsevent, &screen_point, x, y);
   if (!toplevel)
     return NULL;
-  _gdk_quartz_window_nspoint_to_gdk_xy (screen_point, x_root, y_root);
+  _gdk_haiku_window_nspoint_to_gdk_xy (screen_point, x_root, y_root);
 
   event_type = [nsevent type];
 
@@ -854,7 +854,7 @@ find_window_for_ns_event (NSEvent *nsevent,
        * macOS versions. These trigger 4 pixels out from the window's
        * frame so we obtain that rect and adjust it for hit testing.
        */
-      if (!nsevent.trackingArea && gdk_quartz_osx_version() >= GDK_OSX_VENTURA)
+      if (!nsevent.trackingArea && gdk_haiku_osx_version() >= GDK_OSX_VENTURA)
         {
           static const int border_width = 4;
           NSRect frame = nsevent.window.frame;
@@ -922,7 +922,7 @@ fill_crossing_event (GdkWindow       *toplevel,
   event->crossing.mode = mode;
   event->crossing.detail = detail;
   event->crossing.state = get_keyboard_modifiers_from_ns_event (nsevent) |
-                         _gdk_quartz_events_get_current_mouse_modifiers ();
+                         _gdk_haiku_events_get_current_mouse_modifiers ();
 
   gdk_event_set_device (event, gdk_seat_get_pointer (seat));
   gdk_event_set_seat (event, seat);
@@ -1055,7 +1055,7 @@ fill_button_event (GdkWindow *window,
   GdkSeat *seat = gdk_display_get_default_seat (_gdk_display);
 
   state = get_keyboard_modifiers_from_ns_event (nsevent) |
-         _gdk_quartz_events_get_current_mouse_modifiers ();
+         _gdk_haiku_events_get_current_mouse_modifiers ();
 
   switch ((int)[nsevent type])
     {
@@ -1077,7 +1077,7 @@ fill_button_event (GdkWindow *window,
       g_assert_not_reached ();
     }
 
-  event_device = _gdk_quartz_device_manager_core_device_for_ns_event (gdk_display_get_device_manager (_gdk_display),
+  event_device = _gdk_haiku_device_manager_core_device_for_ns_event (gdk_display_get_device_manager (_gdk_display),
                                                                       nsevent);
 
   if ([nsevent subtype] == GDK_QUARTZ_EVENT_SUBTYPE_TABLET_POINT)
@@ -1120,7 +1120,7 @@ fill_motion_event (GdkWindow *window,
   GdkDevice *event_device = NULL;
   gdouble *axes = NULL;
 
-  event_device = _gdk_quartz_device_manager_core_device_for_ns_event (gdk_display_get_device_manager (_gdk_display),
+  event_device = _gdk_haiku_device_manager_core_device_for_ns_event (gdk_display_get_device_manager (_gdk_display),
                                                                       nsevent);
 
   if ([nsevent subtype] == GDK_QUARTZ_EVENT_SUBTYPE_TABLET_POINT)
@@ -1143,7 +1143,7 @@ fill_motion_event (GdkWindow *window,
   event->motion.y_root = y_root;
   event->motion.axes = axes;
   event->motion.state = get_keyboard_modifiers_from_ns_event (nsevent) |
-                        _gdk_quartz_events_get_current_mouse_modifiers ();
+                        _gdk_haiku_events_get_current_mouse_modifiers ();
   event->motion.is_hint = FALSE;
   gdk_event_set_device (event, gdk_seat_get_pointer (seat));
   gdk_event_set_source_device (event, event_device);
@@ -1213,7 +1213,7 @@ fill_key_event (GdkWindow    *window,
 				       &event->key.keyval,
 				       NULL, NULL, NULL);
 
-  event->key.is_modifier = _gdk_quartz_keys_is_modifier (event->key.hardware_keycode);
+  event->key.is_modifier = _gdk_haiku_keys_is_modifier (event->key.hardware_keycode);
 
   /* If the key press is a modifier, the state should include the mask
    * for that modifier but only for releases, not presses. This
@@ -1254,7 +1254,7 @@ fill_key_event (GdkWindow    *window,
         event->key.state |= mask;
     }
 
-  event->key.state |= _gdk_quartz_events_get_current_mouse_modifiers ();
+  event->key.state |= _gdk_haiku_events_get_current_mouse_modifiers ();
 
   /* The X11 backend adds the first virtual modifier MOD2..MOD5 are
    * mapped to. Since we only have one virtual modifier in the quartz
@@ -1357,7 +1357,7 @@ synthesize_crossing_event (GdkWindow *window,
 }
 
 void
-_gdk_quartz_synthesize_null_key_event (GdkWindow *window)
+_gdk_haiku_synthesize_null_key_event (GdkWindow *window)
 {
   GdkEvent *event;
   GdkSeat *seat = gdk_display_get_default_seat (_gdk_display);
@@ -1376,9 +1376,9 @@ _gdk_quartz_synthesize_null_key_event (GdkWindow *window)
 }
 
 GdkModifierType
-_gdk_quartz_events_get_current_keyboard_modifiers (void)
+_gdk_haiku_events_get_current_keyboard_modifiers (void)
 {
-  if (gdk_quartz_osx_version () >= GDK_OSX_SNOW_LEOPARD)
+  if (gdk_haiku_osx_version () >= GDK_OSX_SNOW_LEOPARD)
     {
       return get_keyboard_modifiers_from_ns_flags ([NSClassFromString(@"NSEvent") modifierFlags]);
     }
@@ -1403,11 +1403,11 @@ _gdk_quartz_events_get_current_keyboard_modifiers (void)
 }
 
 GdkModifierType
-_gdk_quartz_events_get_current_mouse_modifiers (void)
+_gdk_haiku_events_get_current_mouse_modifiers (void)
 {
   NSUInteger buttons = 0;
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1060
-  if (gdk_quartz_osx_version () >= GDK_OSX_SNOW_LEOPARD)
+  if (gdk_haiku_osx_version () >= GDK_OSX_SNOW_LEOPARD)
     buttons = [NSClassFromString(@"NSEvent") pressedMouseButtons];
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 1060
   else
@@ -1469,7 +1469,7 @@ test_resize (NSEvent *event, GdkWindow *toplevel, gint x, gint y)
    * window finding code, because there are no GdkWindows present in
    * the range [-3, 0].
    */
-  lion = gdk_quartz_osx_version () >= GDK_OSX_LION;
+  lion = gdk_haiku_osx_version () >= GDK_OSX_LION;
   if (lion &&
       ([event type] == GDK_QUARTZ_LEFT_MOUSE_DOWN ||
        [event type] == GDK_QUARTZ_RIGHT_MOUSE_DOWN ||
@@ -1510,7 +1510,7 @@ gdk_event_translate (GdkEvent *event,
   if (event_type == GDK_QUARTZ_APP_KIT_DEFINED)
     {
       if ([nsevent subtype] ==  GDK_QUARTZ_APPLICATION_DEACTIVATED)
-        _gdk_quartz_events_break_all_grabs (get_time_from_ns_event (nsevent));
+        _gdk_haiku_events_break_all_grabs (get_time_from_ns_event (nsevent));
 
       /* This could potentially be used to break grabs when clicking
        * on the title. The subtype 20 is undocumented so it's probably
@@ -1539,7 +1539,7 @@ gdk_event_translate (GdkEvent *event,
    */
   if (event_type == GDK_QUARTZ_EVENT_TABLET_PROXIMITY)
     {
-      _gdk_quartz_device_manager_register_device_for_ns_event (gdk_display_get_device_manager (_gdk_display),
+      _gdk_haiku_device_manager_register_device_for_ns_event (gdk_display_get_device_manager (_gdk_display),
                                                                nsevent);
     }
 
@@ -1578,7 +1578,7 @@ gdk_event_translate (GdkEvent *event,
    */
   if ([(GdkHaikuNSWindow *)nswindow isInMove])
     {
-      _gdk_quartz_events_break_all_grabs (get_time_from_ns_event (nsevent));
+      _gdk_haiku_events_break_all_grabs (get_time_from_ns_event (nsevent));
       return FALSE;
     }
 
@@ -1675,7 +1675,7 @@ gdk_event_translate (GdkEvent *event,
 	float dx;
 	float dy;
 #ifdef AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER
-	if (gdk_quartz_osx_version() >= GDK_OSX_LION &&
+	if (gdk_haiku_osx_version() >= GDK_OSX_LION &&
 	    [nsevent hasPreciseScrollingDeltas])
 	  {
 	    dx = [nsevent scrollingDeltaX];
@@ -1715,7 +1715,7 @@ gdk_event_translate (GdkEvent *event,
         if (dx != 0.0 || dy != 0.0)
           {
 #ifdef AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER
-	    if (gdk_quartz_osx_version() >= GDK_OSX_LION &&
+	    if (gdk_haiku_osx_version() >= GDK_OSX_LION &&
 		[nsevent hasPreciseScrollingDeltas])
               {
                 GdkEvent *emulated_event;
@@ -1740,7 +1740,7 @@ gdk_event_translate (GdkEvent *event,
     case NSEventTypeRotate:
       /* Event handling requires [NSEvent phase] which was introduced in 10.7 */
       /* However - Tests on 10.7 showed that phase property does not work     */
-      if (gdk_quartz_osx_version () >= GDK_OSX_MOUNTAIN_LION)
+      if (gdk_haiku_osx_version () >= GDK_OSX_MOUNTAIN_LION)
         fill_pinch_event (window, event, nsevent, x, y, x_root, y_root);
       else
         return_val = FALSE;
@@ -1760,7 +1760,7 @@ gdk_event_translate (GdkEvent *event,
       {
         GdkEventType type;
 
-        type = _gdk_quartz_keys_event_type (nsevent);
+        type = _gdk_haiku_keys_event_type (nsevent);
         if (type == GDK_NOTHING)
           return_val = FALSE;
         else
@@ -1795,11 +1795,11 @@ gdk_event_translate (GdkEvent *event,
 }
 
 void
-_gdk_quartz_display_queue_events (GdkDisplay *display)
+_gdk_haiku_display_queue_events (GdkDisplay *display)
 {  
   NSEvent *nsevent;
 
-  nsevent = _gdk_quartz_event_loop_get_pending ();
+  nsevent = _gdk_haiku_event_loop_get_pending ();
   if (nsevent)
     {
       GdkEvent *event;
@@ -1830,19 +1830,19 @@ _gdk_quartz_display_queue_events (GdkDisplay *display)
           gdk_threads_enter ();
         }
 
-      _gdk_quartz_event_loop_release_event (nsevent);
+      _gdk_haiku_event_loop_release_event (nsevent);
     }
 }
 
 void
-_gdk_quartz_screen_broadcast_client_message (GdkScreen *screen,
+_gdk_haiku_screen_broadcast_client_message (GdkScreen *screen,
                                              GdkEvent  *event)
 {
   /* Not supported. */
 }
 
 gboolean
-_gdk_quartz_screen_get_setting (GdkScreen   *screen,
+_gdk_haiku_screen_get_setting (GdkScreen   *screen,
                                 const gchar *name,
                                 GValue      *value)
 {
@@ -1926,7 +1926,7 @@ _gdk_quartz_screen_get_setting (GdkScreen   *screen,
 }
 
 void
-_gdk_quartz_display_event_data_copy (GdkDisplay     *display,
+_gdk_haiku_display_event_data_copy (GdkDisplay     *display,
                                      const GdkEvent *src,
                                      GdkEvent       *dst)
 {
@@ -1941,7 +1941,7 @@ _gdk_quartz_display_event_data_copy (GdkDisplay     *display,
 }
 
 void
-_gdk_quartz_display_event_data_free (GdkDisplay *display,
+_gdk_haiku_display_event_data_free (GdkDisplay *display,
                                      GdkEvent   *event)
 {
   GdkEventPrivate *priv = (GdkEventPrivate *) event;

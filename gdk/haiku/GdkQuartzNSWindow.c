@@ -53,7 +53,7 @@
 {
   GdkWindow *window = [[self contentView] gdkWindow];
 
-  _gdk_quartz_window_detach_from_parent (window);
+  _gdk_haiku_window_detach_from_parent (window);
 }
 
 -(void)windowDidMiniaturize:(NSNotification *)aNotification
@@ -68,7 +68,7 @@
 {
   GdkWindow *window = [[self contentView] gdkWindow];
 
-  _gdk_quartz_window_attach_to_parent (window);
+  _gdk_haiku_window_attach_to_parent (window);
 
   gdk_synthesize_window_state (window, GDK_WINDOW_STATE_ICONIFIED, 0);
 }
@@ -78,14 +78,14 @@
   GdkWindow *window = [[self contentView] gdkWindow];
 
   gdk_synthesize_window_state (window, 0, GDK_WINDOW_STATE_FOCUSED);
-  _gdk_quartz_events_update_focus_window (window, TRUE);
+  _gdk_haiku_events_update_focus_window (window, TRUE);
 }
 
 -(void)windowDidResignKey:(NSNotification *)aNotification
 {
   GdkWindow *window = [[self contentView] gdkWindow];
 
-  _gdk_quartz_events_update_focus_window (window, FALSE);
+  _gdk_haiku_events_update_focus_window (window, FALSE);
   gdk_synthesize_window_state (window, GDK_WINDOW_STATE_FOCUSED, 0);
 }
 
@@ -103,7 +103,7 @@
       return;
     }
 
-  _gdk_quartz_window_did_become_main (window);
+  _gdk_haiku_window_did_become_main (window);
 }
 
 -(void)windowDidResignMain:(NSNotification *)aNotification
@@ -111,7 +111,7 @@
   GdkWindow *window;
 
   window = [[self contentView] gdkWindow];
-  _gdk_quartz_window_did_resign_main (window);
+  _gdk_haiku_window_did_resign_main (window);
 }
 
 /* Used in combination with NSLeftMouseUp in sendEvent to keep track
@@ -137,7 +137,7 @@
     {
       double time = ((double)[event timestamp]) * 1000.0;
 
-      _gdk_quartz_events_break_all_grabs (time);
+      _gdk_haiku_events_break_all_grabs (time);
       inManualMove = NO;
       inManualResize = NO;
       inMove = NO;
@@ -219,7 +219,7 @@ synthesize_configure_event(GdkWindow *window)
                                    0);
     }
 
-  _gdk_quartz_window_update_position (window);
+  _gdk_haiku_window_update_position (window);
   synthesize_configure_event(window);
 
   [self checkSendEnterNotify];
@@ -255,7 +255,7 @@ synthesize_configure_event(GdkWindow *window)
   /* Certain resize operations (e.g. going fullscreen), also move the
    * origin of the window.
    */
-  _gdk_quartz_window_update_position (window);
+  _gdk_haiku_window_update_position (window);
   _gdk_window_update_size (window);
   synthesize_configure_event (window);
 
@@ -384,11 +384,11 @@ synthesize_configure_event(GdkWindow *window)
 - (NSPoint)convertPointToScreen:(NSPoint)point
 {
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 101400
-  if (gdk_quartz_osx_version () >= GDK_OSX_MOJAVE)
+  if (gdk_haiku_osx_version () >= GDK_OSX_MOJAVE)
     return [super convertPointToScreen: point];
 #endif
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 1070
-  if (gdk_quartz_osx_version () < GDK_OSX_LION)
+  if (gdk_haiku_osx_version () < GDK_OSX_LION)
     return [self convertBaseToScreen:point];
 #endif
   {
@@ -401,11 +401,11 @@ synthesize_configure_event(GdkWindow *window)
 - (NSPoint)convertPointFromScreen:(NSPoint)point
 {
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 101400
-  if (gdk_quartz_osx_version () >= GDK_OSX_MOJAVE)
+  if (gdk_haiku_osx_version () >= GDK_OSX_MOJAVE)
     return [super convertPointFromScreen: point];
 #endif
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 1070
-  if (gdk_quartz_osx_version () < GDK_OSX_LION)
+  if (gdk_haiku_osx_version () < GDK_OSX_LION)
     return [self convertScreenToBase:point];
 #endif
   {
@@ -660,8 +660,8 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
 - (void)draggingEnded:(id <NSDraggingInfo>)sender
 {
   /* leave a note for the source about what action was taken */
-  if (_gdk_quartz_drag_source_context && current_context)
-   _gdk_quartz_drag_source_context->action = current_context->action;
+  if (_gdk_haiku_drag_source_context && current_context)
+   _gdk_haiku_drag_source_context->action = current_context->action;
 
   if (current_context)
     g_object_unref (current_context);
@@ -697,7 +697,7 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
   int gx, gy;
 
   update_context_from_dragging_info (sender);
-  _gdk_quartz_window_nspoint_to_gdk_xy (screen_point, &gx, &gy);
+  _gdk_haiku_window_nspoint_to_gdk_xy (screen_point, &gx, &gy);
 
   event = gdk_event_new (GDK_DRAG_MOTION);
   event->dnd.window = g_object_ref ([[self contentView] gdkWindow]);
@@ -725,7 +725,7 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
   int gy, gx;
 
   update_context_from_dragging_info (sender);
-  _gdk_quartz_window_nspoint_to_gdk_xy (screen_point, &gx, &gy);
+  _gdk_haiku_window_nspoint_to_gdk_xy (screen_point, &gx, &gy);
 
   event = gdk_event_new (GDK_DROP_START);
   event->dnd.window = g_object_ref ([[self contentView] gdkWindow]);
@@ -759,12 +759,12 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
   GdkScreen *screen;
   GdkDevice *device;
 
-  g_assert (_gdk_quartz_drag_source_context != NULL);
+  g_assert (_gdk_haiku_drag_source_context != NULL);
 
   event = gdk_event_new (GDK_DROP_FINISHED);
   event->dnd.window = g_object_ref ([[self contentView] gdkWindow]);
   event->dnd.send_event = FALSE;
-  event->dnd.context = g_object_ref (_gdk_quartz_drag_source_context);
+  event->dnd.context = g_object_ref (_gdk_haiku_drag_source_context);
 
   screen = gdk_window_get_screen (event->dnd.window);
 
@@ -776,7 +776,7 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
       event->dnd.context->dest_window = NULL;
 
       windows = gdk_screen_get_toplevel_windows (screen);
-      _gdk_quartz_window_nspoint_to_gdk_xy (aPoint, &gx, &gy);
+      _gdk_haiku_window_nspoint_to_gdk_xy (aPoint, &gx, &gy);
 
       for (list = windows; list; list = list->next)
         {
@@ -795,7 +795,7 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
             }}
     }
 
-  device = gdk_drag_context_get_device (_gdk_quartz_drag_source_context);
+  device = gdk_drag_context_get_device (_gdk_haiku_drag_source_context);
   gdk_event_set_device (event, device);
   gdk_event_set_seat (event, gdk_device_get_seat (device));
 
@@ -803,7 +803,7 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
 
   gdk_event_free (event);
 
-  _gdk_quartz_drag_source_context_destroy_gtk_only ();
+  _gdk_haiku_drag_source_context_destroy_gtk_only ();
 }
 
 #ifdef AVAILABLE_MAC_OS_X_VERSION_10_7_AND_LATER
@@ -830,7 +830,7 @@ typedef enum
   is_fullscreen = (([self styleMask] & GDK_QUARTZ_FULL_SCREEN_MASK) != 0);
 
   if (was_fullscreen != is_fullscreen)
-    _gdk_quartz_window_update_fullscreen_state ([[self contentView] gdkWindow]);
+    _gdk_haiku_window_update_fullscreen_state ([[self contentView] gdkWindow]);
 }
 
 #endif

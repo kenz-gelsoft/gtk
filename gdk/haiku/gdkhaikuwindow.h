@@ -28,7 +28,7 @@
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_QUARTZ_WINDOW              (gdk_quartz_window_get_type ())
+#define GDK_TYPE_QUARTZ_WINDOW              (gdk_haiku_window_get_type ())
 #define GDK_QUARTZ_WINDOW(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_WINDOW, GdkHaikuWindow))
 #define GDK_QUARTZ_WINDOW_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_QUARTZ_WINDOW, GdkHaikuWindowClass))
 #define GDK_IS_QUARTZ_WINDOW(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_QUARTZ_WINDOW))
@@ -43,7 +43,7 @@ typedef GdkWindow GdkHaikuWindow;
 typedef struct _GdkHaikuWindowClass GdkHaikuWindowClass;
 
 GDK_AVAILABLE_IN_ALL
-GType     gdk_quartz_window_get_type     (void);
+GType     gdk_haiku_window_get_type     (void);
 
 G_END_DECLS
 

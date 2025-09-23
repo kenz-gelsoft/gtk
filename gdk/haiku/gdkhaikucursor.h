@@ -28,7 +28,7 @@
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_QUARTZ_CURSOR              (gdk_quartz_cursor_get_type ())
+#define GDK_TYPE_QUARTZ_CURSOR              (gdk_haiku_cursor_get_type ())
 #define GDK_QUARTZ_CURSOR(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_CURSOR, GdkHaikuCursor))
 #define GDK_QUARTZ_CURSOR_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_QUARTZ_CURSOR, GdkHaikuCursorClass))
 #define GDK_IS_QUARTZ_CURSOR(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_QUARTZ_CURSOR))
@@ -43,7 +43,7 @@ typedef GdkCursor GdkHaikuCursor;
 typedef struct _GdkHaikuCursorClass GdkHaikuCursorClass;
 
 GDK_AVAILABLE_IN_ALL
-GType gdk_quartz_cursor_get_type (void);
+GType gdk_haiku_cursor_get_type (void);
 
 G_END_DECLS
 

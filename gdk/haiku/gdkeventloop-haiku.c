@@ -611,13 +611,13 @@ select_thread_collect_poll (GPollFD *ufds, guint nfds)
  ************************************************************/
 
 gboolean
-_gdk_quartz_event_loop_check_pending (void)
+_gdk_haiku_event_loop_check_pending (void)
 {
   return current_events && current_events->head;
 }
 
 NSEvent*
-_gdk_quartz_event_loop_get_pending (void)
+_gdk_haiku_event_loop_get_pending (void)
 {
   NSEvent *event = NULL;
 
@@ -628,7 +628,7 @@ _gdk_quartz_event_loop_get_pending (void)
 }
 
 void
-_gdk_quartz_event_loop_release_event (NSEvent *event)
+_gdk_haiku_event_loop_release_event (NSEvent *event)
 {
   [event release];
 }
@@ -672,7 +672,7 @@ gdk_event_prepare (GSource *source,
     retval = _gdk_event_queue_find_first (_gdk_display) != NULL;
   else
     retval = (_gdk_event_queue_find_first (_gdk_display) != NULL ||
-              _gdk_quartz_event_loop_check_pending ());
+              _gdk_haiku_event_loop_check_pending ());
 
   gdk_threads_leave ();
 
@@ -690,7 +690,7 @@ gdk_event_check (GSource *source)
     retval = _gdk_event_queue_find_first (_gdk_display) != NULL;
   else
     retval = (_gdk_event_queue_find_first (_gdk_display) != NULL ||
-              _gdk_quartz_event_loop_check_pending ());
+              _gdk_haiku_event_loop_check_pending ());
 
   gdk_threads_leave ();
 
@@ -706,7 +706,7 @@ gdk_event_dispatch (GSource     *source,
 
   gdk_threads_enter ();
 
-  _gdk_quartz_display_queue_events (_gdk_display);
+  _gdk_haiku_display_queue_events (_gdk_display);
 
   event = _gdk_event_unqueue (_gdk_display);
 
@@ -1044,7 +1044,7 @@ run_loop_observer_callback (CFRunLoopObserverRef observer,
 /************************************************************/
 
 void
-_gdk_quartz_event_loop_init (void)
+_gdk_haiku_event_loop_init (void)
 {
   GSource *source;
   CFRunLoopObserverRef observer;

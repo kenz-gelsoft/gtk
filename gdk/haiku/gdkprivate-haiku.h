@@ -32,9 +32,9 @@
 
 /* Display */
 
-GdkDisplay *    _gdk_quartz_display_open (const gchar *name);
+GdkDisplay *    _gdk_haiku_display_open (const gchar *name);
 
 /* Window Impl */
-void _gdk_quartz_unref_cairo_surface (GdkWindow *window);
+void _gdk_haiku_unref_cairo_surface (GdkWindow *window);
 
 #endif /* __GDK_PRIVATE_QUARTZ_H__ */

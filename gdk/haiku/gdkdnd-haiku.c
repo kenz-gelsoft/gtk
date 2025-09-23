@@ -23,52 +23,52 @@
 #include "gdkinternal-quartz.h"
 #include "gdkquartz-gtk-only.h"
 
-G_DEFINE_TYPE (GdkHaikuDragContext, gdk_quartz_drag_context, GDK_TYPE_DRAG_CONTEXT)
+G_DEFINE_TYPE (GdkHaikuDragContext, gdk_haiku_drag_context, GDK_TYPE_DRAG_CONTEXT)
 
 
-GdkDragContext *_gdk_quartz_drag_source_context = NULL;
+GdkDragContext *_gdk_haiku_drag_source_context = NULL;
 
 GdkDragContext *
-gdk_quartz_drag_source_context_libgtk_only ()
+gdk_haiku_drag_source_context_libgtk_only ()
 {
-  return _gdk_quartz_drag_source_context;
+  return _gdk_haiku_drag_source_context;
 }
 
 GdkDragContext *
-_gdk_quartz_window_drag_begin (GdkWindow *window,
+_gdk_haiku_window_drag_begin (GdkWindow *window,
                                GdkDevice *device,
                                GList     *targets,
                                gint       x_root,
                                gint       y_root)
 {
-  g_assert (_gdk_quartz_drag_source_context == NULL);
+  g_assert (_gdk_haiku_drag_source_context == NULL);
 
   /* Create fake context */
-  _gdk_quartz_drag_source_context = g_object_new (GDK_TYPE_QUARTZ_DRAG_CONTEXT,
+  _gdk_haiku_drag_source_context = g_object_new (GDK_TYPE_QUARTZ_DRAG_CONTEXT,
                                                   NULL);
-  _gdk_quartz_drag_source_context->display = gdk_window_get_display (window);
-  _gdk_quartz_drag_source_context->is_source = TRUE;
+  _gdk_haiku_drag_source_context->display = gdk_window_get_display (window);
+  _gdk_haiku_drag_source_context->is_source = TRUE;
 
-  _gdk_quartz_drag_source_context->source_window = window;
+  _gdk_haiku_drag_source_context->source_window = window;
   g_object_ref (window);
 
-  _gdk_quartz_drag_source_context->targets = targets;
+  _gdk_haiku_drag_source_context->targets = targets;
 
-  gdk_drag_context_set_device (_gdk_quartz_drag_source_context, device);
+  gdk_drag_context_set_device (_gdk_haiku_drag_source_context, device);
 
-  return _gdk_quartz_drag_source_context;
+  return _gdk_haiku_drag_source_context;
 }
 
 void
-_gdk_quartz_drag_source_context_destroy_gtk_only ()
+_gdk_haiku_drag_source_context_destroy_gtk_only ()
 {
-     if (_gdk_quartz_drag_source_context)
-          g_object_unref (_gdk_quartz_drag_source_context);
-     _gdk_quartz_drag_source_context = NULL;
+     if (_gdk_haiku_drag_source_context)
+          g_object_unref (_gdk_haiku_drag_source_context);
+     _gdk_haiku_drag_source_context = NULL;
 }
 
 static gboolean
-gdk_quartz_drag_context_drag_motion (GdkDragContext  *context,
+gdk_haiku_drag_context_drag_motion (GdkDragContext  *context,
                                      GdkWindow       *dest_window,
                                      GdkDragProtocol  protocol,
                                      gint             x_root,
@@ -82,7 +82,7 @@ gdk_quartz_drag_context_drag_motion (GdkDragContext  *context,
 }
 
 static GdkWindow *
-gdk_quartz_drag_context_find_window (GdkDragContext  *context,
+gdk_haiku_drag_context_find_window (GdkDragContext  *context,
                                      GdkWindow       *drag_window,
                                      GdkScreen       *screen,
                                      gint             x_root,
@@ -94,21 +94,21 @@ gdk_quartz_drag_context_find_window (GdkDragContext  *context,
 }
 
 static void
-gdk_quartz_drag_context_drag_drop (GdkDragContext *context,
+gdk_haiku_drag_context_drag_drop (GdkDragContext *context,
                                    guint32         time)
 {
   /* FIXME: Implement */
 }
 
 static void
-gdk_quartz_drag_context_drag_abort (GdkDragContext *context,
+gdk_haiku_drag_context_drag_abort (GdkDragContext *context,
                                     guint32         time)
 {
   /* FIXME: Implement */
 }
 
 static void
-gdk_quartz_drag_context_drag_status (GdkDragContext *context,
+gdk_haiku_drag_context_drag_status (GdkDragContext *context,
                                      GdkDragAction   action,
                                      guint32         time)
 {
@@ -116,7 +116,7 @@ gdk_quartz_drag_context_drag_status (GdkDragContext *context,
 }
 
 static void
-gdk_quartz_drag_context_drop_reply (GdkDragContext *context,
+gdk_haiku_drag_context_drop_reply (GdkDragContext *context,
                                     gboolean        ok,
                                     guint32         time)
 {
@@ -124,7 +124,7 @@ gdk_quartz_drag_context_drop_reply (GdkDragContext *context,
 }
 
 static void
-gdk_quartz_drag_context_drop_finish (GdkDragContext *context,
+gdk_haiku_drag_context_drop_finish (GdkDragContext *context,
                                      gboolean        success,
                                      guint32         time)
 {
@@ -132,57 +132,57 @@ gdk_quartz_drag_context_drop_finish (GdkDragContext *context,
 }
 
 void
-_gdk_quartz_window_register_dnd (GdkWindow *window)
+_gdk_haiku_window_register_dnd (GdkWindow *window)
 {
   /* FIXME: Implement */
 }
 
 static GdkAtom
-gdk_quartz_drag_context_get_selection (GdkDragContext *context)
+gdk_haiku_drag_context_get_selection (GdkDragContext *context)
 {
   /* FIXME: Implement */
   return GDK_NONE;
 }
 
 static gboolean
-gdk_quartz_drag_context_drop_status (GdkDragContext *context)
+gdk_haiku_drag_context_drop_status (GdkDragContext *context)
 {
   /* FIXME: Implement */
   return FALSE;
 }
 
 id
-gdk_quartz_drag_context_get_dragging_info_libgtk_only (GdkDragContext *context)
+gdk_haiku_drag_context_get_dragging_info_libgtk_only (GdkDragContext *context)
 {
   return GDK_QUARTZ_DRAG_CONTEXT (context)->dragging_info;
 }
 
 static void
-gdk_quartz_drag_context_init (GdkHaikuDragContext *context)
+gdk_haiku_drag_context_init (GdkHaikuDragContext *context)
 {
 }
 
 static void
-gdk_quartz_drag_context_finalize (GObject *object)
+gdk_haiku_drag_context_finalize (GObject *object)
 {
-  G_OBJECT_CLASS (gdk_quartz_drag_context_parent_class)->finalize (object);
+  G_OBJECT_CLASS (gdk_haiku_drag_context_parent_class)->finalize (object);
 }
 
 static void
-gdk_quartz_drag_context_class_init (GdkHaikuDragContextClass *klass)
+gdk_haiku_drag_context_class_init (GdkHaikuDragContextClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GdkDragContextClass *context_class = GDK_DRAG_CONTEXT_CLASS (klass);
 
-  object_class->finalize = gdk_quartz_drag_context_finalize;
+  object_class->finalize = gdk_haiku_drag_context_finalize;
 
-  context_class->find_window = gdk_quartz_drag_context_find_window;
-  context_class->drag_status = gdk_quartz_drag_context_drag_status;
-  context_class->drag_motion = gdk_quartz_drag_context_drag_motion;
-  context_class->drag_abort = gdk_quartz_drag_context_drag_abort;
-  context_class->drag_drop = gdk_quartz_drag_context_drag_drop;
-  context_class->drop_reply = gdk_quartz_drag_context_drop_reply;
-  context_class->drop_finish = gdk_quartz_drag_context_drop_finish;
-  context_class->drop_status = gdk_quartz_drag_context_drop_status;
-  context_class->get_selection = gdk_quartz_drag_context_get_selection;
+  context_class->find_window = gdk_haiku_drag_context_find_window;
+  context_class->drag_status = gdk_haiku_drag_context_drag_status;
+  context_class->drag_motion = gdk_haiku_drag_context_drag_motion;
+  context_class->drag_abort = gdk_haiku_drag_context_drag_abort;
+  context_class->drag_drop = gdk_haiku_drag_context_drag_drop;
+  context_class->drop_reply = gdk_haiku_drag_context_drop_reply;
+  context_class->drop_finish = gdk_haiku_drag_context_drop_finish;
+  context_class->drop_status = gdk_haiku_drag_context_drop_status;
+  context_class->get_selection = gdk_haiku_drag_context_get_selection;
 }

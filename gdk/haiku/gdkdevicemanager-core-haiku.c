@@ -45,26 +45,26 @@ typedef enum
 #define HAS_FOCUS(toplevel)                           \
   ((toplevel)->has_focus || (toplevel)->has_pointer_focus)
 
-static void    gdk_quartz_device_manager_core_finalize    (GObject *object);
-static void    gdk_quartz_device_manager_core_constructed (GObject *object);
+static void    gdk_haiku_device_manager_core_finalize    (GObject *object);
+static void    gdk_haiku_device_manager_core_constructed (GObject *object);
 
-static GList * gdk_quartz_device_manager_core_list_devices (GdkDeviceManager *device_manager,
+static GList * gdk_haiku_device_manager_core_list_devices (GdkDeviceManager *device_manager,
                                                             GdkDeviceType     type);
-static GdkDevice * gdk_quartz_device_manager_core_get_client_pointer (GdkDeviceManager *device_manager);
+static GdkDevice * gdk_haiku_device_manager_core_get_client_pointer (GdkDeviceManager *device_manager);
 
 
-G_DEFINE_TYPE (GdkHaikuDeviceManagerCore, gdk_quartz_device_manager_core, GDK_TYPE_DEVICE_MANAGER)
+G_DEFINE_TYPE (GdkHaikuDeviceManagerCore, gdk_haiku_device_manager_core, GDK_TYPE_DEVICE_MANAGER)
 
 static void
-gdk_quartz_device_manager_core_class_init (GdkHaikuDeviceManagerCoreClass *klass)
+gdk_haiku_device_manager_core_class_init (GdkHaikuDeviceManagerCoreClass *klass)
 {
   GdkDeviceManagerClass *device_manager_class = GDK_DEVICE_MANAGER_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->finalize = gdk_quartz_device_manager_core_finalize;
-  object_class->constructed = gdk_quartz_device_manager_core_constructed;
-  device_manager_class->list_devices = gdk_quartz_device_manager_core_list_devices;
-  device_manager_class->get_client_pointer = gdk_quartz_device_manager_core_get_client_pointer;
+  object_class->finalize = gdk_haiku_device_manager_core_finalize;
+  object_class->constructed = gdk_haiku_device_manager_core_constructed;
+  device_manager_class->list_devices = gdk_haiku_device_manager_core_list_devices;
+  device_manager_class->get_client_pointer = gdk_haiku_device_manager_core_get_client_pointer;
 }
 
 static GdkDevice *
@@ -98,13 +98,13 @@ create_core_keyboard (GdkDeviceManager *device_manager,
 }
 
 static void
-gdk_quartz_device_manager_core_init (GdkHaikuDeviceManagerCore *device_manager)
+gdk_haiku_device_manager_core_init (GdkHaikuDeviceManagerCore *device_manager)
 {
   device_manager->known_tablet_devices = NULL;
 }
 
 static void
-gdk_quartz_device_manager_core_finalize (GObject *object)
+gdk_haiku_device_manager_core_finalize (GObject *object)
 {
   GdkHaikuDeviceManagerCore *quartz_device_manager_core;
 
@@ -115,11 +115,11 @@ gdk_quartz_device_manager_core_finalize (GObject *object)
 
   g_list_free_full (quartz_device_manager_core->known_tablet_devices, g_object_unref);
 
-  G_OBJECT_CLASS (gdk_quartz_device_manager_core_parent_class)->finalize (object);
+  G_OBJECT_CLASS (gdk_haiku_device_manager_core_parent_class)->finalize (object);
 }
 
 static void
-gdk_quartz_device_manager_core_constructed (GObject *object)
+gdk_haiku_device_manager_core_constructed (GObject *object)
 {
   GdkHaikuDeviceManagerCore *device_manager;
   GdkDisplay *display;
@@ -140,7 +140,7 @@ gdk_quartz_device_manager_core_constructed (GObject *object)
 }
 
 static GList *
-gdk_quartz_device_manager_core_list_devices (GdkDeviceManager *device_manager,
+gdk_haiku_device_manager_core_list_devices (GdkDeviceManager *device_manager,
                                              GdkDeviceType     type)
 {
   GdkHaikuDeviceManagerCore *self;
@@ -166,7 +166,7 @@ gdk_quartz_device_manager_core_list_devices (GdkDeviceManager *device_manager,
 }
 
 static GdkDevice *
-gdk_quartz_device_manager_core_get_client_pointer (GdkDeviceManager *device_manager)
+gdk_haiku_device_manager_core_get_client_pointer (GdkDeviceManager *device_manager)
 {
   GdkHaikuDeviceManagerCore *quartz_device_manager_core;
 
@@ -242,7 +242,7 @@ translate_device_axes (GdkDevice *source_device,
 }
 
 void
-_gdk_quartz_device_manager_register_device_for_ns_event (GdkDeviceManager *device_manager,
+_gdk_haiku_device_manager_register_device_for_ns_event (GdkDeviceManager *device_manager,
                                                          NSEvent          *nsevent)
 {
   GdkHaikuDeviceManagerCore *self = GDK_QUARTZ_DEVICE_MANAGER_CORE (device_manager);
@@ -267,22 +267,22 @@ _gdk_quartz_device_manager_register_device_for_ns_event (GdkDeviceManager *devic
       GdkDevice *device_to_check = GDK_DEVICE (l->data);
 
       if (input_source == gdk_device_get_source (device_to_check) &&
-          [nsevent uniqueID] == _gdk_quartz_device_core_get_unique (device_to_check))
+          [nsevent uniqueID] == _gdk_haiku_device_core_get_unique (device_to_check))
         {
           device = device_to_check;
           if ([nsevent isEnteringProximity])
             {
-              if (!_gdk_quartz_device_core_is_active (device, [nsevent deviceID]))
+              if (!_gdk_haiku_device_core_is_active (device, [nsevent deviceID]))
                 self->num_active_devices++;
 
-              _gdk_quartz_device_core_set_active (device, TRUE, [nsevent deviceID]);
+              _gdk_haiku_device_core_set_active (device, TRUE, [nsevent deviceID]);
             }
           else
             {
-              if (_gdk_quartz_device_core_is_active (device, [nsevent deviceID]))
+              if (_gdk_haiku_device_core_is_active (device, [nsevent deviceID]))
                 self->num_active_devices--;
 
-              _gdk_quartz_device_core_set_active (device, FALSE, [nsevent deviceID]);
+              _gdk_haiku_device_core_set_active (device, FALSE, [nsevent deviceID]);
             }
         }
     }
@@ -320,17 +320,17 @@ _gdk_quartz_device_manager_register_device_for_ns_event (GdkDeviceManager *devic
       seat = gdk_device_get_seat (self->core_pointer);
       gdk_seat_default_add_slave (GDK_SEAT_DEFAULT (seat), device);
 
-      _gdk_quartz_device_core_set_unique (device, [nsevent uniqueID]);
-      _gdk_quartz_device_core_set_active (device, TRUE, [nsevent deviceID]);
+      _gdk_haiku_device_core_set_unique (device, [nsevent uniqueID]);
+      _gdk_haiku_device_core_set_active (device, TRUE, [nsevent deviceID]);
 
       self->known_tablet_devices = g_list_append (self->known_tablet_devices,
                                                   device);
 
       if ([nsevent isEnteringProximity])
         {
-          if (!_gdk_quartz_device_core_is_active (device, [nsevent deviceID]))
+          if (!_gdk_haiku_device_core_is_active (device, [nsevent deviceID]))
             self->num_active_devices++;
-          _gdk_quartz_device_core_set_active (device, TRUE, [nsevent deviceID]);
+          _gdk_haiku_device_core_set_active (device, TRUE, [nsevent deviceID]);
         }
     }
 
@@ -343,7 +343,7 @@ _gdk_quartz_device_manager_register_device_for_ns_event (GdkDeviceManager *devic
 }
 
 GdkDevice *
-_gdk_quartz_device_manager_core_device_for_ns_event (GdkDeviceManager *device_manager,
+_gdk_haiku_device_manager_core_device_for_ns_event (GdkDeviceManager *device_manager,
                                                      NSEvent          *nsevent)
 {
   GdkHaikuDeviceManagerCore *self = GDK_QUARTZ_DEVICE_MANAGER_CORE (device_manager);
@@ -360,7 +360,7 @@ _gdk_quartz_device_manager_core_device_for_ns_event (GdkDeviceManager *device_ma
         {
           GdkDevice *device_to_check = GDK_DEVICE (l->data);
 
-          if (_gdk_quartz_device_core_is_active (device_to_check, [nsevent deviceID]))
+          if (_gdk_haiku_device_core_is_active (device_to_check, [nsevent deviceID]))
             device = device_to_check;
         }
     }

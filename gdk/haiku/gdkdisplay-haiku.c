@@ -72,7 +72,7 @@ static void display_reconfiguration_callback (CGDirectDisplayID            displ
                                               void                        *data);
 
 static GdkWindow *
-gdk_quartz_display_get_default_group (GdkDisplay *display)
+gdk_haiku_display_get_default_group (GdkDisplay *display)
 {
 /* X11-only. */
   return NULL;
@@ -87,7 +87,7 @@ _gdk_device_manager_new (GdkDisplay *display)
 }
 
 void
-_gdk_quartz_display_add_frame_callback (GdkDisplay             *display,
+_gdk_haiku_display_add_frame_callback (GdkDisplay             *display,
                                         GdkWindow              *window)
 {
   GdkHaikuDisplay *display_quartz;
@@ -105,7 +105,7 @@ _gdk_quartz_display_add_frame_callback (GdkDisplay             *display,
 }
 
 void
-_gdk_quartz_display_remove_frame_callback (GdkDisplay             *display,
+_gdk_haiku_display_remove_frame_callback (GdkDisplay             *display,
                                            GdkWindow              *window)
 {
   GdkHaikuDisplay *display_quartz = GDK_QUARTZ_DISPLAY (display);
@@ -124,7 +124,7 @@ _gdk_quartz_display_remove_frame_callback (GdkDisplay             *display,
 }
 
 static gboolean
-gdk_quartz_display_frame_cb (gpointer data)
+gdk_haiku_display_frame_cb (gpointer data)
 {
   GdkDisplayLinkSource *source;
   GdkHaikuDisplay *display_quartz = data;
@@ -183,41 +183,41 @@ gdk_quartz_display_frame_cb (gpointer data)
 }
 
 static void
-gdk_quartz_display_init_display_link (GdkDisplay *display)
+gdk_haiku_display_init_display_link (GdkDisplay *display)
 {
   GdkHaikuDisplay *display_quartz = GDK_QUARTZ_DISPLAY (display);
 
   display_quartz->frame_source = gdk_display_link_source_new ();
   g_source_set_callback (display_quartz->frame_source,
-                         gdk_quartz_display_frame_cb,
+                         gdk_haiku_display_frame_cb,
                          display,
                          NULL);
   g_source_attach (display_quartz->frame_source, NULL);
 }
 
 GdkDisplay *
-_gdk_quartz_display_open (const gchar *display_name)
+_gdk_haiku_display_open (const gchar *display_name)
 {
   if (_gdk_display != NULL)
     return NULL;
 
-  _gdk_display = g_object_new (gdk_quartz_display_get_type (), NULL);
+  _gdk_display = g_object_new (gdk_haiku_display_get_type (), NULL);
   _gdk_display->device_manager = _gdk_device_manager_new (_gdk_display);
 
-  _gdk_screen = g_object_new (gdk_quartz_screen_get_type (), NULL);
-  _gdk_quartz_screen_init_visuals (_gdk_screen);
+  _gdk_screen = g_object_new (gdk_haiku_screen_get_type (), NULL);
+  _gdk_haiku_screen_init_visuals (_gdk_screen);
 
-  _gdk_quartz_window_init_windowing (_gdk_display, _gdk_screen);
+  _gdk_haiku_window_init_windowing (_gdk_display, _gdk_screen);
 
-  _gdk_quartz_events_init ();
+  _gdk_haiku_events_init ();
 
   /* Initialize application */
   [NSApplication sharedApplication];
-  gdk_quartz_display_init_display_link (_gdk_display);
+  gdk_haiku_display_init_display_link (_gdk_display);
 
 #if 0
   /* FIXME: Remove the #if 0 when we have these functions */
-  _gdk_quartz_dnd_init ();
+  _gdk_haiku_dnd_init ();
 #endif
 
   g_signal_emit_by_name (_gdk_display, "opened");
@@ -226,7 +226,7 @@ _gdk_quartz_display_open (const gchar *display_name)
 }
 
 static const gchar *
-gdk_quartz_display_get_name (GdkDisplay *display)
+gdk_haiku_display_get_name (GdkDisplay *display)
 {
   static gchar *display_name = NULL;
 
@@ -241,13 +241,13 @@ gdk_quartz_display_get_name (GdkDisplay *display)
 }
 
 static GdkScreen *
-gdk_quartz_display_get_default_screen (GdkDisplay *display)
+gdk_haiku_display_get_default_screen (GdkDisplay *display)
 {
   return _gdk_screen;
 }
 
 static void
-gdk_quartz_display_beep (GdkDisplay *display)
+gdk_haiku_display_beep (GdkDisplay *display)
 {
   g_return_if_fail (GDK_IS_DISPLAY (display));
 
@@ -255,19 +255,19 @@ gdk_quartz_display_beep (GdkDisplay *display)
 }
 
 static void
-gdk_quartz_display_sync (GdkDisplay *display)
+gdk_haiku_display_sync (GdkDisplay *display)
 {
   /* Not needed. */
 }
 
 static void
-gdk_quartz_display_flush (GdkDisplay *display)
+gdk_haiku_display_flush (GdkDisplay *display)
 {
   /* Not needed. */
 }
 
 static gboolean
-gdk_quartz_display_supports_selection_notification (GdkDisplay *display)
+gdk_haiku_display_supports_selection_notification (GdkDisplay *display)
 {
   g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
   /* X11-only. */
@@ -275,7 +275,7 @@ gdk_quartz_display_supports_selection_notification (GdkDisplay *display)
 }
 
 static gboolean
-gdk_quartz_display_request_selection_notification (GdkDisplay *display,
+gdk_haiku_display_request_selection_notification (GdkDisplay *display,
                                                    GdkAtom     selection)
 {
   /* X11-only. */
@@ -283,28 +283,28 @@ gdk_quartz_display_request_selection_notification (GdkDisplay *display,
 }
 
 static gboolean
-gdk_quartz_display_supports_clipboard_persistence (GdkDisplay *display)
+gdk_haiku_display_supports_clipboard_persistence (GdkDisplay *display)
 {
   /* X11-only */
   return FALSE;
 }
 
 static gboolean
-gdk_quartz_display_supports_shapes (GdkDisplay *display)
+gdk_haiku_display_supports_shapes (GdkDisplay *display)
 {
   /* Not needed, nothing ever calls this.*/
   return FALSE;
 }
 
 static gboolean
-gdk_quartz_display_supports_input_shapes (GdkDisplay *display)
+gdk_haiku_display_supports_input_shapes (GdkDisplay *display)
 {
   /* Not needed, nothign ever calls this. */
   return FALSE;
 }
 
 static void
-gdk_quartz_display_store_clipboard (GdkDisplay    *display,
+gdk_haiku_display_store_clipboard (GdkDisplay    *display,
                                     GdkWindow     *clipboard_window,
                                     guint32        time_,
                                     const GdkAtom *targets,
@@ -317,21 +317,21 @@ gdk_quartz_display_store_clipboard (GdkDisplay    *display,
 
 
 static gboolean
-gdk_quartz_display_supports_composite (GdkDisplay *display)
+gdk_haiku_display_supports_composite (GdkDisplay *display)
 {
   /* X11-only. */
   return FALSE;
 }
 
 static gulong
-gdk_quartz_display_get_next_serial (GdkDisplay *display)
+gdk_haiku_display_get_next_serial (GdkDisplay *display)
 {
   /* X11-only. */
   return 0;
 }
 
 static void
-gdk_quartz_display_notify_startup_complete (GdkDisplay  *display,
+gdk_haiku_display_notify_startup_complete (GdkDisplay  *display,
                                             const gchar *startup_id)
 {
   /* This should call finishLaunching, but doing so causes Quartz to throw
@@ -342,13 +342,13 @@ gdk_quartz_display_notify_startup_complete (GdkDisplay  *display,
 }
 
 static void
-gdk_quartz_display_push_error_trap (GdkDisplay *display)
+gdk_haiku_display_push_error_trap (GdkDisplay *display)
 {
   /* X11-only. */
 }
 
 static gint
-gdk_quartz_display_pop_error_trap (GdkDisplay *display, gboolean ignore)
+gdk_haiku_display_pop_error_trap (GdkDisplay *display, gboolean ignore)
 {
   /* X11 only. */
   return 0;
@@ -409,7 +409,7 @@ configure_monitor (GdkMonitor       *monitor,
   monitor->height_mm = height;
   monitor->geometry = disp_geometry;
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1080
-  if (mode && gdk_quartz_osx_version () >= GDK_OSX_MOUNTAIN_LION)
+  if (mode && gdk_haiku_osx_version () >= GDK_OSX_MOUNTAIN_LION)
   {
     monitor->scale_factor = CGDisplayModeGetPixelWidth (mode) / CGDisplayModeGetWidth (mode);
     CGDisplayModeRelease (mode);
@@ -528,18 +528,18 @@ display_reconfiguration_callback (CGDirectDisplayID            cg_display,
 
 
 static int
-gdk_quartz_display_get_n_monitors (GdkDisplay *display)
+gdk_haiku_display_get_n_monitors (GdkDisplay *display)
 {
   GdkHaikuDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
   return quartz_display->monitors->len;
 }
 
 static GdkMonitor *
-gdk_quartz_display_get_monitor (GdkDisplay *display,
+gdk_haiku_display_get_monitor (GdkDisplay *display,
                                 int         monitor_num)
 {
   GdkHaikuDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
-  int n_displays = gdk_quartz_display_get_n_monitors (display);
+  int n_displays = gdk_haiku_display_get_n_monitors (display);
 
   if (monitor_num >= 0 && monitor_num < n_displays)
     return g_ptr_array_index (quartz_display->monitors, monitor_num);
@@ -548,7 +548,7 @@ gdk_quartz_display_get_monitor (GdkDisplay *display,
 }
 
 static GdkMonitor *
-gdk_quartz_display_get_primary_monitor (GdkDisplay *display)
+gdk_haiku_display_get_primary_monitor (GdkDisplay *display)
 {
   GdkHaikuDisplay *quartz_display = GDK_QUARTZ_DISPLAY (display);
   CGDirectDisplayID primary_id = CGMainDisplayID ();
@@ -564,7 +564,7 @@ gdk_quartz_display_get_primary_monitor (GdkDisplay *display)
 }
 
 static GdkMonitor *
-gdk_quartz_display_get_monitor_at_window (GdkDisplay *display,
+gdk_haiku_display_get_monitor_at_window (GdkDisplay *display,
                                           GdkWindow *window)
 {
   GdkWindowImplHaiku *impl = NULL;
@@ -612,10 +612,10 @@ gdk_quartz_display_get_monitor_at_window (GdkDisplay *display,
   return monitor;
 }
 
-G_DEFINE_TYPE (GdkHaikuDisplay, gdk_quartz_display, GDK_TYPE_DISPLAY)
+G_DEFINE_TYPE (GdkHaikuDisplay, gdk_haiku_display, GDK_TYPE_DISPLAY)
 
 static void
-gdk_quartz_display_init (GdkHaikuDisplay *display)
+gdk_haiku_display_init (GdkHaikuDisplay *display)
 {
   uint32_t n_displays = 0, disp;
   CGDirectDisplayID *displays;
@@ -639,7 +639,7 @@ gdk_quartz_display_init (GdkHaikuDisplay *display)
 }
 
 static void
-gdk_quartz_display_dispose (GObject *object)
+gdk_haiku_display_dispose (GObject *object)
 {
   GdkHaikuDisplay *quartz_display = GDK_QUARTZ_DISPLAY (object);
 
@@ -647,80 +647,80 @@ gdk_quartz_display_dispose (GObject *object)
   CGDisplayRemoveReconfigurationCallback (display_reconfiguration_callback,
                                           quartz_display);
 
-  G_OBJECT_CLASS (gdk_quartz_display_parent_class)->dispose (object);
+  G_OBJECT_CLASS (gdk_haiku_display_parent_class)->dispose (object);
 }
 
 static void
-gdk_quartz_display_finalize (GObject *object)
+gdk_haiku_display_finalize (GObject *object)
 {
-  G_OBJECT_CLASS (gdk_quartz_display_parent_class)->finalize (object);
+  G_OBJECT_CLASS (gdk_haiku_display_parent_class)->finalize (object);
 }
 
 static void
-gdk_quartz_display_class_init (GdkHaikuDisplayClass *class)
+gdk_haiku_display_class_init (GdkHaikuDisplayClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
   GdkDisplayClass *display_class = GDK_DISPLAY_CLASS (class);
 
-  object_class->finalize = gdk_quartz_display_finalize;
-  object_class->dispose = gdk_quartz_display_dispose;
+  object_class->finalize = gdk_haiku_display_finalize;
+  object_class->dispose = gdk_haiku_display_dispose;
 
   display_class->window_type = GDK_TYPE_QUARTZ_WINDOW;
 
-  display_class->get_name = gdk_quartz_display_get_name;
-  display_class->get_default_screen = gdk_quartz_display_get_default_screen;
-  display_class->beep = gdk_quartz_display_beep;
-  display_class->sync = gdk_quartz_display_sync;
-  display_class->flush = gdk_quartz_display_flush;
-  display_class->has_pending = _gdk_quartz_display_has_pending;
-  display_class->queue_events = _gdk_quartz_display_queue_events;
-  display_class->get_default_group = gdk_quartz_display_get_default_group;
-  display_class->supports_selection_notification = gdk_quartz_display_supports_selection_notification;
-  display_class->request_selection_notification = gdk_quartz_display_request_selection_notification;
+  display_class->get_name = gdk_haiku_display_get_name;
+  display_class->get_default_screen = gdk_haiku_display_get_default_screen;
+  display_class->beep = gdk_haiku_display_beep;
+  display_class->sync = gdk_haiku_display_sync;
+  display_class->flush = gdk_haiku_display_flush;
+  display_class->has_pending = _gdk_haiku_display_has_pending;
+  display_class->queue_events = _gdk_haiku_display_queue_events;
+  display_class->get_default_group = gdk_haiku_display_get_default_group;
+  display_class->supports_selection_notification = gdk_haiku_display_supports_selection_notification;
+  display_class->request_selection_notification = gdk_haiku_display_request_selection_notification;
 
-  display_class->supports_shapes = gdk_quartz_display_supports_shapes;
-  display_class->supports_input_shapes = gdk_quartz_display_supports_input_shapes;
-  display_class->supports_composite = gdk_quartz_display_supports_composite;
-  display_class->supports_cursor_alpha = _gdk_quartz_display_supports_cursor_alpha;
-  display_class->supports_cursor_color = _gdk_quartz_display_supports_cursor_color;
+  display_class->supports_shapes = gdk_haiku_display_supports_shapes;
+  display_class->supports_input_shapes = gdk_haiku_display_supports_input_shapes;
+  display_class->supports_composite = gdk_haiku_display_supports_composite;
+  display_class->supports_cursor_alpha = _gdk_haiku_display_supports_cursor_alpha;
+  display_class->supports_cursor_color = _gdk_haiku_display_supports_cursor_color;
 
-  display_class->supports_clipboard_persistence = gdk_quartz_display_supports_clipboard_persistence;
-  display_class->store_clipboard = gdk_quartz_display_store_clipboard;
+  display_class->supports_clipboard_persistence = gdk_haiku_display_supports_clipboard_persistence;
+  display_class->store_clipboard = gdk_haiku_display_store_clipboard;
 
-  display_class->get_default_cursor_size = _gdk_quartz_display_get_default_cursor_size;
-  display_class->get_maximal_cursor_size = _gdk_quartz_display_get_maximal_cursor_size;
-  display_class->get_cursor_for_type = _gdk_quartz_display_get_cursor_for_type;
-  display_class->get_cursor_for_name = _gdk_quartz_display_get_cursor_for_name;
-  display_class->get_cursor_for_surface = _gdk_quartz_display_get_cursor_for_surface;
+  display_class->get_default_cursor_size = _gdk_haiku_display_get_default_cursor_size;
+  display_class->get_maximal_cursor_size = _gdk_haiku_display_get_maximal_cursor_size;
+  display_class->get_cursor_for_type = _gdk_haiku_display_get_cursor_for_type;
+  display_class->get_cursor_for_name = _gdk_haiku_display_get_cursor_for_name;
+  display_class->get_cursor_for_surface = _gdk_haiku_display_get_cursor_for_surface;
 
   /* display_class->get_app_launch_context = NULL; Has default. */
-  display_class->before_process_all_updates = _gdk_quartz_display_before_process_all_updates;
-  display_class->after_process_all_updates = _gdk_quartz_display_after_process_all_updates;
-  display_class->get_next_serial = gdk_quartz_display_get_next_serial;
-  display_class->notify_startup_complete = gdk_quartz_display_notify_startup_complete;
-  display_class->event_data_copy = _gdk_quartz_display_event_data_copy;
-  display_class->event_data_free = _gdk_quartz_display_event_data_free;
-  display_class->create_window_impl = _gdk_quartz_display_create_window_impl;
-  display_class->get_keymap = _gdk_quartz_display_get_keymap;
-  display_class->push_error_trap = gdk_quartz_display_push_error_trap;
-  display_class->pop_error_trap = gdk_quartz_display_pop_error_trap;
+  display_class->before_process_all_updates = _gdk_haiku_display_before_process_all_updates;
+  display_class->after_process_all_updates = _gdk_haiku_display_after_process_all_updates;
+  display_class->get_next_serial = gdk_haiku_display_get_next_serial;
+  display_class->notify_startup_complete = gdk_haiku_display_notify_startup_complete;
+  display_class->event_data_copy = _gdk_haiku_display_event_data_copy;
+  display_class->event_data_free = _gdk_haiku_display_event_data_free;
+  display_class->create_window_impl = _gdk_haiku_display_create_window_impl;
+  display_class->get_keymap = _gdk_haiku_display_get_keymap;
+  display_class->push_error_trap = gdk_haiku_display_push_error_trap;
+  display_class->pop_error_trap = gdk_haiku_display_pop_error_trap;
 
-  display_class->get_selection_owner = _gdk_quartz_display_get_selection_owner;
-  display_class->set_selection_owner = _gdk_quartz_display_set_selection_owner;
+  display_class->get_selection_owner = _gdk_haiku_display_get_selection_owner;
+  display_class->set_selection_owner = _gdk_haiku_display_set_selection_owner;
   display_class->send_selection_notify = NULL; /* Ignore. X11 stuff removed in master.  */
-  display_class->get_selection_property = _gdk_quartz_display_get_selection_property;
-  display_class->convert_selection = _gdk_quartz_display_convert_selection;
-  display_class->text_property_to_utf8_list = _gdk_quartz_display_text_property_to_utf8_list;
-  display_class->utf8_to_string_target = _gdk_quartz_display_utf8_to_string_target;
+  display_class->get_selection_property = _gdk_haiku_display_get_selection_property;
+  display_class->convert_selection = _gdk_haiku_display_convert_selection;
+  display_class->text_property_to_utf8_list = _gdk_haiku_display_text_property_to_utf8_list;
+  display_class->utf8_to_string_target = _gdk_haiku_display_utf8_to_string_target;
 
 /* display_class->get_default_seat; The parent class default works fine. */
 
-  display_class->get_n_monitors = gdk_quartz_display_get_n_monitors;
-  display_class->get_monitor = gdk_quartz_display_get_monitor;
-  display_class->get_primary_monitor = gdk_quartz_display_get_primary_monitor;
-  display_class->get_monitor_at_window = gdk_quartz_display_get_monitor_at_window;
-  display_class->is_gl_context_current = gdk_quartz_display_is_gl_context_current;
-  display_class->make_gl_context_current = gdk_quartz_display_make_gl_context_current;
+  display_class->get_n_monitors = gdk_haiku_display_get_n_monitors;
+  display_class->get_monitor = gdk_haiku_display_get_monitor;
+  display_class->get_primary_monitor = gdk_haiku_display_get_primary_monitor;
+  display_class->get_monitor_at_window = gdk_haiku_display_get_monitor_at_window;
+  display_class->is_gl_context_current = gdk_haiku_display_is_gl_context_current;
+  display_class->make_gl_context_current = gdk_haiku_display_make_gl_context_current;
 
   /**
    * GdkHaikuDisplay::monitors-changed:

@@ -73,13 +73,13 @@ struct _GdkHaikuKeymapClass
   GdkKeymapClass keymap_class;
 };
 
-G_DEFINE_TYPE (GdkHaikuKeymap, gdk_quartz_keymap, GDK_TYPE_KEYMAP)
+G_DEFINE_TYPE (GdkHaikuKeymap, gdk_haiku_keymap, GDK_TYPE_KEYMAP)
 
 GdkKeymap *
-_gdk_quartz_display_get_keymap (GdkDisplay *display)
+_gdk_haiku_display_get_keymap (GdkDisplay *display)
 {
   if (default_keymap == NULL)
-    default_keymap = g_object_new (gdk_quartz_keymap_get_type (), NULL);
+    default_keymap = g_object_new (gdk_haiku_keymap_get_type (), NULL);
 
   return default_keymap;
 }
@@ -467,41 +467,41 @@ update_keymap (void)
 }
 
 static PangoDirection
-gdk_quartz_keymap_get_direction (GdkKeymap *keymap)
+gdk_haiku_keymap_get_direction (GdkKeymap *keymap)
 {
   return PANGO_DIRECTION_NEUTRAL;
 }
 
 static gboolean
-gdk_quartz_keymap_have_bidi_layouts (GdkKeymap *keymap)
+gdk_haiku_keymap_have_bidi_layouts (GdkKeymap *keymap)
 {
   /* FIXME: Can we implement this? */
   return FALSE;
 }
 
 static gboolean
-gdk_quartz_keymap_get_caps_lock_state (GdkKeymap *keymap)
+gdk_haiku_keymap_get_caps_lock_state (GdkKeymap *keymap)
 {
   /* FIXME: Implement this. */
   return FALSE;
 }
 
 static gboolean
-gdk_quartz_keymap_get_num_lock_state (GdkKeymap *keymap)
+gdk_haiku_keymap_get_num_lock_state (GdkKeymap *keymap)
 {
   /* FIXME: Implement this. */
   return FALSE;
 }
 
 static gboolean
-gdk_quartz_keymap_get_scroll_lock_state (GdkKeymap *keymap)
+gdk_haiku_keymap_get_scroll_lock_state (GdkKeymap *keymap)
 {
   /* FIXME: Implement this. */
   return FALSE;
 }
 
 static gboolean
-gdk_quartz_keymap_get_entries_for_keyval (GdkKeymap     *keymap,
+gdk_haiku_keymap_get_entries_for_keyval (GdkKeymap     *keymap,
                                           guint          keyval,
                                           GdkKeymapKey **keys,
                                           gint          *n_keys)
@@ -534,7 +534,7 @@ gdk_quartz_keymap_get_entries_for_keyval (GdkKeymap     *keymap,
 }
 
 static gboolean
-gdk_quartz_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
+gdk_haiku_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
                                            guint          hardware_keycode,
                                            GdkKeymapKey **keys,
                                            guint        **keyvals,
@@ -595,7 +595,7 @@ gdk_quartz_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
 #define GET_KEYVAL(keycode, group, level) (keyval_array[(keycode * KEYVALS_PER_KEYCODE + group * 2 + level)])
 
 static guint
-gdk_quartz_keymap_lookup_key (GdkKeymap          *keymap,
+gdk_haiku_keymap_lookup_key (GdkKeymap          *keymap,
                               const GdkKeymapKey *key)
 {
   return GET_KEYVAL (key->keycode, key->group, key->level);
@@ -639,7 +639,7 @@ translate_keysym (guint           hardware_keycode,
 }
 
 static gboolean
-gdk_quartz_keymap_translate_keyboard_state (GdkKeymap       *keymap,
+gdk_haiku_keymap_translate_keyboard_state (GdkKeymap       *keymap,
                                             guint            hardware_keycode,
                                             GdkModifierType  state,
                                             gint             group,
@@ -688,7 +688,7 @@ gdk_quartz_keymap_translate_keyboard_state (GdkKeymap       *keymap,
 }
 
 static void
-gdk_quartz_keymap_add_virtual_modifiers (GdkKeymap       *keymap,
+gdk_haiku_keymap_add_virtual_modifiers (GdkKeymap       *keymap,
                                          GdkModifierType *state)
 {
   if (*state & GDK_MOD2_MASK)
@@ -696,7 +696,7 @@ gdk_quartz_keymap_add_virtual_modifiers (GdkKeymap       *keymap,
 }
 
 static gboolean
-gdk_quartz_keymap_map_virtual_modifiers (GdkKeymap       *keymap,
+gdk_haiku_keymap_map_virtual_modifiers (GdkKeymap       *keymap,
                                          GdkModifierType *state)
 {
   if (*state & GDK_META_MASK)
@@ -706,7 +706,7 @@ gdk_quartz_keymap_map_virtual_modifiers (GdkKeymap       *keymap,
 }
 
 static GdkModifierType
-gdk_quartz_keymap_get_modifier_mask (GdkKeymap         *keymap,
+gdk_haiku_keymap_get_modifier_mask (GdkKeymap         *keymap,
                                      GdkModifierIntent  intent)
 {
   switch (intent)
@@ -743,7 +743,7 @@ gdk_quartz_keymap_get_modifier_mask (GdkKeymap         *keymap,
  * GDK_KEY_PRESS, GDK_KEY_RELEASE, GDK_NOTHING (should be ignored)
  */
 GdkEventType
-_gdk_quartz_keys_event_type (NSEvent *event)
+_gdk_haiku_keys_event_type (NSEvent *event)
 {
   unsigned short keycode;
   unsigned int flags;
@@ -783,7 +783,7 @@ _gdk_quartz_keys_event_type (NSEvent *event)
 }
 
 gboolean
-_gdk_quartz_keys_is_modifier (guint keycode)
+_gdk_haiku_keys_is_modifier (guint keycode)
 {
   gint i;
   
@@ -810,7 +810,7 @@ input_sources_changed_notification (CFNotificationCenterRef  center,
 }
 
 static void
-gdk_quartz_keymap_init (GdkHaikuKeymap *keymap)
+gdk_haiku_keymap_init (GdkHaikuKeymap *keymap)
 {
   CFNotificationCenterAddObserver (CFNotificationCenterGetDistributedCenter (),
                                    keymap,
@@ -822,34 +822,34 @@ gdk_quartz_keymap_init (GdkHaikuKeymap *keymap)
 }
 
 static void
-gdk_quartz_keymap_finalize (GObject *object)
+gdk_haiku_keymap_finalize (GObject *object)
 {
   CFNotificationCenterRemoveObserver (CFNotificationCenterGetDistributedCenter (),
                                       object,
                                       CFSTR ("AppleSelectedInputSourcesChangedNotification"),
                                       NULL);
 
-  G_OBJECT_CLASS (gdk_quartz_keymap_parent_class)->finalize (object);
+  G_OBJECT_CLASS (gdk_haiku_keymap_parent_class)->finalize (object);
 }
 
 static void
-gdk_quartz_keymap_class_init (GdkHaikuKeymapClass *klass)
+gdk_haiku_keymap_class_init (GdkHaikuKeymapClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GdkKeymapClass *keymap_class = GDK_KEYMAP_CLASS (klass);
 
-  object_class->finalize = gdk_quartz_keymap_finalize;
+  object_class->finalize = gdk_haiku_keymap_finalize;
 
-  keymap_class->get_direction = gdk_quartz_keymap_get_direction;
-  keymap_class->have_bidi_layouts = gdk_quartz_keymap_have_bidi_layouts;
-  keymap_class->get_caps_lock_state = gdk_quartz_keymap_get_caps_lock_state;
-  keymap_class->get_num_lock_state = gdk_quartz_keymap_get_num_lock_state;
-  keymap_class->get_scroll_lock_state = gdk_quartz_keymap_get_scroll_lock_state;
-  keymap_class->get_entries_for_keyval = gdk_quartz_keymap_get_entries_for_keyval;
-  keymap_class->get_entries_for_keycode = gdk_quartz_keymap_get_entries_for_keycode;
-  keymap_class->lookup_key = gdk_quartz_keymap_lookup_key;
-  keymap_class->translate_keyboard_state = gdk_quartz_keymap_translate_keyboard_state;
-  keymap_class->add_virtual_modifiers = gdk_quartz_keymap_add_virtual_modifiers;
-  keymap_class->map_virtual_modifiers = gdk_quartz_keymap_map_virtual_modifiers;
-  keymap_class->get_modifier_mask = gdk_quartz_keymap_get_modifier_mask;
+  keymap_class->get_direction = gdk_haiku_keymap_get_direction;
+  keymap_class->have_bidi_layouts = gdk_haiku_keymap_have_bidi_layouts;
+  keymap_class->get_caps_lock_state = gdk_haiku_keymap_get_caps_lock_state;
+  keymap_class->get_num_lock_state = gdk_haiku_keymap_get_num_lock_state;
+  keymap_class->get_scroll_lock_state = gdk_haiku_keymap_get_scroll_lock_state;
+  keymap_class->get_entries_for_keyval = gdk_haiku_keymap_get_entries_for_keyval;
+  keymap_class->get_entries_for_keycode = gdk_haiku_keymap_get_entries_for_keycode;
+  keymap_class->lookup_key = gdk_haiku_keymap_lookup_key;
+  keymap_class->translate_keyboard_state = gdk_haiku_keymap_translate_keyboard_state;
+  keymap_class->add_virtual_modifiers = gdk_haiku_keymap_add_virtual_modifiers;
+  keymap_class->map_virtual_modifiers = gdk_haiku_keymap_map_virtual_modifiers;
+  keymap_class->get_modifier_mask = gdk_haiku_keymap_get_modifier_mask;
 }

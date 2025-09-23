@@ -28,7 +28,7 @@
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_QUARTZ_DISPLAY_MANAGER    (gdk_quartz_display_manager_get_type ())
+#define GDK_TYPE_QUARTZ_DISPLAY_MANAGER    (gdk_haiku_display_manager_get_type ())
 #define GDK_QUARTZ_DISPLAY_MANAGER(object) (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_DISPLAY_MANAGER, GdkHaikuDisplayManager))
 
 #ifdef GDK_COMPILATION
@@ -40,7 +40,7 @@ typedef struct _GdkDisplayManagerClass GdkHaikuDisplayManagerClass;
 
 
 GDK_AVAILABLE_IN_ALL
-GType gdk_quartz_display_manager_get_type (void);
+GType gdk_haiku_display_manager_get_type (void);
 
 G_END_DECLS
 

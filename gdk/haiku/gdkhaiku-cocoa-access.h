@@ -27,10 +27,10 @@
 #include <gdk/gdk.h>
 
 GDK_AVAILABLE_IN_ALL
-NSEvent  *gdk_quartz_event_get_nsevent              (GdkEvent  *event);
+NSEvent  *gdk_haiku_event_get_nsevent              (GdkEvent  *event);
 GDK_AVAILABLE_IN_ALL
-NSWindow *gdk_quartz_window_get_nswindow            (GdkWindow *window);
+NSWindow *gdk_haiku_window_get_nswindow            (GdkWindow *window);
 GDK_AVAILABLE_IN_ALL
-NSView   *gdk_quartz_window_get_nsview              (GdkWindow *window);
+NSView   *gdk_haiku_window_get_nsview              (GdkWindow *window);
 
 #endif

@@ -27,7 +27,7 @@
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_QUARTZ_DRAG_CONTEXT              (gdk_quartz_drag_context_get_type ())
+#define GDK_TYPE_QUARTZ_DRAG_CONTEXT              (gdk_haiku_drag_context_get_type ())
 #define GDK_QUARTZ_DRAG_CONTEXT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_DRAG_CONTEXT, GdkHaikuDragContext))
 #define GDK_QUARTZ_DRAG_CONTEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_QUARTZ_DRAG_CONTEXT, GdkHaikuDragContextClass))
 #define GDK_IS_QUARTZ_DRAG_CONTEXT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_QUARTZ_DRAG_CONTEXT))
@@ -43,16 +43,16 @@ typedef struct _GdkHaikuDragContextClass GdkHaikuDragContextClass;
 
 
 GDK_AVAILABLE_IN_ALL
-GType     gdk_quartz_drag_context_get_type (void);
+GType     gdk_haiku_drag_context_get_type (void);
 
 GDK_AVAILABLE_IN_ALL
-id        gdk_quartz_drag_context_get_dragging_info_libgtk_only (GdkDragContext *context);
+id        gdk_haiku_drag_context_get_dragging_info_libgtk_only (GdkDragContext *context);
 
 GDK_AVAILABLE_IN_ALL
-GdkDragContext *gdk_quartz_drag_source_context_libgtk_only (void);
+GdkDragContext *gdk_haiku_drag_source_context_libgtk_only (void);
 
 GDK_AVAILABLE_IN_3_24
-void _gdk_quartz_drag_source_context_destroy_gtk_only ();
+void _gdk_haiku_drag_source_context_destroy_gtk_only ();
 
 G_END_DECLS
 

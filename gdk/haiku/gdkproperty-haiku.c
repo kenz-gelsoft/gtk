@@ -129,14 +129,14 @@ ensure_atom_tables (void)
 }
 
 void
-_gdk_quartz_window_delete_property (GdkWindow *window,
+_gdk_haiku_window_delete_property (GdkWindow *window,
                                     GdkAtom    property)
 {
   /* FIXME: Implement */
 }
 
 gint
-_gdk_quartz_window_get_property (GdkWindow   *window,
+_gdk_haiku_window_get_property (GdkWindow   *window,
                                  GdkAtom      property,
                                  GdkAtom      type,
                                  gulong       offset,
@@ -152,7 +152,7 @@ _gdk_quartz_window_get_property (GdkWindow   *window,
 }
 
 void
-_gdk_quartz_window_change_property (GdkWindow   *window,
+_gdk_haiku_window_change_property (GdkWindow   *window,
                                     GdkAtom      property,
                                     GdkAtom      type,
                                     gint         format,

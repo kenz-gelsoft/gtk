@@ -27,7 +27,7 @@
 #include <gdkquartzutils.h>
 
 NSImage *
-gdk_quartz_pixbuf_to_ns_image_libgtk_only (GdkPixbuf *pixbuf)
+gdk_haiku_pixbuf_to_ns_image_libgtk_only (GdkPixbuf *pixbuf)
 {
   NSBitmapImageRep  *bitmap_rep;
   NSImage           *image;
@@ -92,7 +92,7 @@ gdk_quartz_pixbuf_to_ns_image_libgtk_only (GdkPixbuf *pixbuf)
 }
 
 NSEvent *
-gdk_quartz_event_get_nsevent (GdkEvent *event)
+gdk_haiku_event_get_nsevent (GdkEvent *event)
 {
   /* FIXME: If the event here is unallocated, we crash. */
   return ((GdkEventPrivate *) event)->windowing_data;
@@ -104,7 +104,7 @@ gdk_quartz_event_get_nsevent (GdkEvent *event)
  * Copyright (C) 2009 Paul Davis
  */
 gunichar
-gdk_quartz_get_key_equivalent (guint key)
+gdk_haiku_get_key_equivalent (guint key)
 {
   if (key >= GDK_KEY_A && key <= GDK_KEY_Z)
     return key + (GDK_KEY_a - GDK_KEY_A);

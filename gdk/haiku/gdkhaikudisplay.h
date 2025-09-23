@@ -28,7 +28,7 @@
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_QUARTZ_DISPLAY              (gdk_quartz_display_get_type ())
+#define GDK_TYPE_QUARTZ_DISPLAY              (gdk_haiku_display_get_type ())
 #define GDK_QUARTZ_DISPLAY(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_QUARTZ_DISPLAY, GdkHaikuDisplay))
 #define GDK_QUARTZ_DISPLAY_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_QUARTZ_DISPLAY, GdkHaikuDisplayClass))
 #define GDK_IS_QUARTZ_DISPLAY(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_QUARTZ_DISPLAY))
@@ -44,7 +44,7 @@ typedef struct _GdkHaikuDisplayClass GdkHaikuDisplayClass;
 
 
 GDK_AVAILABLE_IN_ALL
-GType gdk_quartz_display_get_type (void);
+GType gdk_haiku_display_get_type (void);
 
 G_END_DECLS
 

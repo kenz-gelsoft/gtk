@@ -24,10 +24,10 @@
 #include "gdkdisplay-quartz.h"
 #include "gdkinternal-quartz.h"
 
-G_DEFINE_TYPE (GdkHaikuMonitor, gdk_quartz_monitor, GDK_TYPE_MONITOR)
+G_DEFINE_TYPE (GdkHaikuMonitor, gdk_haiku_monitor, GDK_TYPE_MONITOR)
 
 static void
-gdk_quartz_monitor_get_workarea (GdkMonitor   *monitor,
+gdk_haiku_monitor_get_workarea (GdkMonitor   *monitor,
                                  GdkRectangle *dest)
 {
   GDK_QUARTZ_ALLOC_POOL;
@@ -64,13 +64,13 @@ gdk_quartz_monitor_get_workarea (GdkMonitor   *monitor,
 }
 
 static void
-gdk_quartz_monitor_init (GdkHaikuMonitor *monitor)
+gdk_haiku_monitor_init (GdkHaikuMonitor *monitor)
 {
 }
 
 static void
-gdk_quartz_monitor_class_init (GdkHaikuMonitorClass *class)
+gdk_haiku_monitor_class_init (GdkHaikuMonitorClass *class)
 {
-  GDK_MONITOR_CLASS (class)->get_workarea = gdk_quartz_monitor_get_workarea;
+  GDK_MONITOR_CLASS (class)->get_workarea = gdk_haiku_monitor_get_workarea;
 }
 

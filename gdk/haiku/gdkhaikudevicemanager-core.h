@@ -26,7 +26,7 @@
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE         (gdk_quartz_device_manager_core_get_type ())
+#define GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE         (gdk_haiku_device_manager_core_get_type ())
 #define GDK_QUARTZ_DEVICE_MANAGER_CORE(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE, GdkHaikuDeviceManagerCore))
 #define GDK_QUARTZ_DEVICE_MANAGER_CORE_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST ((c), GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE, GdkHaikuDeviceManagerCoreClass))
 #define GDK_IS_QUARTZ_DEVICE_MANAGER_CORE(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), GDK_TYPE_QUARTZ_DEVICE_MANAGER_CORE))
@@ -38,7 +38,7 @@ typedef struct _GdkHaikuDeviceManagerCoreClass GdkHaikuDeviceManagerCoreClass;
 
 
 GDK_AVAILABLE_IN_ALL
-GType gdk_quartz_device_manager_core_get_type (void) G_GNUC_CONST;
+GType gdk_haiku_device_manager_core_get_type (void) G_GNUC_CONST;
 
 
 G_END_DECLS

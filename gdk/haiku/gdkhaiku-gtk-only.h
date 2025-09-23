@@ -43,14 +43,14 @@
 
 /* Drag and Drop/Clipboard */
 GDK_AVAILABLE_IN_ALL
-GdkAtom   gdk_quartz_pasteboard_type_to_atom_libgtk_only        (NSString       *type);
+GdkAtom   gdk_haiku_pasteboard_type_to_atom_libgtk_only        (NSString       *type);
 GDK_AVAILABLE_IN_ALL
-NSString *gdk_quartz_target_to_pasteboard_type_libgtk_only      (const gchar    *target);
+NSString *gdk_haiku_target_to_pasteboard_type_libgtk_only      (const gchar    *target);
 GDK_AVAILABLE_IN_ALL
-NSString *gdk_quartz_atom_to_pasteboard_type_libgtk_only        (GdkAtom         atom);
+NSString *gdk_haiku_atom_to_pasteboard_type_libgtk_only        (GdkAtom         atom);
 
 /* Utilities */
 GDK_AVAILABLE_IN_ALL
-NSImage  *gdk_quartz_pixbuf_to_ns_image_libgtk_only (GdkPixbuf *pixbuf);
+NSImage  *gdk_haiku_pixbuf_to_ns_image_libgtk_only (GdkPixbuf *pixbuf);
 
 #endif

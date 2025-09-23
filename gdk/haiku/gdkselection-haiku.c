@@ -27,7 +27,7 @@
 #include "gdkquartz-gtk-only.h"
 
 gboolean
-_gdk_quartz_display_set_selection_owner (GdkDisplay *display,
+_gdk_haiku_display_set_selection_owner (GdkDisplay *display,
                                          GdkWindow  *owner,
                                          GdkAtom     selection,
                                          guint32     time,
@@ -38,7 +38,7 @@ _gdk_quartz_display_set_selection_owner (GdkDisplay *display,
 }
 
 GdkWindow*
-_gdk_quartz_display_get_selection_owner (GdkDisplay *display,
+_gdk_haiku_display_get_selection_owner (GdkDisplay *display,
                                          GdkAtom     selection)
 {
   /* FIXME: Implement */
@@ -46,7 +46,7 @@ _gdk_quartz_display_get_selection_owner (GdkDisplay *display,
 }
 
 void
-_gdk_quartz_display_convert_selection (GdkDisplay *display,
+_gdk_haiku_display_convert_selection (GdkDisplay *display,
                                        GdkWindow  *requestor,
                                        GdkAtom     selection,
                                        GdkAtom     target,
@@ -56,7 +56,7 @@ _gdk_quartz_display_convert_selection (GdkDisplay *display,
 }
 
 gint
-_gdk_quartz_display_get_selection_property (GdkDisplay *display,
+_gdk_haiku_display_get_selection_property (GdkDisplay *display,
                                             GdkWindow  *requestor,
                                             guchar    **data,
                                             GdkAtom    *ret_type,
@@ -67,7 +67,7 @@ _gdk_quartz_display_get_selection_property (GdkDisplay *display,
 }
 
 gchar *
-_gdk_quartz_display_utf8_to_string_target (GdkDisplay  *display,
+_gdk_haiku_display_utf8_to_string_target (GdkDisplay  *display,
                                            const gchar *str)
 {
   /* FIXME: Implement */
@@ -142,7 +142,7 @@ make_list (const gchar  *text,
 }
 
 gint
-_gdk_quartz_display_text_property_to_utf8_list (GdkDisplay    *display,
+_gdk_haiku_display_text_property_to_utf8_list (GdkDisplay    *display,
                                                 GdkAtom        encoding,
                                                 gint           format,
                                                 const guchar  *text,
@@ -175,7 +175,7 @@ _gdk_quartz_display_text_property_to_utf8_list (GdkDisplay    *display,
 }
 
 GdkAtom
-gdk_quartz_pasteboard_type_to_atom_libgtk_only (NSString *type)
+gdk_haiku_pasteboard_type_to_atom_libgtk_only (NSString *type)
 {
   if ([type isEqualToString:GDK_QUARTZ_STRING_PBOARD_TYPE])
     return gdk_atom_intern_static_string ("UTF8_STRING");
@@ -191,7 +191,7 @@ gdk_quartz_pasteboard_type_to_atom_libgtk_only (NSString *type)
 }
 
 NSString *
-gdk_quartz_target_to_pasteboard_type_libgtk_only (const char *target)
+gdk_haiku_target_to_pasteboard_type_libgtk_only (const char *target)
 {
   if (strcmp (target, "UTF8_STRING") == 0)
     return GDK_QUARTZ_STRING_PBOARD_TYPE;
@@ -206,10 +206,10 @@ gdk_quartz_target_to_pasteboard_type_libgtk_only (const char *target)
 }
 
 NSString *
-gdk_quartz_atom_to_pasteboard_type_libgtk_only (GdkAtom atom)
+gdk_haiku_atom_to_pasteboard_type_libgtk_only (GdkAtom atom)
 {
   gchar *target = gdk_atom_name (atom);
-  NSString *ret = gdk_quartz_target_to_pasteboard_type_libgtk_only (target);
+  NSString *ret = gdk_haiku_target_to_pasteboard_type_libgtk_only (target);
   g_free (target);
 
   return ret;

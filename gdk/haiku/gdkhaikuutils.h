@@ -29,7 +29,7 @@
 G_BEGIN_DECLS
 
 GDK_AVAILABLE_IN_3_12
-gunichar  gdk_quartz_get_key_equivalent                         (guint           key);
+gunichar  gdk_haiku_get_key_equivalent                         (guint           key);
 
 G_END_DECLS
 

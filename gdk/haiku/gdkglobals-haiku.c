@@ -27,7 +27,7 @@ GdkScreen *_gdk_screen = NULL;
 GdkWindow *_gdk_root = NULL;
 
 GdkOSXVersion
-gdk_quartz_osx_version (void)
+gdk_haiku_osx_version (void)
 {
   static gint32 vkey = GDK_OSX_UNSUPPORTED;
 

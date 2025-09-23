@@ -30,7 +30,7 @@
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_QUARTZ_GL_CONTEXT   (gdk_quartz_gl_context_get_type ())
+#define GDK_TYPE_QUARTZ_GL_CONTEXT   (gdk_haiku_gl_context_get_type ())
 #define GDK_QUARTZ_GL_CONTEXT(obj)   (G_TYPE_CHECK_INSTANCE_CAST ((obj), GDK_TYPE_QUARTZ_GL_CONTEXT, GdkHaikuGLContext))
 #define GDK_QUARTZ_IS_GL_CONTEXT(obj)  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GDK_TYPE_QUARTZ_GL_CONTEXT))
 
@@ -38,7 +38,7 @@ typedef struct _GdkHaikuGLContext   GdkHaikuGLContext;
 typedef struct _GdkHaikuGLContextClass  GdkHaikuGLContextClass;
 
 GDK_AVAILABLE_IN_3_24
-GType gdk_quartz_gl_context_get_type (void) G_GNUC_CONST;
+GType gdk_haiku_gl_context_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 

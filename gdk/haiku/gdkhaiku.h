@@ -49,7 +49,7 @@ typedef enum
 } GdkOSXVersion;
 
 GDK_AVAILABLE_IN_ALL
-GdkOSXVersion gdk_quartz_osx_version (void);
+GdkOSXVersion gdk_haiku_osx_version (void);
 
 G_END_DECLS
 

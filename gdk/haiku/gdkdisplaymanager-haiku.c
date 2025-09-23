@@ -37,24 +37,24 @@ struct _GdkHaikuDisplayManager
 };
 
 
-G_DEFINE_TYPE (GdkHaikuDisplayManager, gdk_quartz_display_manager, GDK_TYPE_DISPLAY_MANAGER)
+G_DEFINE_TYPE (GdkHaikuDisplayManager, gdk_haiku_display_manager, GDK_TYPE_DISPLAY_MANAGER)
 
 static void
-gdk_quartz_display_manager_init (GdkHaikuDisplayManager *manager)
+gdk_haiku_display_manager_init (GdkHaikuDisplayManager *manager)
 {
 }
 
 static void
-gdk_quartz_display_manager_finalize (GObject *object)
+gdk_haiku_display_manager_finalize (GObject *object)
 {
   g_error ("A GdkHaikuDisplayManager object was finalized. This should not happen");
-  G_OBJECT_CLASS (gdk_quartz_display_manager_parent_class)->finalize (object);
+  G_OBJECT_CLASS (gdk_haiku_display_manager_parent_class)->finalize (object);
 }
 
 static void
-gdk_quartz_display_manager_class_init (GdkHaikuDisplayManagerClass *class)
+gdk_haiku_display_manager_class_init (GdkHaikuDisplayManagerClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  object_class->finalize = gdk_quartz_display_manager_finalize;
+  object_class->finalize = gdk_haiku_display_manager_finalize;
 }

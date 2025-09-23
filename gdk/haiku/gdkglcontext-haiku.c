@@ -34,12 +34,12 @@
 
 #include "gdkintl.h"
 
-G_DEFINE_TYPE (GdkHaikuGLContext, gdk_quartz_gl_context, GDK_TYPE_GL_CONTEXT)
+G_DEFINE_TYPE (GdkHaikuGLContext, gdk_haiku_gl_context, GDK_TYPE_GL_CONTEXT)
 
-static void gdk_quartz_gl_context_dispose (GObject *gobject);
+static void gdk_haiku_gl_context_dispose (GObject *gobject);
 
 void
-gdk_quartz_window_invalidate_for_new_frame (GdkWindow      *window,
+gdk_haiku_window_invalidate_for_new_frame (GdkWindow      *window,
                                             cairo_region_t *update_area)
 {
   cairo_rectangle_int_t window_rect;
@@ -59,14 +59,14 @@ gdk_quartz_window_invalidate_for_new_frame (GdkWindow      *window,
 }
 
 static gboolean
-gdk_quartz_gl_context_realize (GdkGLContext *context,
+gdk_haiku_gl_context_realize (GdkGLContext *context,
                                GError      **error)
 {
   return TRUE;
 }
 
 static void
-gdk_quartz_gl_context_end_frame (GdkGLContext *context,
+gdk_haiku_gl_context_end_frame (GdkGLContext *context,
                                  cairo_region_t *painted,
                                  cairo_region_t *damage)
 {
@@ -76,29 +76,29 @@ gdk_quartz_gl_context_end_frame (GdkGLContext *context,
 }
 
 static void
-gdk_quartz_gl_context_class_init (GdkHaikuGLContextClass *klass)
+gdk_haiku_gl_context_class_init (GdkHaikuGLContextClass *klass)
 {
   GdkGLContextClass *context_class = GDK_GL_CONTEXT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  context_class->realize = gdk_quartz_gl_context_realize;
-  context_class->end_frame = gdk_quartz_gl_context_end_frame;
-  gobject_class->dispose = gdk_quartz_gl_context_dispose;
+  context_class->realize = gdk_haiku_gl_context_realize;
+  context_class->end_frame = gdk_haiku_gl_context_end_frame;
+  gobject_class->dispose = gdk_haiku_gl_context_dispose;
 }
 
 static void
-gdk_quartz_gl_context_init (GdkHaikuGLContext *self)
+gdk_haiku_gl_context_init (GdkHaikuGLContext *self)
 {
 }
 
 gboolean
-gdk_quartz_display_init_gl (GdkDisplay *display)
+gdk_haiku_display_init_gl (GdkDisplay *display)
 {
   return TRUE;
 }
 
 GdkGLContext *
-gdk_quartz_window_create_gl_context (GdkWindow     *window,
+gdk_haiku_window_create_gl_context (GdkWindow     *window,
                                      gboolean       attached,
                                      GdkGLContext  *share,
                                      GError       **error)
@@ -138,7 +138,7 @@ gdk_quartz_window_create_gl_context (GdkWindow     *window,
 
   if (attached)
     {
-      NSView *view = gdk_quartz_window_get_nsview (window);
+      NSView *view = gdk_haiku_window_get_nsview (window);
 
       if ([view respondsToSelector:@selector(setWantsBestResolutionOpenGLSurface:)])
         [view setWantsBestResolutionOpenGLSurface:YES];
@@ -165,7 +165,7 @@ gdk_quartz_window_create_gl_context (GdkWindow     *window,
 }
 
 static void
-gdk_quartz_gl_context_dispose (GObject *gobject)
+gdk_haiku_gl_context_dispose (GObject *gobject)
 {
   GdkHaikuGLContext *context_quartz = GDK_QUARTZ_GL_CONTEXT (gobject);
 
@@ -176,11 +176,11 @@ gdk_quartz_gl_context_dispose (GObject *gobject)
       context_quartz->gl_context = NULL;
     }
 
-  G_OBJECT_CLASS (gdk_quartz_gl_context_parent_class)->dispose (gobject);
+  G_OBJECT_CLASS (gdk_haiku_gl_context_parent_class)->dispose (gobject);
 }
 
 gboolean
-gdk_quartz_display_is_gl_context_current (GdkDisplay   *display,
+gdk_haiku_display_is_gl_context_current (GdkDisplay   *display,
                                           GdkGLContext *context)
 {
   GdkHaikuGLContext *context_quartz = GDK_QUARTZ_GL_CONTEXT (context);
@@ -189,7 +189,7 @@ gdk_quartz_display_is_gl_context_current (GdkDisplay   *display,
 }
 
 gboolean
-gdk_quartz_display_make_gl_context_current (GdkDisplay   *display,
+gdk_haiku_display_make_gl_context_current (GdkDisplay   *display,
                                             GdkGLContext *context)
 {
   GdkHaikuGLContext *context_quartz;

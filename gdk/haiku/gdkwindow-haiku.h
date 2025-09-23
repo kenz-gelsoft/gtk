@@ -82,9 +82,9 @@ struct _GdkWindowImplHaikuClass
 
 GType _gdk_window_impl_quartz_get_type (void);
 
-CGContextRef gdk_quartz_window_get_context     (GdkWindowImplHaiku *window,
+CGContextRef gdk_haiku_window_get_context     (GdkWindowImplHaiku *window,
                                                 gboolean             antialias);
-void         gdk_quartz_window_release_context (GdkWindowImplHaiku *window,
+void         gdk_haiku_window_release_context (GdkWindowImplHaiku *window,
                                                 CGContextRef         context);
 
 /* Root window implementation for Quartz
