@@ -95,17 +95,17 @@ GdkModifierType _gdk_haiku_events_get_current_mouse_modifiers    (void);
 void         _gdk_haiku_events_break_all_grabs         (guint32    time);
 
 /* Devices */
-void       _gdk_haiku_device_core_set_active (GdkDevice  *device,
+void       _gdk_haiku_device_set_active (GdkDevice  *device,
                                                gboolean    active,
                                                NSUInteger  device_id);
 
-gboolean   _gdk_haiku_device_core_is_active (GdkDevice  *device,
+gboolean   _gdk_haiku_device_is_active (GdkDevice  *device,
                                               NSUInteger  device_id);
 
-void       _gdk_haiku_device_core_set_unique (GdkDevice          *device,
+void       _gdk_haiku_device_set_unique (GdkDevice          *device,
                                                unsigned long long  unique_id);
 
-unsigned long long _gdk_haiku_device_core_get_unique (GdkDevice *device);
+unsigned long long _gdk_haiku_device_get_unique (GdkDevice *device);
 
 /* Event loop */
 gboolean   _gdk_haiku_event_loop_check_pending (void);

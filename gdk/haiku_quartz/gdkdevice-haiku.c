@@ -29,7 +29,7 @@
 #include "gdkinternal-haiku.h"
 #include "gdkhaiku-cocoa-access.h"
 
-struct _GdkHaikuDeviceCore
+struct _GdkHaikuDevice
 {
   GdkDevice parent_instance;
 
@@ -38,29 +38,29 @@ struct _GdkHaikuDeviceCore
   unsigned long long unique_id;
 };
 
-struct _GdkHaikuDeviceCoreClass
+struct _GdkHaikuDeviceClass
 {
   GdkDeviceClass parent_class;
 };
 
-static gboolean gdk_haiku_device_core_get_history (GdkDevice      *device,
+static gboolean gdk_haiku_device_get_history (GdkDevice      *device,
                                                     GdkWindow      *window,
                                                     guint32         start,
                                                     guint32         stop,
                                                     GdkTimeCoord ***events,
                                                     gint           *n_events);
-static void gdk_haiku_device_core_get_state (GdkDevice       *device,
+static void gdk_haiku_device_get_state (GdkDevice       *device,
                                               GdkWindow       *window,
                                               gdouble         *axes,
                                               GdkModifierType *mask);
-static void gdk_haiku_device_core_set_window_cursor (GdkDevice *device,
+static void gdk_haiku_device_set_window_cursor (GdkDevice *device,
                                                       GdkWindow *window,
                                                       GdkCursor *cursor);
-static void gdk_haiku_device_core_warp (GdkDevice *device,
+static void gdk_haiku_device_warp (GdkDevice *device,
                                          GdkScreen *screen,
                                          gdouble    x,
                                          gdouble    y);
-static void gdk_haiku_device_core_query_state (GdkDevice        *device,
+static void gdk_haiku_device_query_state (GdkDevice        *device,
                                                 GdkWindow        *window,
                                                 GdkWindow       **root_window,
                                                 GdkWindow       **child_window,
@@ -69,56 +69,56 @@ static void gdk_haiku_device_core_query_state (GdkDevice        *device,
                                                 gdouble          *win_x,
                                                 gdouble          *win_y,
                                                 GdkModifierType  *mask);
-static GdkGrabStatus gdk_haiku_device_core_grab   (GdkDevice     *device,
+static GdkGrabStatus gdk_haiku_device_grab   (GdkDevice     *device,
                                                     GdkWindow     *window,
                                                     gboolean       owner_events,
                                                     GdkEventMask   event_mask,
                                                     GdkWindow     *confine_to,
                                                     GdkCursor     *cursor,
                                                     guint32        time_);
-static void          gdk_haiku_device_core_ungrab (GdkDevice     *device,
+static void          gdk_haiku_device_ungrab (GdkDevice     *device,
                                                     guint32        time_);
-static GdkWindow * gdk_haiku_device_core_window_at_position (GdkDevice       *device,
+static GdkWindow * gdk_haiku_device_window_at_position (GdkDevice       *device,
                                                               gdouble         *win_x,
                                                               gdouble         *win_y,
                                                               GdkModifierType *mask,
                                                               gboolean         get_toplevel);
-static void      gdk_haiku_device_core_select_window_events (GdkDevice       *device,
+static void      gdk_haiku_device_select_window_events (GdkDevice       *device,
                                                               GdkWindow       *window,
                                                               GdkEventMask     event_mask);
 
 
-G_DEFINE_TYPE (GdkHaikuDeviceCore, gdk_haiku_device_core, GDK_TYPE_DEVICE)
+G_DEFINE_TYPE (GdkHaikuDevice, gdk_haiku_device, GDK_TYPE_DEVICE)
 
 static void
-gdk_haiku_device_core_class_init (GdkHaikuDeviceCoreClass *klass)
+gdk_haiku_device_class_init (GdkHaikuDeviceClass *klass)
 {
   GdkDeviceClass *device_class = GDK_DEVICE_CLASS (klass);
 
-  device_class->get_history = gdk_haiku_device_core_get_history;
-  device_class->get_state = gdk_haiku_device_core_get_state;
-  device_class->set_window_cursor = gdk_haiku_device_core_set_window_cursor;
-  device_class->warp = gdk_haiku_device_core_warp;
-  device_class->query_state = gdk_haiku_device_core_query_state;
-  device_class->grab = gdk_haiku_device_core_grab;
-  device_class->ungrab = gdk_haiku_device_core_ungrab;
-  device_class->window_at_position = gdk_haiku_device_core_window_at_position;
-  device_class->select_window_events = gdk_haiku_device_core_select_window_events;
+  device_class->get_history = gdk_haiku_device_get_history;
+  device_class->get_state = gdk_haiku_device_get_state;
+  device_class->set_window_cursor = gdk_haiku_device_set_window_cursor;
+  device_class->warp = gdk_haiku_device_warp;
+  device_class->query_state = gdk_haiku_device_query_state;
+  device_class->grab = gdk_haiku_device_grab;
+  device_class->ungrab = gdk_haiku_device_ungrab;
+  device_class->window_at_position = gdk_haiku_device_window_at_position;
+  device_class->select_window_events = gdk_haiku_device_select_window_events;
 }
 
 static void
-gdk_haiku_device_core_init (GdkHaikuDeviceCore *haiku_device_core)
+gdk_haiku_device_init (GdkHaikuDevice *haiku_device)
 {
   GdkDevice *device;
 
-  device = GDK_DEVICE (haiku_device_core);
+  device = GDK_DEVICE (haiku_device);
 
   _gdk_device_add_axis (device, GDK_NONE, GDK_AXIS_X, 0, 0, 1);
   _gdk_device_add_axis (device, GDK_NONE, GDK_AXIS_Y, 0, 0, 1);
 }
 
 static gboolean
-gdk_haiku_device_core_get_history (GdkDevice      *device,
+gdk_haiku_device_get_history (GdkDevice      *device,
                                     GdkWindow      *window,
                                     guint32         start,
                                     guint32         stop,
@@ -129,7 +129,7 @@ gdk_haiku_device_core_get_history (GdkDevice      *device,
 }
 
 static void
-gdk_haiku_device_core_get_state (GdkDevice       *device,
+gdk_haiku_device_get_state (GdkDevice       *device,
                                   GdkWindow       *window,
                                   gdouble         *axes,
                                   GdkModifierType *mask)
@@ -170,7 +170,7 @@ translate_coords_to_child_coords (GdkWindow *parent,
 }
 
 static void
-gdk_haiku_device_core_set_window_cursor (GdkDevice *device,
+gdk_haiku_device_set_window_cursor (GdkDevice *device,
                                           GdkWindow *window,
                                           GdkCursor *cursor)
 {
@@ -185,7 +185,7 @@ gdk_haiku_device_core_set_window_cursor (GdkDevice *device,
 }
 
 static void
-gdk_haiku_device_core_warp (GdkDevice *device,
+gdk_haiku_device_warp (GdkDevice *device,
                              GdkScreen *screen,
                              gdouble    x,
                              gdouble    y)
@@ -194,7 +194,7 @@ gdk_haiku_device_core_warp (GdkDevice *device,
 }
 
 static GdkWindow *
-gdk_haiku_device_core_query_state_helper (GdkWindow       *window,
+gdk_haiku_device_query_state_helper (GdkWindow       *window,
                                            GdkDevice       *device,
                                            gdouble         *x,
                                            gdouble         *y,
@@ -260,7 +260,7 @@ gdk_haiku_device_core_query_state_helper (GdkWindow       *window,
 }
 
 static void
-gdk_haiku_device_core_query_state (GdkDevice        *device,
+gdk_haiku_device_query_state (GdkDevice        *device,
                                     GdkWindow        *window,
                                     GdkWindow       **root_window,
                                     GdkWindow       **child_window,
@@ -274,7 +274,7 @@ gdk_haiku_device_core_query_state (GdkDevice        *device,
   NSPoint point;
   gint x_tmp, y_tmp;
 
-  found_window = gdk_haiku_device_core_query_state_helper (window, device,
+  found_window = gdk_haiku_device_query_state_helper (window, device,
                                                             win_x, win_y,
                                                             mask);
 
@@ -295,7 +295,7 @@ gdk_haiku_device_core_query_state (GdkDevice        *device,
 }
 
 static GdkGrabStatus
-gdk_haiku_device_core_grab (GdkDevice    *device,
+gdk_haiku_device_grab (GdkDevice    *device,
                              GdkWindow    *window,
                              gboolean      owner_events,
                              GdkEventMask  event_mask,
@@ -308,7 +308,7 @@ gdk_haiku_device_core_grab (GdkDevice    *device,
 }
 
 static void
-gdk_haiku_device_core_ungrab (GdkDevice *device,
+gdk_haiku_device_ungrab (GdkDevice *device,
                                guint32    time_)
 {
   GdkDeviceGrabInfo *grab;
@@ -321,7 +321,7 @@ gdk_haiku_device_core_ungrab (GdkDevice *device,
 }
 
 static GdkWindow *
-gdk_haiku_device_core_window_at_position (GdkDevice       *device,
+gdk_haiku_device_window_at_position (GdkDevice       *device,
                                            gdouble         *win_x,
                                            gdouble         *win_y,
                                            GdkModifierType *mask,
@@ -361,7 +361,7 @@ gdk_haiku_device_core_window_at_position (GdkDevice       *device,
 }
 
 static void
-gdk_haiku_device_core_select_window_events (GdkDevice    *device,
+gdk_haiku_device_select_window_events (GdkDevice    *device,
                                              GdkWindow    *window,
                                              GdkEventMask  event_mask)
 {
@@ -369,34 +369,34 @@ gdk_haiku_device_core_select_window_events (GdkDevice    *device,
 }
 
 void
-_gdk_haiku_device_core_set_active (GdkDevice  *device,
+_gdk_haiku_device_set_active (GdkDevice  *device,
                                     gboolean    active,
                                     NSUInteger  device_id)
 {
-  GdkHaikuDeviceCore *self = GDK_HAIKU_DEVICE_CORE (device);
+  GdkHaikuDevice *self = GDK_HAIKU_DEVICE (device);
 
   self->active = active;
   self->device_id = device_id;
 }
 
 gboolean
-_gdk_haiku_device_core_is_active (GdkDevice  *device,
+_gdk_haiku_device_is_active (GdkDevice  *device,
                                    NSUInteger  device_id)
 {
-  GdkHaikuDeviceCore *self = GDK_HAIKU_DEVICE_CORE (device);
+  GdkHaikuDevice *self = GDK_HAIKU_DEVICE (device);
 
   return (self->active && self->device_id == device_id);
 }
 
 void
-_gdk_haiku_device_core_set_unique (GdkDevice          *device,
+_gdk_haiku_device_set_unique (GdkDevice          *device,
                                     unsigned long long  unique_id)
 {
-  GDK_HAIKU_DEVICE_CORE (device)->unique_id = unique_id;
+  GDK_HAIKU_DEVICE (device)->unique_id = unique_id;
 }
 
 unsigned long long
-_gdk_haiku_device_core_get_unique (GdkDevice *device)
+_gdk_haiku_device_get_unique (GdkDevice *device)
 {
-  return GDK_HAIKU_DEVICE_CORE (device)->unique_id;
+  return GDK_HAIKU_DEVICE (device)->unique_id;
 }

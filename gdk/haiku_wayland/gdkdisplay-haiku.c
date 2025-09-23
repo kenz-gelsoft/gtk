@@ -616,6 +616,124 @@ _gdk_haiku_display_prepare_cursor_themes (GdkHaikuDisplay *display_haiku)
   postpone_on_globals_closure (display_haiku, closure);
 }
 
+void
+gdk_haiku_display_system_bell (GdkDisplay *display,
+                                 GdkWindow  *window)
+{
+  GdkHaikuDisplay *display_haiku;
+  struct gtk_surface1 *gtk_surface;
+  gint64 now_ms;
+
+  g_return_if_fail (GDK_IS_DISPLAY (display));
+
+  display_haiku = GDK_HAIKU_DISPLAY (display);
+
+  if (!display_haiku->gtk_shell)
+    return;
+
+  if (window)
+    gtk_surface = gdk_haiku_window_get_gtk_surface (window);
+  else
+    gtk_surface = NULL;
+
+  now_ms = g_get_monotonic_time () / 1000;
+  if (now_ms - display_haiku->last_bell_time_ms < MIN_SYSTEM_BELL_DELAY_MS)
+    return;
+
+  display_haiku->last_bell_time_ms = now_ms;
+
+  gtk_shell1_system_bell (display_haiku->gtk_shell, gtk_surface);
+}
+
+static void
+gdk_haiku_display_make_default (GdkDisplay *display)
+{
+  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
+  const gchar *startup_id;
+
+  g_free (display_haiku->startup_notification_id);
+  display_haiku->startup_notification_id = NULL;
+
+  startup_id = gdk_get_desktop_startup_id ();
+  if (startup_id)
+    display_haiku->startup_notification_id = g_strdup (startup_id);
+}
+
+static gboolean
+gdk_haiku_display_has_pending (GdkDisplay *display)
+{
+  return FALSE;
+}
+
+static void
+gdk_haiku_display_before_process_all_updates (GdkDisplay *display)
+{
+}
+
+static void
+gdk_haiku_display_after_process_all_updates (GdkDisplay *display)
+{
+  /* Post the damage here instead? */
+}
+
+/**
+ * gdk_haiku_display_set_startup_notification_id:
+ * @display: (type GdkHaikuDisplay): a #GdkDisplay
+ * @startup_id: the startup notification ID (must be valid utf8)
+ *
+ * Sets the startup notification ID for a display.
+ *
+ * This is usually taken from the value of the DESKTOP_STARTUP_ID
+ * environment variable, but in some cases (such as the application not
+ * being launched using exec()) it can come from other sources.
+ *
+ * The startup ID is also what is used to signal that the startup is
+ * complete (for example, when opening a window or when calling
+ * gdk_notify_startup_complete()).
+ *
+ * Since: 3.22
+ **/
+void
+gdk_haiku_display_set_startup_notification_id (GdkDisplay *display,
+                                                 const char *startup_id)
+{
+  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
+
+  g_free (display_haiku->startup_notification_id);
+  display_haiku->startup_notification_id = g_strdup (startup_id);
+}
+
+static GdkKeymap *
+_gdk_haiku_display_get_keymap (GdkDisplay *display)
+{
+  GdkDevice *core_keyboard = NULL;
+  static GdkKeymap *tmp_keymap = NULL;
+
+  core_keyboard = gdk_seat_get_keyboard (gdk_display_get_default_seat (display));
+
+  if (core_keyboard && tmp_keymap)
+    {
+      g_object_unref (tmp_keymap);
+      tmp_keymap = NULL;
+    }
+
+  if (core_keyboard)
+    return _gdk_haiku_device_get_keymap (core_keyboard);
+
+  if (!tmp_keymap)
+    tmp_keymap = _gdk_haiku_keymap_new ();
+
+  return tmp_keymap;
+}
+
+static GdkWindow *
+gdk_haiku_display_get_default_group (GdkDisplay *display)
+{
+  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+
+  return NULL;
+}
+
 GdkDisplay *
 _gdk_haiku_display_open (const gchar *display_name)
 {
@@ -713,6 +831,200 @@ _gdk_haiku_display_open (const gchar *display_name)
   return display;
 }
 
+static const gchar *
+gdk_haiku_display_get_name (GdkDisplay *display)
+{
+  const gchar *name;
+
+  name = g_getenv ("WAYLAND_DISPLAY");
+  if (name == NULL)
+    name = "haiku-0";
+
+  return name;
+}
+
+static GdkScreen *
+gdk_haiku_display_get_default_screen (GdkDisplay *display)
+{
+  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+
+  return GDK_HAIKU_DISPLAY (display)->screen;
+}
+
+static void
+gdk_haiku_display_beep (GdkDisplay *display)
+{
+  gdk_haiku_display_system_bell (display, NULL);
+}
+
+static void
+gdk_haiku_display_sync (GdkDisplay *display)
+{
+  GdkHaikuDisplay *display_haiku;
+
+  g_return_if_fail (GDK_IS_DISPLAY (display));
+
+  display_haiku = GDK_HAIKU_DISPLAY (display);
+
+  wl_display_roundtrip (display_haiku->wl_display);
+}
+
+static void
+gdk_haiku_display_flush (GdkDisplay *display)
+{
+  g_return_if_fail (GDK_IS_DISPLAY (display));
+
+  if (!display->closed)
+    wl_display_flush (GDK_HAIKU_DISPLAY (display)->wl_display);
+}
+
+static gboolean
+gdk_haiku_display_supports_selection_notification (GdkDisplay *display)
+{
+  return FALSE;
+}
+
+static gboolean
+gdk_haiku_display_request_selection_notification (GdkDisplay *display,
+						    GdkAtom     selection)
+
+{
+    return FALSE;
+}
+
+static gboolean
+gdk_haiku_display_supports_clipboard_persistence (GdkDisplay *display)
+{
+  return FALSE;
+}
+
+static gboolean
+gdk_haiku_display_supports_shapes (GdkDisplay *display)
+{
+  return FALSE;
+}
+
+static gboolean
+gdk_haiku_display_supports_input_shapes (GdkDisplay *display)
+{
+  return TRUE;
+}
+
+static void
+gdk_haiku_display_store_clipboard (GdkDisplay    *display,
+				     GdkWindow     *clipboard_window,
+				     guint32        time_,
+				     const GdkAtom *targets,
+				     gint           n_targets)
+{
+}
+
+static gboolean
+gdk_haiku_display_supports_composite (GdkDisplay *display)
+{
+  return FALSE;
+}
+
+static gulong
+gdk_haiku_display_get_next_serial (GdkDisplay *display)
+{
+  static gulong serial = 0;
+  return ++serial;
+}
+
+static void
+gdk_haiku_display_notify_startup_complete (GdkDisplay  *display,
+					     const gchar *startup_id)
+{
+  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
+
+#ifdef HAVE_XDG_ACTIVATION
+  /* Will be signaled with focus activation */
+  if (display_haiku->xdg_activation)
+    return;
+#endif
+
+  if (startup_id == NULL)
+    {
+      startup_id = display_haiku->startup_notification_id;
+
+      if (startup_id == NULL)
+        return;
+    }
+
+#ifdef HAVE_XDG_ACTIVATION
+  if (display_haiku->xdg_activation) /* FIXME: Isn't this redundant? */
+    return;
+#endif
+  if (display_haiku->gtk_shell)
+    gtk_shell1_set_startup_id (display_haiku->gtk_shell, startup_id);
+}
+
+static void
+gdk_haiku_display_push_error_trap (GdkDisplay *display)
+{
+}
+
+static gint
+gdk_haiku_display_pop_error_trap (GdkDisplay *display,
+				    gboolean    ignored)
+{
+  return 0;
+}
+
+static int
+gdk_haiku_display_get_n_monitors (GdkDisplay *display)
+{
+  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
+
+  return display_haiku->monitors->len;
+}
+
+static GdkMonitor *
+gdk_haiku_display_get_monitor (GdkDisplay *display,
+                                 int         monitor_num)
+{
+  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
+
+  if (monitor_num < 0 || monitor_num >= display_haiku->monitors->len)
+    return NULL;
+
+  return (GdkMonitor *)display_haiku->monitors->pdata[monitor_num];
+}
+
+static GdkMonitor *
+gdk_haiku_display_get_monitor_at_window (GdkDisplay *display,
+                                           GdkWindow  *window)
+{
+  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
+  struct wl_output *output;
+  int i;
+
+  g_return_val_if_fail (GDK_IS_HAIKU_WINDOW (window), NULL);
+
+  output = gdk_haiku_window_get_wl_output (window);
+  if (output == NULL)
+    return NULL;
+
+  for (i = 0; i < display_haiku->monitors->len; i++)
+    {
+      GdkMonitor *monitor = display_haiku->monitors->pdata[i];
+
+      if (gdk_haiku_monitor_get_wl_output (monitor) == output)
+        return monitor;
+    }
+
+  return NULL;
+}
+
+static void
+gdk_haiku_display_init (GdkHaikuDisplay *display)
+{
+  display->xkb_context = xkb_context_new (0);
+
+  display->monitors = g_ptr_array_new_with_free_func (g_object_unref);
+}
+
 static void
 gdk_haiku_display_dispose (GObject *object)
 {
@@ -776,311 +1088,6 @@ gdk_haiku_display_finalize (GObject *object)
   G_OBJECT_CLASS (gdk_haiku_display_parent_class)->finalize (object);
 }
 
-static const gchar *
-gdk_haiku_display_get_name (GdkDisplay *display)
-{
-  const gchar *name;
-
-  name = g_getenv ("WAYLAND_DISPLAY");
-  if (name == NULL)
-    name = "haiku-0";
-
-  return name;
-}
-
-static GdkScreen *
-gdk_haiku_display_get_default_screen (GdkDisplay *display)
-{
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
-
-  return GDK_HAIKU_DISPLAY (display)->screen;
-}
-
-void
-gdk_haiku_display_system_bell (GdkDisplay *display,
-                                 GdkWindow  *window)
-{
-  GdkHaikuDisplay *display_haiku;
-  struct gtk_surface1 *gtk_surface;
-  gint64 now_ms;
-
-  g_return_if_fail (GDK_IS_DISPLAY (display));
-
-  display_haiku = GDK_HAIKU_DISPLAY (display);
-
-  if (!display_haiku->gtk_shell)
-    return;
-
-  if (window)
-    gtk_surface = gdk_haiku_window_get_gtk_surface (window);
-  else
-    gtk_surface = NULL;
-
-  now_ms = g_get_monotonic_time () / 1000;
-  if (now_ms - display_haiku->last_bell_time_ms < MIN_SYSTEM_BELL_DELAY_MS)
-    return;
-
-  display_haiku->last_bell_time_ms = now_ms;
-
-  gtk_shell1_system_bell (display_haiku->gtk_shell, gtk_surface);
-}
-
-static void
-gdk_haiku_display_beep (GdkDisplay *display)
-{
-  gdk_haiku_display_system_bell (display, NULL);
-}
-
-static void
-gdk_haiku_display_sync (GdkDisplay *display)
-{
-  GdkHaikuDisplay *display_haiku;
-
-  g_return_if_fail (GDK_IS_DISPLAY (display));
-
-  display_haiku = GDK_HAIKU_DISPLAY (display);
-
-  wl_display_roundtrip (display_haiku->wl_display);
-}
-
-static void
-gdk_haiku_display_flush (GdkDisplay *display)
-{
-  g_return_if_fail (GDK_IS_DISPLAY (display));
-
-  if (!display->closed)
-    wl_display_flush (GDK_HAIKU_DISPLAY (display)->wl_display);
-}
-
-static void
-gdk_haiku_display_make_default (GdkDisplay *display)
-{
-  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
-  const gchar *startup_id;
-
-  g_free (display_haiku->startup_notification_id);
-  display_haiku->startup_notification_id = NULL;
-
-  startup_id = gdk_get_desktop_startup_id ();
-  if (startup_id)
-    display_haiku->startup_notification_id = g_strdup (startup_id);
-}
-
-static gboolean
-gdk_haiku_display_has_pending (GdkDisplay *display)
-{
-  return FALSE;
-}
-
-static GdkWindow *
-gdk_haiku_display_get_default_group (GdkDisplay *display)
-{
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
-
-  return NULL;
-}
-
-
-static gboolean
-gdk_haiku_display_supports_selection_notification (GdkDisplay *display)
-{
-  return FALSE;
-}
-
-static gboolean
-gdk_haiku_display_request_selection_notification (GdkDisplay *display,
-						    GdkAtom     selection)
-
-{
-    return FALSE;
-}
-
-static gboolean
-gdk_haiku_display_supports_clipboard_persistence (GdkDisplay *display)
-{
-  return FALSE;
-}
-
-static void
-gdk_haiku_display_store_clipboard (GdkDisplay    *display,
-				     GdkWindow     *clipboard_window,
-				     guint32        time_,
-				     const GdkAtom *targets,
-				     gint           n_targets)
-{
-}
-
-static gboolean
-gdk_haiku_display_supports_shapes (GdkDisplay *display)
-{
-  return FALSE;
-}
-
-static gboolean
-gdk_haiku_display_supports_input_shapes (GdkDisplay *display)
-{
-  return TRUE;
-}
-
-static gboolean
-gdk_haiku_display_supports_composite (GdkDisplay *display)
-{
-  return FALSE;
-}
-
-static void
-gdk_haiku_display_before_process_all_updates (GdkDisplay *display)
-{
-}
-
-static void
-gdk_haiku_display_after_process_all_updates (GdkDisplay *display)
-{
-  /* Post the damage here instead? */
-}
-
-static gulong
-gdk_haiku_display_get_next_serial (GdkDisplay *display)
-{
-  static gulong serial = 0;
-  return ++serial;
-}
-
-/**
- * gdk_haiku_display_set_startup_notification_id:
- * @display: (type GdkHaikuDisplay): a #GdkDisplay
- * @startup_id: the startup notification ID (must be valid utf8)
- *
- * Sets the startup notification ID for a display.
- *
- * This is usually taken from the value of the DESKTOP_STARTUP_ID
- * environment variable, but in some cases (such as the application not
- * being launched using exec()) it can come from other sources.
- *
- * The startup ID is also what is used to signal that the startup is
- * complete (for example, when opening a window or when calling
- * gdk_notify_startup_complete()).
- *
- * Since: 3.22
- **/
-void
-gdk_haiku_display_set_startup_notification_id (GdkDisplay *display,
-                                                 const char *startup_id)
-{
-  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
-
-  g_free (display_haiku->startup_notification_id);
-  display_haiku->startup_notification_id = g_strdup (startup_id);
-}
-
-static void
-gdk_haiku_display_notify_startup_complete (GdkDisplay  *display,
-					     const gchar *startup_id)
-{
-  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
-
-#ifdef HAVE_XDG_ACTIVATION
-  /* Will be signaled with focus activation */
-  if (display_haiku->xdg_activation)
-    return;
-#endif
-
-  if (startup_id == NULL)
-    {
-      startup_id = display_haiku->startup_notification_id;
-
-      if (startup_id == NULL)
-        return;
-    }
-
-#ifdef HAVE_XDG_ACTIVATION
-  if (display_haiku->xdg_activation) /* FIXME: Isn't this redundant? */
-    return;
-#endif
-  if (display_haiku->gtk_shell)
-    gtk_shell1_set_startup_id (display_haiku->gtk_shell, startup_id);
-}
-
-static GdkKeymap *
-_gdk_haiku_display_get_keymap (GdkDisplay *display)
-{
-  GdkDevice *core_keyboard = NULL;
-  static GdkKeymap *tmp_keymap = NULL;
-
-  core_keyboard = gdk_seat_get_keyboard (gdk_display_get_default_seat (display));
-
-  if (core_keyboard && tmp_keymap)
-    {
-      g_object_unref (tmp_keymap);
-      tmp_keymap = NULL;
-    }
-
-  if (core_keyboard)
-    return _gdk_haiku_device_get_keymap (core_keyboard);
-
-  if (!tmp_keymap)
-    tmp_keymap = _gdk_haiku_keymap_new ();
-
-  return tmp_keymap;
-}
-
-static void
-gdk_haiku_display_push_error_trap (GdkDisplay *display)
-{
-}
-
-static gint
-gdk_haiku_display_pop_error_trap (GdkDisplay *display,
-				    gboolean    ignored)
-{
-  return 0;
-}
-
-static int
-gdk_haiku_display_get_n_monitors (GdkDisplay *display)
-{
-  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
-
-  return display_haiku->monitors->len;
-}
-
-static GdkMonitor *
-gdk_haiku_display_get_monitor (GdkDisplay *display,
-                                 int         monitor_num)
-{
-  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
-
-  if (monitor_num < 0 || monitor_num >= display_haiku->monitors->len)
-    return NULL;
-
-  return (GdkMonitor *)display_haiku->monitors->pdata[monitor_num];
-}
-
-static GdkMonitor *
-gdk_haiku_display_get_monitor_at_window (GdkDisplay *display,
-                                           GdkWindow  *window)
-{
-  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
-  struct wl_output *output;
-  int i;
-
-  g_return_val_if_fail (GDK_IS_HAIKU_WINDOW (window), NULL);
-
-  output = gdk_haiku_window_get_wl_output (window);
-  if (output == NULL)
-    return NULL;
-
-  for (i = 0; i < display_haiku->monitors->len; i++)
-    {
-      GdkMonitor *monitor = display_haiku->monitors->pdata[i];
-
-      if (gdk_haiku_monitor_get_wl_output (monitor) == output)
-        return monitor;
-    }
-
-  return NULL;
-}
-
 static void
 gdk_haiku_display_class_init (GdkHaikuDisplayClass *class)
 {
@@ -1137,14 +1144,6 @@ gdk_haiku_display_class_init (GdkHaikuDisplayClass *class)
   display_class->get_n_monitors = gdk_haiku_display_get_n_monitors;
   display_class->get_monitor = gdk_haiku_display_get_monitor;
   display_class->get_monitor_at_window = gdk_haiku_display_get_monitor_at_window;
-}
-
-static void
-gdk_haiku_display_init (GdkHaikuDisplay *display)
-{
-  display->xkb_context = xkb_context_new (0);
-
-  display->monitors = g_ptr_array_new_with_free_func (g_object_unref);
 }
 
 void

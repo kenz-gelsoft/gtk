@@ -65,40 +65,6 @@ GType gdk_haiku_drag_context_get_type (void);
 
 G_DEFINE_TYPE (GdkHaikuDragContext, gdk_haiku_drag_context, GDK_TYPE_DRAG_CONTEXT)
 
-static void
-gdk_haiku_drag_context_finalize (GObject *object)
-{
-  GdkHaikuDragContext *haiku_context = GDK_HAIKU_DRAG_CONTEXT (object);
-  GdkDragContext *context = GDK_DRAG_CONTEXT (object);
-  GdkWindow *dnd_window;
-
-  contexts = g_list_remove (contexts, context);
-
-  if (context->is_source)
-    {
-      GdkDisplay *display = gdk_window_get_display (context->source_window);
-      GdkAtom selection;
-      GdkWindow *selection_owner;
-
-      selection = gdk_drag_get_selection (context);
-      selection_owner = gdk_selection_owner_get_for_display (display, selection);
-      if (selection_owner == context->source_window)
-        gdk_haiku_selection_unset_data_source (display, selection);
-
-      gdk_drag_context_set_cursor (context, NULL);
-    }
-
-  if (haiku_context->data_source)
-    wl_data_source_destroy (haiku_context->data_source);
-
-  dnd_window = haiku_context->dnd_window;
-
-  G_OBJECT_CLASS (gdk_haiku_drag_context_parent_class)->finalize (object);
-
-  if (dnd_window)
-    gdk_window_destroy (dnd_window);
-}
-
 void
 _gdk_haiku_drag_context_emit_event (GdkDragContext *context,
                                       GdkEventType    type,
@@ -137,30 +103,6 @@ _gdk_haiku_drag_context_emit_event (GdkDragContext *context,
   gdk_event_free (event);
 }
 
-static GdkWindow *
-gdk_haiku_drag_context_find_window (GdkDragContext  *context,
-				      GdkWindow       *drag_window,
-				      GdkScreen       *screen,
-				      gint             x_root,
-				      gint             y_root,
-				      GdkDragProtocol *protocol)
-{
-  GdkDevice *device;
-  GdkWindow *window;
-
-  device = gdk_drag_context_get_device (context);
-  window = gdk_device_get_window_at_position (device, NULL, NULL);
-
-  if (window)
-    {
-      window = gdk_window_get_toplevel (window);
-      *protocol = GDK_DRAG_PROTO_WAYLAND;
-      return g_object_ref (window);
-    }
-
-  return NULL;
-}
-
 static inline uint32_t
 gdk_to_wl_actions (GdkDragAction action)
 {
@@ -181,40 +123,6 @@ gdk_haiku_drag_context_set_action (GdkDragContext *context,
                                      GdkDragAction   action)
 {
   context->suggested_action = context->action = action;
-}
-
-static gboolean
-gdk_haiku_drag_context_drag_motion (GdkDragContext *context,
-				      GdkWindow      *dest_window,
-				      GdkDragProtocol protocol,
-				      gint            x_root,
-				      gint            y_root,
-				      GdkDragAction   suggested_action,
-				      GdkDragAction   possible_actions,
-				      guint32         time)
-{
-  if (context->dest_window != dest_window)
-    {
-      context->dest_window = dest_window ? g_object_ref (dest_window) : NULL;
-      _gdk_haiku_drag_context_set_coords (context, x_root, y_root);
-      _gdk_haiku_drag_context_emit_event (context, GDK_DRAG_STATUS, time);
-    }
-
-  gdk_haiku_drag_context_set_action (context, suggested_action);
-
-  return context->dest_window != NULL;
-}
-
-static void
-gdk_haiku_drag_context_drag_abort (GdkDragContext *context,
-				     guint32         time)
-{
-}
-
-static void
-gdk_haiku_drag_context_drag_drop (GdkDragContext *context,
-				    guint32         time)
-{
 }
 
 /* Destination side */
@@ -276,79 +184,6 @@ gdk_haiku_drag_context_commit_status (GdkDragContext *context)
   gdk_haiku_selection_set_current_offer_actions (display, dnd_actions);
 
   gdk_haiku_drop_context_set_status (context, haiku_context->selected_action != 0);
-}
-
-static void
-gdk_haiku_drag_context_drag_status (GdkDragContext *context,
-				      GdkDragAction   action,
-				      guint32         time_)
-{
-  GdkHaikuDragContext *haiku_context;
-
-  haiku_context = GDK_HAIKU_DRAG_CONTEXT (context);
-  haiku_context->selected_action = action;
-}
-
-static void
-gdk_haiku_drag_context_drop_reply (GdkDragContext *context,
-				     gboolean        accepted,
-				     guint32         time_)
-{
-  if (!accepted)
-    gdk_haiku_drop_context_set_status (context, accepted);
-}
-
-static void
-gdk_haiku_drag_context_drop_finish (GdkDragContext *context,
-				      gboolean        success,
-				      guint32         time)
-{
-  GdkDisplay *display = gdk_device_get_display (gdk_drag_context_get_device (context));
-  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
-  GdkHaikuDragContext *haiku_context;
-  struct wl_data_offer *wl_offer;
-  GdkAtom selection;
-
-  haiku_context = GDK_HAIKU_DRAG_CONTEXT (context);
-  selection = gdk_drag_get_selection (context);
-  wl_offer = gdk_haiku_selection_get_offer (display, selection);
-
-  if (wl_offer && success && haiku_context->selected_action &&
-      haiku_context->selected_action != GDK_ACTION_ASK)
-    {
-      gdk_haiku_drag_context_commit_status (context);
-
-      if (display_haiku->data_device_manager_version >=
-          WL_DATA_OFFER_FINISH_SINCE_VERSION)
-        wl_data_offer_finish (wl_offer);
-    }
-
-  gdk_haiku_selection_set_offer (display, selection, NULL);
-}
-
-static gboolean
-gdk_haiku_drag_context_drop_status (GdkDragContext *context)
-{
-  return FALSE;
-}
-
-static GdkAtom
-gdk_haiku_drag_context_get_selection (GdkDragContext *context)
-{
-  return gdk_atom_intern_static_string ("GdkHaikuSelection");
-}
-
-static void
-gdk_haiku_drag_context_init (GdkHaikuDragContext *context_haiku)
-{
-  GdkDragContext *context;
-
-  context = GDK_DRAG_CONTEXT (context_haiku);
-  contexts = g_list_prepend (contexts, context);
-
-  context->action = GDK_ACTION_COPY;
-  context->suggested_action = GDK_ACTION_COPY;
-  context->actions = GDK_ACTION_COPY | GDK_ACTION_MOVE;
 }
 
 static GdkWindow *
@@ -458,43 +293,10 @@ gdk_haiku_drag_context_drop_done (GdkDragContext *context,
     }
 }
 
-static void
-gdk_haiku_drag_context_class_init (GdkHaikuDragContextClass *klass)
-{
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GdkDragContextClass *context_class = GDK_DRAG_CONTEXT_CLASS (klass);
-
-  object_class->finalize = gdk_haiku_drag_context_finalize;
-
-  context_class->find_window = gdk_haiku_drag_context_find_window;
-  context_class->drag_status = gdk_haiku_drag_context_drag_status;
-  context_class->drag_motion = gdk_haiku_drag_context_drag_motion;
-  context_class->drag_abort = gdk_haiku_drag_context_drag_abort;
-  context_class->drag_drop = gdk_haiku_drag_context_drag_drop;
-  context_class->drop_reply = gdk_haiku_drag_context_drop_reply;
-  context_class->drop_finish = gdk_haiku_drag_context_drop_finish;
-  context_class->drop_status = gdk_haiku_drag_context_drop_status;
-  context_class->get_selection = gdk_haiku_drag_context_get_selection;
-  context_class->get_drag_window = gdk_haiku_drag_context_get_drag_window;
-  context_class->set_hotspot = gdk_haiku_drag_context_set_hotspot;
-  context_class->drop_done = gdk_haiku_drag_context_drop_done;
-  context_class->manage_dnd = gdk_haiku_drag_context_manage_dnd;
-  context_class->set_cursor = gdk_haiku_drag_context_set_cursor;
-  context_class->action_changed = gdk_haiku_drag_context_action_changed;
-  context_class->drop_performed = gdk_haiku_drag_context_drop_performed;
-  context_class->cancel = gdk_haiku_drag_context_cancel;
-  context_class->commit_drag_status = gdk_haiku_drag_context_commit_status;
-}
-
 GdkDragProtocol
 _gdk_haiku_window_get_drag_protocol (GdkWindow *window, GdkWindow **target)
 {
   return GDK_DRAG_PROTO_WAYLAND;
-}
-
-void
-_gdk_haiku_window_register_dnd (GdkWindow *window)
-{
 }
 
 static GdkWindow *
@@ -513,52 +315,6 @@ create_dnd_window (GdkScreen *screen)
   mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_TYPE_HINT;
 
   return gdk_window_new (gdk_screen_get_root_window (screen), &attrs, mask);
-}
-
-GdkDragContext *
-_gdk_haiku_window_drag_begin (GdkWindow *window,
-				GdkDevice *device,
-				GList     *targets,
-                                gint       x_root,
-                                gint       y_root)
-{
-  GdkHaikuDragContext *context_haiku;
-  GdkDragContext *context;
-  GList *l;
-
-  context_haiku = g_object_new (GDK_TYPE_HAIKU_DRAG_CONTEXT, NULL);
-  context = GDK_DRAG_CONTEXT (context_haiku);
-  context->display = gdk_window_get_display (window);
-  context->source_window = g_object_ref (window);
-  context->is_source = TRUE;
-  context->targets = g_list_copy (targets);
-
-  gdk_drag_context_set_device (context, device);
-
-  context_haiku->dnd_window = create_dnd_window (gdk_window_get_screen (window));
-  context_haiku->dnd_surface = gdk_haiku_window_get_wl_surface (context_haiku->dnd_window);
-  context_haiku->data_source =
-    gdk_haiku_selection_get_data_source (window,
-                                           gdk_haiku_drag_context_get_selection (context));
-
-  for (l = context->targets; l; l = l->next)
-    {
-      gchar *mimetype = gdk_atom_name (l->data);
-
-      wl_data_source_offer (context_haiku->data_source, mimetype);
-      g_free (mimetype);
-    }
-
-  /* If there's no targets this is local DnD, ensure we create a target for it */
-  if (!context->targets)
-    {
-      gchar *local_dnd_mime;
-      local_dnd_mime = g_strdup_printf ("application/gtk+-local-dnd-%x", getpid());
-      wl_data_source_offer (context_haiku->data_source, local_dnd_mime);
-      g_free (local_dnd_mime);
-    }
-
-  return context;
 }
 
 GdkDragContext *
@@ -658,4 +414,248 @@ struct wl_data_source *
 gdk_haiku_drag_context_get_data_source (GdkDragContext *context)
 {
   return GDK_HAIKU_DRAG_CONTEXT (context)->data_source;
+}
+
+GdkDragContext *
+_gdk_haiku_window_drag_begin (GdkWindow *window,
+				GdkDevice *device,
+				GList     *targets,
+                                gint       x_root,
+                                gint       y_root)
+{
+  GdkHaikuDragContext *context_haiku;
+  GdkDragContext *context;
+  GList *l;
+
+  context_haiku = g_object_new (GDK_TYPE_HAIKU_DRAG_CONTEXT, NULL);
+  context = GDK_DRAG_CONTEXT (context_haiku);
+  context->display = gdk_window_get_display (window);
+  context->source_window = g_object_ref (window);
+  context->is_source = TRUE;
+  context->targets = g_list_copy (targets);
+
+  gdk_drag_context_set_device (context, device);
+
+  context_haiku->dnd_window = create_dnd_window (gdk_window_get_screen (window));
+  context_haiku->dnd_surface = gdk_haiku_window_get_wl_surface (context_haiku->dnd_window);
+  context_haiku->data_source =
+    gdk_haiku_selection_get_data_source (window,
+                                           gdk_haiku_drag_context_get_selection (context));
+
+  for (l = context->targets; l; l = l->next)
+    {
+      gchar *mimetype = gdk_atom_name (l->data);
+
+      wl_data_source_offer (context_haiku->data_source, mimetype);
+      g_free (mimetype);
+    }
+
+  /* If there's no targets this is local DnD, ensure we create a target for it */
+  if (!context->targets)
+    {
+      gchar *local_dnd_mime;
+      local_dnd_mime = g_strdup_printf ("application/gtk+-local-dnd-%x", getpid());
+      wl_data_source_offer (context_haiku->data_source, local_dnd_mime);
+      g_free (local_dnd_mime);
+    }
+
+  return context;
+}
+
+static gboolean
+gdk_haiku_drag_context_drag_motion (GdkDragContext *context,
+				      GdkWindow      *dest_window,
+				      GdkDragProtocol protocol,
+				      gint            x_root,
+				      gint            y_root,
+				      GdkDragAction   suggested_action,
+				      GdkDragAction   possible_actions,
+				      guint32         time)
+{
+  if (context->dest_window != dest_window)
+    {
+      context->dest_window = dest_window ? g_object_ref (dest_window) : NULL;
+      _gdk_haiku_drag_context_set_coords (context, x_root, y_root);
+      _gdk_haiku_drag_context_emit_event (context, GDK_DRAG_STATUS, time);
+    }
+
+  gdk_haiku_drag_context_set_action (context, suggested_action);
+
+  return context->dest_window != NULL;
+}
+
+static GdkWindow *
+gdk_haiku_drag_context_find_window (GdkDragContext  *context,
+				      GdkWindow       *drag_window,
+				      GdkScreen       *screen,
+				      gint             x_root,
+				      gint             y_root,
+				      GdkDragProtocol *protocol)
+{
+  GdkDevice *device;
+  GdkWindow *window;
+
+  device = gdk_drag_context_get_device (context);
+  window = gdk_device_get_window_at_position (device, NULL, NULL);
+
+  if (window)
+    {
+      window = gdk_window_get_toplevel (window);
+      *protocol = GDK_DRAG_PROTO_WAYLAND;
+      return g_object_ref (window);
+    }
+
+  return NULL;
+}
+
+static void
+gdk_haiku_drag_context_drag_drop (GdkDragContext *context,
+				    guint32         time)
+{
+}
+
+static void
+gdk_haiku_drag_context_drag_abort (GdkDragContext *context,
+				     guint32         time)
+{
+}
+
+static void
+gdk_haiku_drag_context_drag_status (GdkDragContext *context,
+				      GdkDragAction   action,
+				      guint32         time_)
+{
+  GdkHaikuDragContext *haiku_context;
+
+  haiku_context = GDK_HAIKU_DRAG_CONTEXT (context);
+  haiku_context->selected_action = action;
+}
+
+static void
+gdk_haiku_drag_context_drop_reply (GdkDragContext *context,
+				     gboolean        accepted,
+				     guint32         time_)
+{
+  if (!accepted)
+    gdk_haiku_drop_context_set_status (context, accepted);
+}
+
+static void
+gdk_haiku_drag_context_drop_finish (GdkDragContext *context,
+				      gboolean        success,
+				      guint32         time)
+{
+  GdkDisplay *display = gdk_device_get_display (gdk_drag_context_get_device (context));
+  GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
+  GdkHaikuDragContext *haiku_context;
+  struct wl_data_offer *wl_offer;
+  GdkAtom selection;
+
+  haiku_context = GDK_HAIKU_DRAG_CONTEXT (context);
+  selection = gdk_drag_get_selection (context);
+  wl_offer = gdk_haiku_selection_get_offer (display, selection);
+
+  if (wl_offer && success && haiku_context->selected_action &&
+      haiku_context->selected_action != GDK_ACTION_ASK)
+    {
+      gdk_haiku_drag_context_commit_status (context);
+
+      if (display_haiku->data_device_manager_version >=
+          WL_DATA_OFFER_FINISH_SINCE_VERSION)
+        wl_data_offer_finish (wl_offer);
+    }
+
+  gdk_haiku_selection_set_offer (display, selection, NULL);
+}
+
+void
+_gdk_haiku_window_register_dnd (GdkWindow *window)
+{
+}
+
+static GdkAtom
+gdk_haiku_drag_context_get_selection (GdkDragContext *context)
+{
+  return gdk_atom_intern_static_string ("GdkHaikuSelection");
+}
+
+static gboolean
+gdk_haiku_drag_context_drop_status (GdkDragContext *context)
+{
+  return FALSE;
+}
+
+static void
+gdk_haiku_drag_context_init (GdkHaikuDragContext *context_haiku)
+{
+  GdkDragContext *context;
+
+  context = GDK_DRAG_CONTEXT (context_haiku);
+  contexts = g_list_prepend (contexts, context);
+
+  context->action = GDK_ACTION_COPY;
+  context->suggested_action = GDK_ACTION_COPY;
+  context->actions = GDK_ACTION_COPY | GDK_ACTION_MOVE;
+}
+
+static void
+gdk_haiku_drag_context_finalize (GObject *object)
+{
+  GdkHaikuDragContext *haiku_context = GDK_HAIKU_DRAG_CONTEXT (object);
+  GdkDragContext *context = GDK_DRAG_CONTEXT (object);
+  GdkWindow *dnd_window;
+
+  contexts = g_list_remove (contexts, context);
+
+  if (context->is_source)
+    {
+      GdkDisplay *display = gdk_window_get_display (context->source_window);
+      GdkAtom selection;
+      GdkWindow *selection_owner;
+
+      selection = gdk_drag_get_selection (context);
+      selection_owner = gdk_selection_owner_get_for_display (display, selection);
+      if (selection_owner == context->source_window)
+        gdk_haiku_selection_unset_data_source (display, selection);
+
+      gdk_drag_context_set_cursor (context, NULL);
+    }
+
+  if (haiku_context->data_source)
+    wl_data_source_destroy (haiku_context->data_source);
+
+  dnd_window = haiku_context->dnd_window;
+
+  G_OBJECT_CLASS (gdk_haiku_drag_context_parent_class)->finalize (object);
+
+  if (dnd_window)
+    gdk_window_destroy (dnd_window);
+}
+
+static void
+gdk_haiku_drag_context_class_init (GdkHaikuDragContextClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GdkDragContextClass *context_class = GDK_DRAG_CONTEXT_CLASS (klass);
+
+  object_class->finalize = gdk_haiku_drag_context_finalize;
+
+  context_class->find_window = gdk_haiku_drag_context_find_window;
+  context_class->drag_status = gdk_haiku_drag_context_drag_status;
+  context_class->drag_motion = gdk_haiku_drag_context_drag_motion;
+  context_class->drag_abort = gdk_haiku_drag_context_drag_abort;
+  context_class->drag_drop = gdk_haiku_drag_context_drag_drop;
+  context_class->drop_reply = gdk_haiku_drag_context_drop_reply;
+  context_class->drop_finish = gdk_haiku_drag_context_drop_finish;
+  context_class->drop_status = gdk_haiku_drag_context_drop_status;
+  context_class->get_selection = gdk_haiku_drag_context_get_selection;
+  context_class->get_drag_window = gdk_haiku_drag_context_get_drag_window;
+  context_class->set_hotspot = gdk_haiku_drag_context_set_hotspot;
+  context_class->drop_done = gdk_haiku_drag_context_drop_done;
+  context_class->manage_dnd = gdk_haiku_drag_context_manage_dnd;
+  context_class->set_cursor = gdk_haiku_drag_context_set_cursor;
+  context_class->action_changed = gdk_haiku_drag_context_action_changed;
+  context_class->drop_performed = gdk_haiku_drag_context_drop_performed;
+  context_class->cancel = gdk_haiku_drag_context_cancel;
+  context_class->commit_drag_status = gdk_haiku_drag_context_commit_status;
 }

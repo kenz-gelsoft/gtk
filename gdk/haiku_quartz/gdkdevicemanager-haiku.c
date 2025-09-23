@@ -71,7 +71,7 @@ static GdkDevice *
 create_core_pointer (GdkDeviceManager *device_manager,
                      GdkDisplay       *display)
 {
-  return g_object_new (GDK_TYPE_HAIKU_DEVICE_CORE,
+  return g_object_new (GDK_TYPE_HAIKU_DEVICE,
                        "name", "Core Pointer",
                        "type", GDK_DEVICE_TYPE_MASTER,
                        "input-source", GDK_SOURCE_MOUSE,
@@ -86,7 +86,7 @@ static GdkDevice *
 create_core_keyboard (GdkDeviceManager *device_manager,
                       GdkDisplay       *display)
 {
-  return g_object_new (GDK_TYPE_HAIKU_DEVICE_CORE,
+  return g_object_new (GDK_TYPE_HAIKU_DEVICE,
                        "name", "Core Keyboard",
                        "type", GDK_DEVICE_TYPE_MASTER,
                        "input-source", GDK_SOURCE_KEYBOARD,
@@ -180,7 +180,7 @@ create_core_device (GdkDeviceManager *device_manager,
                     GdkInputSource    source)
 {
   GdkDisplay *display = gdk_device_manager_get_display (device_manager);
-  GdkDevice *device = g_object_new (GDK_TYPE_HAIKU_DEVICE_CORE,
+  GdkDevice *device = g_object_new (GDK_TYPE_HAIKU_DEVICE,
                                     "name", device_name,
                                     "type", GDK_DEVICE_TYPE_SLAVE,
                                     "input-source", source,
@@ -267,22 +267,22 @@ _gdk_haiku_device_manager_register_device_for_ns_event (GdkDeviceManager *device
       GdkDevice *device_to_check = GDK_DEVICE (l->data);
 
       if (input_source == gdk_device_get_source (device_to_check) &&
-          [nsevent uniqueID] == _gdk_haiku_device_core_get_unique (device_to_check))
+          [nsevent uniqueID] == _gdk_haiku_device_get_unique (device_to_check))
         {
           device = device_to_check;
           if ([nsevent isEnteringProximity])
             {
-              if (!_gdk_haiku_device_core_is_active (device, [nsevent deviceID]))
+              if (!_gdk_haiku_device_is_active (device, [nsevent deviceID]))
                 self->num_active_devices++;
 
-              _gdk_haiku_device_core_set_active (device, TRUE, [nsevent deviceID]);
+              _gdk_haiku_device_set_active (device, TRUE, [nsevent deviceID]);
             }
           else
             {
-              if (_gdk_haiku_device_core_is_active (device, [nsevent deviceID]))
+              if (_gdk_haiku_device_is_active (device, [nsevent deviceID]))
                 self->num_active_devices--;
 
-              _gdk_haiku_device_core_set_active (device, FALSE, [nsevent deviceID]);
+              _gdk_haiku_device_set_active (device, FALSE, [nsevent deviceID]);
             }
         }
     }
@@ -320,17 +320,17 @@ _gdk_haiku_device_manager_register_device_for_ns_event (GdkDeviceManager *device
       seat = gdk_device_get_seat (self->core_pointer);
       gdk_seat_default_add_slave (GDK_SEAT_DEFAULT (seat), device);
 
-      _gdk_haiku_device_core_set_unique (device, [nsevent uniqueID]);
-      _gdk_haiku_device_core_set_active (device, TRUE, [nsevent deviceID]);
+      _gdk_haiku_device_set_unique (device, [nsevent uniqueID]);
+      _gdk_haiku_device_set_active (device, TRUE, [nsevent deviceID]);
 
       self->known_tablet_devices = g_list_append (self->known_tablet_devices,
                                                   device);
 
       if ([nsevent isEnteringProximity])
         {
-          if (!_gdk_haiku_device_core_is_active (device, [nsevent deviceID]))
+          if (!_gdk_haiku_device_is_active (device, [nsevent deviceID]))
             self->num_active_devices++;
-          _gdk_haiku_device_core_set_active (device, TRUE, [nsevent deviceID]);
+          _gdk_haiku_device_set_active (device, TRUE, [nsevent deviceID]);
         }
     }
 
@@ -360,7 +360,7 @@ _gdk_haiku_device_manager_core_device_for_ns_event (GdkDeviceManager *device_man
         {
           GdkDevice *device_to_check = GDK_DEVICE (l->data);
 
-          if (_gdk_haiku_device_core_is_active (device_to_check, [nsevent deviceID]))
+          if (_gdk_haiku_device_is_active (device_to_check, [nsevent deviceID]))
             device = device_to_check;
         }
     }

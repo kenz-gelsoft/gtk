@@ -68,183 +68,6 @@ GType _gdk_haiku_keymap_get_type (void);
 
 G_DEFINE_TYPE (GdkHaikuKeymap, _gdk_haiku_keymap, GDK_TYPE_KEYMAP)
 
-static void
-gdk_haiku_keymap_finalize (GObject *object)
-{
-  GdkHaikuKeymap *keymap = GDK_HAIKU_KEYMAP (object);
-
-  xkb_keymap_unref (keymap->xkb_keymap);
-  xkb_state_unref (keymap->xkb_state);
-  g_free (keymap->direction);
-
-  G_OBJECT_CLASS (_gdk_haiku_keymap_parent_class)->finalize (object);
-}
-
-static PangoDirection
-gdk_haiku_keymap_get_direction (GdkKeymap *keymap)
-{
-  GdkHaikuKeymap *keymap_haiku = GDK_HAIKU_KEYMAP (keymap);
-  gint i;
-
-  for (i = 0; i < xkb_keymap_num_layouts (keymap_haiku->xkb_keymap); i++)
-    {
-      if (xkb_state_layout_index_is_active (keymap_haiku->xkb_state, i, XKB_STATE_LAYOUT_EFFECTIVE))
-        return keymap_haiku->direction[i];
-    }
-
-  return PANGO_DIRECTION_NEUTRAL;
-}
-
-static gboolean
-gdk_haiku_keymap_have_bidi_layouts (GdkKeymap *keymap)
-{
-  GdkHaikuKeymap *keymap_haiku = GDK_HAIKU_KEYMAP (keymap);
-
-  return keymap_haiku->bidi;
-}
-
-static gboolean
-gdk_haiku_keymap_get_caps_lock_state (GdkKeymap *keymap)
-{
-  return xkb_state_led_name_is_active (GDK_HAIKU_KEYMAP (keymap)->xkb_state,
-                                       XKB_LED_NAME_CAPS);
-}
-
-static gboolean
-gdk_haiku_keymap_get_num_lock_state (GdkKeymap *keymap)
-{
-  return xkb_state_led_name_is_active (GDK_HAIKU_KEYMAP (keymap)->xkb_state,
-                                       XKB_LED_NAME_NUM);
-}
-
-static gboolean
-gdk_haiku_keymap_get_scroll_lock_state (GdkKeymap *keymap)
-{
-  return xkb_state_led_name_is_active (GDK_HAIKU_KEYMAP (keymap)->xkb_state,
-                                       XKB_LED_NAME_SCROLL);
-}
-
-static gboolean
-gdk_haiku_keymap_get_entries_for_keyval (GdkKeymap     *keymap,
-					   guint          keyval,
-					   GdkKeymapKey **keys,
-					   gint          *n_keys)
-{
-  struct xkb_keymap *xkb_keymap = GDK_HAIKU_KEYMAP (keymap)->xkb_keymap;
-  GArray *retval;
-  guint keycode;
-  xkb_keycode_t min_keycode, max_keycode;
-
-  retval = g_array_new (FALSE, FALSE, sizeof (GdkKeymapKey));
-
-  min_keycode = xkb_keymap_min_keycode (xkb_keymap);
-  max_keycode = xkb_keymap_max_keycode (xkb_keymap);
-  for (keycode = min_keycode; keycode < max_keycode; keycode++)
-    {
-      gint num_layouts, layout;
-      num_layouts = xkb_keymap_num_layouts_for_key (xkb_keymap, keycode);
-      for (layout = 0; layout < num_layouts; layout++)
-        {
-          gint num_levels, level;
-          num_levels = xkb_keymap_num_levels_for_key (xkb_keymap, keycode, layout);
-          for (level = 0; level < num_levels; level++)
-            {
-              const xkb_keysym_t *syms;
-              gint num_syms, sym;
-              num_syms = xkb_keymap_key_get_syms_by_level (xkb_keymap, keycode, layout, level, &syms);
-              for (sym = 0; sym < num_syms; sym++)
-                {
-                  if (syms[sym] == keyval)
-                    {
-                      GdkKeymapKey key;
-
-                      key.keycode = keycode;
-                      key.group = layout;
-                      key.level = level;
-
-                      g_array_append_val (retval, key);
-                    }
-                }
-            }
-        }
-    }
-
-  *n_keys = retval->len;
-  *keys = (GdkKeymapKey*) g_array_free (retval, FALSE);
-
-  return *n_keys > 0;
-}
-
-static gboolean
-gdk_haiku_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
-					    guint          hardware_keycode,
-					    GdkKeymapKey **keys,
-					    guint        **keyvals,
-					    gint          *n_entries)
-{
-  struct xkb_keymap *xkb_keymap = GDK_HAIKU_KEYMAP (keymap)->xkb_keymap;
-  gint num_layouts, layout;
-  gint num_entries;
-  gint i;
-
-  num_layouts = xkb_keymap_num_layouts_for_key (xkb_keymap, hardware_keycode);
-
-  num_entries = 0;
-  for (layout = 0; layout < num_layouts; layout++)
-    num_entries += xkb_keymap_num_levels_for_key (xkb_keymap, hardware_keycode,  layout);
-
- if (n_entries)
-    *n_entries = num_entries;
-  if (keys)
-    *keys = g_new0 (GdkKeymapKey, num_entries);
-  if (keyvals)
-    *keyvals = g_new0 (guint, num_entries);
-
-  i = 0;
-  for (layout = 0; layout < num_layouts; layout++)
-    {
-      gint num_levels, level;
-      num_levels = xkb_keymap_num_levels_for_key (xkb_keymap, hardware_keycode, layout);
-      for (level = 0; level < num_levels; level++)
-        {
-          const xkb_keysym_t *syms;
-          int num_syms;
-          num_syms = xkb_keymap_key_get_syms_by_level (xkb_keymap, hardware_keycode, layout, 0, &syms);
-          if (keys)
-            {
-              (*keys)[i].keycode = hardware_keycode;
-              (*keys)[i].group = layout;
-              (*keys)[i].level = level;
-            }
-          if (keyvals && num_syms > 0)
-            (*keyvals)[i] = syms[0];
-
-          i++;
-        }
-    }
-
-  return num_entries > 0;
-}
-
-static guint
-gdk_haiku_keymap_lookup_key (GdkKeymap          *keymap,
-			       const GdkKeymapKey *key)
-{
-  struct xkb_keymap *xkb_keymap = GDK_HAIKU_KEYMAP (keymap)->xkb_keymap;
-  const xkb_keysym_t *syms;
-  int num_syms;
-
-  num_syms = xkb_keymap_key_get_syms_by_level (xkb_keymap,
-                                               key->keycode,
-                                               key->group,
-                                               key->level,
-                                               &syms);
-  if (num_syms > 0)
-    return syms[0];
-  else
-    return XKB_KEY_NoSymbol;
-}
-
 static guint32
 get_xkb_modifiers (struct xkb_keymap *xkb_keymap,
                    GdkModifierType    state)
@@ -315,54 +138,6 @@ get_gdk_modifiers (struct xkb_keymap *xkb_keymap,
   return state;
 }
 
-static gboolean
-gdk_haiku_keymap_translate_keyboard_state (GdkKeymap       *keymap,
-					     guint            hardware_keycode,
-					     GdkModifierType  state,
-					     gint             group,
-					     guint           *keyval,
-					     gint            *effective_group,
-					     gint            *effective_level,
-					     GdkModifierType *consumed_modifiers)
-{
-  struct xkb_keymap *xkb_keymap;
-  struct xkb_state *xkb_state;
-  guint32 modifiers;
-  guint32 consumed;
-  xkb_layout_index_t layout;
-  xkb_level_index_t level;
-  xkb_keysym_t sym;
-
-  g_return_val_if_fail (keymap == NULL || GDK_IS_KEYMAP (keymap), FALSE);
-  g_return_val_if_fail (group < 4, FALSE);
-
-  xkb_keymap = GDK_HAIKU_KEYMAP (keymap)->xkb_keymap;
-
-  modifiers = get_xkb_modifiers (xkb_keymap, state);
-
-  xkb_state = xkb_state_new (xkb_keymap);
-
-  xkb_state_update_mask (xkb_state, modifiers, 0, 0, group, 0, 0);
-
-  layout = xkb_state_key_get_layout (xkb_state, hardware_keycode);
-  level = xkb_state_key_get_level (xkb_state, hardware_keycode, layout);
-  sym = xkb_state_key_get_one_sym (xkb_state, hardware_keycode);
-  consumed = modifiers & ~xkb_state_mod_mask_remove_consumed (xkb_state, hardware_keycode, modifiers);
-
-  xkb_state_unref (xkb_state);
-
-  if (keyval)
-    *keyval = sym;
-  if (effective_group)
-    *effective_group = layout;
-  if (effective_level)
-    *effective_level = level;
-  if (consumed_modifiers)
-    *consumed_modifiers = get_gdk_modifiers (xkb_keymap, consumed);
-
-  return (sym != XKB_KEY_NoSymbol);
-}
-
 static guint
 gdk_haiku_keymap_get_modifier_state (GdkKeymap *keymap)
 {
@@ -373,95 +148,6 @@ gdk_haiku_keymap_get_modifier_state (GdkKeymap *keymap)
   mods = xkb_state_serialize_mods (xkb_state, XKB_STATE_MODS_EFFECTIVE);
 
   return get_gdk_modifiers (xkb_keymap, mods);
-}
-
-static void
-gdk_haiku_keymap_add_virtual_modifiers (GdkKeymap       *keymap,
-					  GdkModifierType *state)
-{
-  struct xkb_keymap *xkb_keymap;
-  struct xkb_state *xkb_state;
-  xkb_mod_index_t idx;
-  uint32_t mods, real;
-  struct { const char *name; GdkModifierType mask; } vmods[] = {
-    { "Super", GDK_SUPER_MASK | GDK_MOD4_MASK },
-    { "Hyper", GDK_HYPER_MASK },
-    { "Meta", GDK_META_MASK },
-    { NULL, 0 }
-  };
-  int i;
-
-  xkb_keymap = GDK_HAIKU_KEYMAP (keymap)->xkb_keymap;
-  mods = get_xkb_modifiers (xkb_keymap, *state);
-
-  xkb_state = xkb_state_new (xkb_keymap);
-
-  for (i = 0; vmods[i].name; i++)
-    {
-      idx = xkb_keymap_mod_get_index (xkb_keymap, vmods[i].name);
-      if (idx == XKB_MOD_INVALID)
-        continue;
-
-      xkb_state_update_mask (xkb_state, 1 << idx, 0, 0, 0, 0, 0);
-      real = xkb_state_serialize_mods (xkb_state, XKB_STATE_MODS_EFFECTIVE);
-      real &= 0xf0; /* ignore mapping to Lock, Shift, Control, Mod1 */
-      if (mods & real)
-        *state |= vmods[i].mask;
-      xkb_state_update_mask (xkb_state, 0, 0, 0, 0, 0, 0);
-    }
-
-  xkb_state_unref (xkb_state);
-}
-
-static gboolean
-gdk_haiku_keymap_map_virtual_modifiers (GdkKeymap       *keymap,
-					  GdkModifierType *state)
-{
-  struct xkb_keymap *xkb_keymap;
-  struct xkb_state *xkb_state;
-  uint32_t mods, mapped;
-  gboolean ret = TRUE;
-
-  xkb_keymap = GDK_HAIKU_KEYMAP (keymap)->xkb_keymap;
-  mods = get_xkb_modifiers (xkb_keymap, *state);
-
-  xkb_state = xkb_state_new (xkb_keymap);
-  xkb_state_update_mask (xkb_state, mods & ~0xff, 0, 0, 0, 0, 0);
-  mapped = xkb_state_serialize_mods (xkb_state, XKB_STATE_MODS_EFFECTIVE);
-  if ((mapped & mods & 0xff) != 0)
-    ret = FALSE;
-  *state |= get_gdk_modifiers (xkb_keymap, mapped);
-
-  xkb_state_unref (xkb_state);
-
-  return ret;
-}
-
-static void
-_gdk_haiku_keymap_class_init (GdkHaikuKeymapClass *klass)
-{
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GdkKeymapClass *keymap_class = GDK_KEYMAP_CLASS (klass);
-
-  object_class->finalize = gdk_haiku_keymap_finalize;
-
-  keymap_class->get_direction = gdk_haiku_keymap_get_direction;
-  keymap_class->have_bidi_layouts = gdk_haiku_keymap_have_bidi_layouts;
-  keymap_class->get_caps_lock_state = gdk_haiku_keymap_get_caps_lock_state;
-  keymap_class->get_num_lock_state = gdk_haiku_keymap_get_num_lock_state;
-  keymap_class->get_scroll_lock_state = gdk_haiku_keymap_get_scroll_lock_state;
-  keymap_class->get_entries_for_keyval = gdk_haiku_keymap_get_entries_for_keyval;
-  keymap_class->get_entries_for_keycode = gdk_haiku_keymap_get_entries_for_keycode;
-  keymap_class->lookup_key = gdk_haiku_keymap_lookup_key;
-  keymap_class->translate_keyboard_state = gdk_haiku_keymap_translate_keyboard_state;
-  keymap_class->get_modifier_state = gdk_haiku_keymap_get_modifier_state;
-  keymap_class->add_virtual_modifiers = gdk_haiku_keymap_add_virtual_modifiers;
-  keymap_class->map_virtual_modifiers = gdk_haiku_keymap_map_virtual_modifiers;
-}
-
-static void
-_gdk_haiku_keymap_init (GdkHaikuKeymap *keymap)
-{
 }
 
 static void
@@ -657,6 +343,281 @@ _gdk_haiku_keymap_get_xkb_state (GdkKeymap *keymap)
   return GDK_HAIKU_KEYMAP (keymap)->xkb_state;
 }
 
+static PangoDirection
+gdk_haiku_keymap_get_direction (GdkKeymap *keymap)
+{
+  GdkHaikuKeymap *keymap_haiku = GDK_HAIKU_KEYMAP (keymap);
+  gint i;
+
+  for (i = 0; i < xkb_keymap_num_layouts (keymap_haiku->xkb_keymap); i++)
+    {
+      if (xkb_state_layout_index_is_active (keymap_haiku->xkb_state, i, XKB_STATE_LAYOUT_EFFECTIVE))
+        return keymap_haiku->direction[i];
+    }
+
+  return PANGO_DIRECTION_NEUTRAL;
+}
+
+static gboolean
+gdk_haiku_keymap_have_bidi_layouts (GdkKeymap *keymap)
+{
+  GdkHaikuKeymap *keymap_haiku = GDK_HAIKU_KEYMAP (keymap);
+
+  return keymap_haiku->bidi;
+}
+
+static gboolean
+gdk_haiku_keymap_get_caps_lock_state (GdkKeymap *keymap)
+{
+  return xkb_state_led_name_is_active (GDK_HAIKU_KEYMAP (keymap)->xkb_state,
+                                       XKB_LED_NAME_CAPS);
+}
+
+static gboolean
+gdk_haiku_keymap_get_num_lock_state (GdkKeymap *keymap)
+{
+  return xkb_state_led_name_is_active (GDK_HAIKU_KEYMAP (keymap)->xkb_state,
+                                       XKB_LED_NAME_NUM);
+}
+
+static gboolean
+gdk_haiku_keymap_get_scroll_lock_state (GdkKeymap *keymap)
+{
+  return xkb_state_led_name_is_active (GDK_HAIKU_KEYMAP (keymap)->xkb_state,
+                                       XKB_LED_NAME_SCROLL);
+}
+
+static gboolean
+gdk_haiku_keymap_get_entries_for_keyval (GdkKeymap     *keymap,
+					   guint          keyval,
+					   GdkKeymapKey **keys,
+					   gint          *n_keys)
+{
+  struct xkb_keymap *xkb_keymap = GDK_HAIKU_KEYMAP (keymap)->xkb_keymap;
+  GArray *retval;
+  guint keycode;
+  xkb_keycode_t min_keycode, max_keycode;
+
+  retval = g_array_new (FALSE, FALSE, sizeof (GdkKeymapKey));
+
+  min_keycode = xkb_keymap_min_keycode (xkb_keymap);
+  max_keycode = xkb_keymap_max_keycode (xkb_keymap);
+  for (keycode = min_keycode; keycode < max_keycode; keycode++)
+    {
+      gint num_layouts, layout;
+      num_layouts = xkb_keymap_num_layouts_for_key (xkb_keymap, keycode);
+      for (layout = 0; layout < num_layouts; layout++)
+        {
+          gint num_levels, level;
+          num_levels = xkb_keymap_num_levels_for_key (xkb_keymap, keycode, layout);
+          for (level = 0; level < num_levels; level++)
+            {
+              const xkb_keysym_t *syms;
+              gint num_syms, sym;
+              num_syms = xkb_keymap_key_get_syms_by_level (xkb_keymap, keycode, layout, level, &syms);
+              for (sym = 0; sym < num_syms; sym++)
+                {
+                  if (syms[sym] == keyval)
+                    {
+                      GdkKeymapKey key;
+
+                      key.keycode = keycode;
+                      key.group = layout;
+                      key.level = level;
+
+                      g_array_append_val (retval, key);
+                    }
+                }
+            }
+        }
+    }
+
+  *n_keys = retval->len;
+  *keys = (GdkKeymapKey*) g_array_free (retval, FALSE);
+
+  return *n_keys > 0;
+}
+
+static gboolean
+gdk_haiku_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
+					    guint          hardware_keycode,
+					    GdkKeymapKey **keys,
+					    guint        **keyvals,
+					    gint          *n_entries)
+{
+  struct xkb_keymap *xkb_keymap = GDK_HAIKU_KEYMAP (keymap)->xkb_keymap;
+  gint num_layouts, layout;
+  gint num_entries;
+  gint i;
+
+  num_layouts = xkb_keymap_num_layouts_for_key (xkb_keymap, hardware_keycode);
+
+  num_entries = 0;
+  for (layout = 0; layout < num_layouts; layout++)
+    num_entries += xkb_keymap_num_levels_for_key (xkb_keymap, hardware_keycode,  layout);
+
+ if (n_entries)
+    *n_entries = num_entries;
+  if (keys)
+    *keys = g_new0 (GdkKeymapKey, num_entries);
+  if (keyvals)
+    *keyvals = g_new0 (guint, num_entries);
+
+  i = 0;
+  for (layout = 0; layout < num_layouts; layout++)
+    {
+      gint num_levels, level;
+      num_levels = xkb_keymap_num_levels_for_key (xkb_keymap, hardware_keycode, layout);
+      for (level = 0; level < num_levels; level++)
+        {
+          const xkb_keysym_t *syms;
+          int num_syms;
+          num_syms = xkb_keymap_key_get_syms_by_level (xkb_keymap, hardware_keycode, layout, 0, &syms);
+          if (keys)
+            {
+              (*keys)[i].keycode = hardware_keycode;
+              (*keys)[i].group = layout;
+              (*keys)[i].level = level;
+            }
+          if (keyvals && num_syms > 0)
+            (*keyvals)[i] = syms[0];
+
+          i++;
+        }
+    }
+
+  return num_entries > 0;
+}
+
+static guint
+gdk_haiku_keymap_lookup_key (GdkKeymap          *keymap,
+			       const GdkKeymapKey *key)
+{
+  struct xkb_keymap *xkb_keymap = GDK_HAIKU_KEYMAP (keymap)->xkb_keymap;
+  const xkb_keysym_t *syms;
+  int num_syms;
+
+  num_syms = xkb_keymap_key_get_syms_by_level (xkb_keymap,
+                                               key->keycode,
+                                               key->group,
+                                               key->level,
+                                               &syms);
+  if (num_syms > 0)
+    return syms[0];
+  else
+    return XKB_KEY_NoSymbol;
+}
+
+static gboolean
+gdk_haiku_keymap_translate_keyboard_state (GdkKeymap       *keymap,
+					     guint            hardware_keycode,
+					     GdkModifierType  state,
+					     gint             group,
+					     guint           *keyval,
+					     gint            *effective_group,
+					     gint            *effective_level,
+					     GdkModifierType *consumed_modifiers)
+{
+  struct xkb_keymap *xkb_keymap;
+  struct xkb_state *xkb_state;
+  guint32 modifiers;
+  guint32 consumed;
+  xkb_layout_index_t layout;
+  xkb_level_index_t level;
+  xkb_keysym_t sym;
+
+  g_return_val_if_fail (keymap == NULL || GDK_IS_KEYMAP (keymap), FALSE);
+  g_return_val_if_fail (group < 4, FALSE);
+
+  xkb_keymap = GDK_HAIKU_KEYMAP (keymap)->xkb_keymap;
+
+  modifiers = get_xkb_modifiers (xkb_keymap, state);
+
+  xkb_state = xkb_state_new (xkb_keymap);
+
+  xkb_state_update_mask (xkb_state, modifiers, 0, 0, group, 0, 0);
+
+  layout = xkb_state_key_get_layout (xkb_state, hardware_keycode);
+  level = xkb_state_key_get_level (xkb_state, hardware_keycode, layout);
+  sym = xkb_state_key_get_one_sym (xkb_state, hardware_keycode);
+  consumed = modifiers & ~xkb_state_mod_mask_remove_consumed (xkb_state, hardware_keycode, modifiers);
+
+  xkb_state_unref (xkb_state);
+
+  if (keyval)
+    *keyval = sym;
+  if (effective_group)
+    *effective_group = layout;
+  if (effective_level)
+    *effective_level = level;
+  if (consumed_modifiers)
+    *consumed_modifiers = get_gdk_modifiers (xkb_keymap, consumed);
+
+  return (sym != XKB_KEY_NoSymbol);
+}
+
+static void
+gdk_haiku_keymap_add_virtual_modifiers (GdkKeymap       *keymap,
+					  GdkModifierType *state)
+{
+  struct xkb_keymap *xkb_keymap;
+  struct xkb_state *xkb_state;
+  xkb_mod_index_t idx;
+  uint32_t mods, real;
+  struct { const char *name; GdkModifierType mask; } vmods[] = {
+    { "Super", GDK_SUPER_MASK | GDK_MOD4_MASK },
+    { "Hyper", GDK_HYPER_MASK },
+    { "Meta", GDK_META_MASK },
+    { NULL, 0 }
+  };
+  int i;
+
+  xkb_keymap = GDK_HAIKU_KEYMAP (keymap)->xkb_keymap;
+  mods = get_xkb_modifiers (xkb_keymap, *state);
+
+  xkb_state = xkb_state_new (xkb_keymap);
+
+  for (i = 0; vmods[i].name; i++)
+    {
+      idx = xkb_keymap_mod_get_index (xkb_keymap, vmods[i].name);
+      if (idx == XKB_MOD_INVALID)
+        continue;
+
+      xkb_state_update_mask (xkb_state, 1 << idx, 0, 0, 0, 0, 0);
+      real = xkb_state_serialize_mods (xkb_state, XKB_STATE_MODS_EFFECTIVE);
+      real &= 0xf0; /* ignore mapping to Lock, Shift, Control, Mod1 */
+      if (mods & real)
+        *state |= vmods[i].mask;
+      xkb_state_update_mask (xkb_state, 0, 0, 0, 0, 0, 0);
+    }
+
+  xkb_state_unref (xkb_state);
+}
+
+static gboolean
+gdk_haiku_keymap_map_virtual_modifiers (GdkKeymap       *keymap,
+					  GdkModifierType *state)
+{
+  struct xkb_keymap *xkb_keymap;
+  struct xkb_state *xkb_state;
+  uint32_t mods, mapped;
+  gboolean ret = TRUE;
+
+  xkb_keymap = GDK_HAIKU_KEYMAP (keymap)->xkb_keymap;
+  mods = get_xkb_modifiers (xkb_keymap, *state);
+
+  xkb_state = xkb_state_new (xkb_keymap);
+  xkb_state_update_mask (xkb_state, mods & ~0xff, 0, 0, 0, 0, 0);
+  mapped = xkb_state_serialize_mods (xkb_state, XKB_STATE_MODS_EFFECTIVE);
+  if ((mapped & mods & 0xff) != 0)
+    ret = FALSE;
+  *state |= get_gdk_modifiers (xkb_keymap, mapped);
+
+  xkb_state_unref (xkb_state);
+
+  return ret;
+}
+
 gboolean
 _gdk_haiku_keymap_key_is_modifier (GdkKeymap *keymap,
                                      guint      keycode)
@@ -675,4 +636,43 @@ _gdk_haiku_keymap_key_is_modifier (GdkKeymap *keymap,
   xkb_state_unref (xkb_state);
 
   return is_modifier;
+}
+
+static void
+_gdk_haiku_keymap_init (GdkHaikuKeymap *keymap)
+{
+}
+
+static void
+gdk_haiku_keymap_finalize (GObject *object)
+{
+  GdkHaikuKeymap *keymap = GDK_HAIKU_KEYMAP (object);
+
+  xkb_keymap_unref (keymap->xkb_keymap);
+  xkb_state_unref (keymap->xkb_state);
+  g_free (keymap->direction);
+
+  G_OBJECT_CLASS (_gdk_haiku_keymap_parent_class)->finalize (object);
+}
+
+static void
+_gdk_haiku_keymap_class_init (GdkHaikuKeymapClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GdkKeymapClass *keymap_class = GDK_KEYMAP_CLASS (klass);
+
+  object_class->finalize = gdk_haiku_keymap_finalize;
+
+  keymap_class->get_direction = gdk_haiku_keymap_get_direction;
+  keymap_class->have_bidi_layouts = gdk_haiku_keymap_have_bidi_layouts;
+  keymap_class->get_caps_lock_state = gdk_haiku_keymap_get_caps_lock_state;
+  keymap_class->get_num_lock_state = gdk_haiku_keymap_get_num_lock_state;
+  keymap_class->get_scroll_lock_state = gdk_haiku_keymap_get_scroll_lock_state;
+  keymap_class->get_entries_for_keyval = gdk_haiku_keymap_get_entries_for_keyval;
+  keymap_class->get_entries_for_keycode = gdk_haiku_keymap_get_entries_for_keycode;
+  keymap_class->lookup_key = gdk_haiku_keymap_lookup_key;
+  keymap_class->translate_keyboard_state = gdk_haiku_keymap_translate_keyboard_state;
+  keymap_class->get_modifier_state = gdk_haiku_keymap_get_modifier_state;
+  keymap_class->add_virtual_modifiers = gdk_haiku_keymap_add_virtual_modifiers;
+  keymap_class->map_virtual_modifiers = gdk_haiku_keymap_map_virtual_modifiers;
 }

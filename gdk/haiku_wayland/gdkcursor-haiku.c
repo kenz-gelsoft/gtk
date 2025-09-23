@@ -191,18 +191,6 @@ _gdk_haiku_display_update_cursors (GdkHaikuDisplay *display)
     _gdk_haiku_cursor_update (display, cursor);
 }
 
-static void
-gdk_haiku_cursor_finalize (GObject *object)
-{
-  GdkHaikuCursor *cursor = GDK_HAIKU_CURSOR (object);
-
-  g_free (cursor->name);
-  if (cursor->surface.cairo_surface)
-    cairo_surface_destroy (cursor->surface.cairo_surface);
-
-  G_OBJECT_CLASS (_gdk_haiku_cursor_parent_class)->finalize (object);
-}
-
 static cairo_surface_t *
 gdk_haiku_cursor_get_surface (GdkCursor *cursor,
 				gdouble *x_hot,
@@ -343,22 +331,6 @@ _gdk_haiku_cursor_set_scale (GdkCursor *cursor,
   _gdk_haiku_cursor_update (display_haiku, haiku_cursor);
 }
 
-static void
-_gdk_haiku_cursor_class_init (GdkHaikuCursorClass *haiku_cursor_class)
-{
-  GdkCursorClass *cursor_class = GDK_CURSOR_CLASS (haiku_cursor_class);
-  GObjectClass *object_class = G_OBJECT_CLASS (haiku_cursor_class);
-
-  object_class->finalize = gdk_haiku_cursor_finalize;
-
-  cursor_class->get_surface = gdk_haiku_cursor_get_surface;
-}
-
-static void
-_gdk_haiku_cursor_init (GdkHaikuCursor *cursor)
-{
-}
-
 GdkCursor *
 _gdk_haiku_display_get_cursor_for_name_with_scale (GdkDisplay  *display,
                                                      const gchar *name,
@@ -401,13 +373,6 @@ _gdk_haiku_display_get_cursor_for_name_with_scale (GdkDisplay  *display,
                         haiku_cursor->name,
                         g_object_ref (haiku_cursor));
   return GDK_CURSOR (haiku_cursor);
-}
-
-GdkCursor *
-_gdk_haiku_display_get_cursor_for_name (GdkDisplay  *display,
-                                          const gchar *name)
-{
-  return _gdk_haiku_display_get_cursor_for_name_with_scale (display, name, 1);
 }
 
 GdkCursor *
@@ -554,6 +519,53 @@ _gdk_haiku_display_get_cursor_for_surface (GdkDisplay *display,
   return GDK_CURSOR (cursor);
 }
 
+GdkCursor *
+_gdk_haiku_display_get_cursor_for_name (GdkDisplay  *display,
+                                          const gchar *name)
+{
+  return _gdk_haiku_display_get_cursor_for_name_with_scale (display, name, 1);
+}
+
+static void
+gdk_haiku_cursor_finalize (GObject *object)
+{
+  GdkHaikuCursor *cursor = GDK_HAIKU_CURSOR (object);
+
+  g_free (cursor->name);
+  if (cursor->surface.cairo_surface)
+    cairo_surface_destroy (cursor->surface.cairo_surface);
+
+  G_OBJECT_CLASS (_gdk_haiku_cursor_parent_class)->finalize (object);
+}
+
+static void
+_gdk_haiku_cursor_class_init (GdkHaikuCursorClass *haiku_cursor_class)
+{
+  GdkCursorClass *cursor_class = GDK_CURSOR_CLASS (haiku_cursor_class);
+  GObjectClass *object_class = G_OBJECT_CLASS (haiku_cursor_class);
+
+  object_class->finalize = gdk_haiku_cursor_finalize;
+
+  cursor_class->get_surface = gdk_haiku_cursor_get_surface;
+}
+
+static void
+_gdk_haiku_cursor_init (GdkHaikuCursor *cursor)
+{
+}
+
+gboolean
+_gdk_haiku_display_supports_cursor_alpha (GdkDisplay *display)
+{
+  return TRUE;
+}
+
+gboolean
+_gdk_haiku_display_supports_cursor_color (GdkDisplay *display)
+{
+  return TRUE;
+}
+
 void
 _gdk_haiku_display_get_default_cursor_size (GdkDisplay *display,
 					      guint       *width,
@@ -570,16 +582,4 @@ _gdk_haiku_display_get_maximal_cursor_size (GdkDisplay *display,
 {
   *width = 256;
   *height = 256;
-}
-
-gboolean
-_gdk_haiku_display_supports_cursor_alpha (GdkDisplay *display)
-{
-  return TRUE;
-}
-
-gboolean
-_gdk_haiku_display_supports_cursor_color (GdkDisplay *display)
-{
-  return TRUE;
 }
