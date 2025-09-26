@@ -268,7 +268,7 @@ typedef struct {
 static void
 gdk_haiku_cairo_surface_destroy (void *data)
 {
-  GdkHaikuCairoSurfaceData *surface_data = data;
+  GdkHaikuCairoSurfaceData *surface_data = (GdkHaikuCairoSurfaceData *)data;
   cairo_surface_t *surface = surface_data->window_impl->cairo_surface;
 
   if (!cairo_surface_get_reference_count (surface))
@@ -1107,7 +1107,7 @@ _gdk_haiku_window_init_windowing (GdkDisplay *display,
 
   _gdk_root = _gdk_display_create_window (display);
 
-  _gdk_root->impl = g_object_new (_gdk_root_window_impl_haiku_get_type (), NULL);
+  _gdk_root->impl = (GdkWindowImpl *)g_object_new (_gdk_root_window_impl_haiku_get_type (), NULL);
   _gdk_root->impl_window = _gdk_root;
   _gdk_root->visual = gdk_screen_get_system_visual (screen);
 
@@ -1121,7 +1121,7 @@ _gdk_haiku_window_init_windowing (GdkDisplay *display,
 
   _gdk_haiku_screen_update_window_sizes (screen);
 
-  _gdk_root->state = 0; /* We don't want GDK_WINDOW_STATE_WITHDRAWN here */
+  _gdk_root->state = GdkWindowState(0); /* We don't want GDK_WINDOW_STATE_WITHDRAWN here */
   _gdk_root->window_type = GDK_WINDOW_ROOT;
   _gdk_root->depth = 24;
   _gdk_root->viewable = TRUE;
@@ -2028,7 +2028,7 @@ static GdkEventMask
 gdk_window_haiku_get_events (GdkWindow *window)
 {
   if (GDK_WINDOW_DESTROYED (window))
-    return 0;
+    return GdkEventMask(0);
   else
     return window->event_mask;
 }
@@ -2632,6 +2632,7 @@ gdk_haiku_window_get_frame_extents (GdkWindow    *window,
 #endif
 }
 
+#if 0
 /* Fake protocol to make gcc think that it's OK to call setStyleMask
    even if it isn't. We check to make sure before actually calling
    it. */
@@ -2639,6 +2640,7 @@ gdk_haiku_window_get_frame_extents (GdkWindow    *window,
 @protocol CanSetStyleMask
 - (void)setStyleMask:(int)mask;
 @end
+#endif
 
 static void
 gdk_haiku_window_set_decorations (GdkWindow       *window,
@@ -3420,7 +3422,7 @@ _gdk_window_impl_haiku_get_type (void)
 
       object_type = g_type_register_static (GDK_TYPE_WINDOW_IMPL,
                                             "GdkWindowImplHaiku",
-                                            &object_info, 0);
+                                            &object_info, GTypeFlags(0));
     }
 
   return object_type;
@@ -3525,7 +3527,7 @@ _gdk_root_window_impl_haiku_get_type (void)
 
       object_type = g_type_register_static (GDK_TYPE_WINDOW_IMPL_HAIKU,
                                             "GdkRootWindowQuartz",
-                                            &object_info, 0);
+                                            &object_info, GTypeFlags(0));
     }
 
   return object_type;

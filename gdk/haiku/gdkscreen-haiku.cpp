@@ -167,7 +167,7 @@ _gdk_haiku_screen_update_window_sizes (GdkScreen *screen)
     {
       if (GDK_WINDOW_TYPE(list->data) == GDK_WINDOW_OFFSCREEN)
         continue;
-      _gdk_haiku_window_update_position (list->data);
+      _gdk_haiku_window_update_position ((GdkWindow *)list->data);
     }
 
   g_list_free (windows);

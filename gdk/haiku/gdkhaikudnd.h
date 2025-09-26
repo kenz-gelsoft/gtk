@@ -45,8 +45,10 @@ typedef struct _GdkHaikuDragContextClass GdkHaikuDragContextClass;
 GDK_AVAILABLE_IN_ALL
 GType     gdk_haiku_drag_context_get_type (void);
 
+#if 0
 GDK_AVAILABLE_IN_ALL
 id        gdk_haiku_drag_context_get_dragging_info_libgtk_only (GdkDragContext *context);
+#endif
 
 GDK_AVAILABLE_IN_ALL
 GdkDragContext *gdk_haiku_drag_source_context_libgtk_only (void);

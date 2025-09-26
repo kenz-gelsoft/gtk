@@ -129,7 +129,7 @@ make_list (const gchar  *text,
   while (tmp_list)
     {
       if (list)
-	(*list)[--i] = tmp_list->data;
+	(*list)[--i] = (gchar *)tmp_list->data;
       else
 	g_free (tmp_list->data);
 

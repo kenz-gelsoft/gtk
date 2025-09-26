@@ -1415,7 +1415,7 @@ _gdk_haiku_events_get_current_keyboard_modifiers (void)
       return modifiers;
     }
 #endif
-  return 0;
+  return GdkModifierType(0);
 }
 
 GdkModifierType
@@ -1435,7 +1435,7 @@ _gdk_haiku_events_get_current_mouse_modifiers (void)
 #endif
   return get_mouse_button_modifiers_from_ns_buttons (buttons);
 #endif
-  return 0;
+  return GdkModifierType(0);
 }
 
 /* Detect window resizing */

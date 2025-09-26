@@ -406,8 +406,9 @@ static const struct CursorsByName cursors_by_name[] = {
   /* Zoom */
   { "zoom-in", @"gdkZoomInCursor" },
   { "zoom-out", @"gdkZoomOutCursor" },
-#endif
   { NULL, NULL },
+#endif
+  { NULL },
 };
 
 GdkCursor*

@@ -1,29 +1,29 @@
 
-add_languages(['objc'])
+add_languages(['cpp'])
 
 gdk_haiku_sources = files(
-#  'GdkHaikuView.c',
-#  'GdkHaikuNSWindow.c',
-  'gdkcursor-haiku.c',
-  'gdkdevice-core-haiku.c',
-  'gdkdevicemanager-core-haiku.c',
-  'gdkdisplay-haiku.c',
-  'gdkdisplaylinksource.c',
-  'gdkdisplaymanager-haiku.c',
-  'gdkdnd-haiku.c',
-  'gdkevents-haiku.c',
-  'gdkeventloop-haiku.c',
-  'gdkglcontext-haiku.c',
-  'gdkglobals-haiku.c',
-  'gdkkeys-haiku.c',
-  'gdkmonitor-haiku.c',
-  'gdkproperty-haiku.c',
-  'gdkscreen-haiku.c',
-  'gdkselection-haiku.c',
-  'gdktestutils-haiku.c',
-  'gdkutils-haiku.c',
-  'gdkvisual-haiku.c',
-  'gdkwindow-haiku.c',
+#  'GdkHaikuView.cpp',
+#  'GdkHaikuNSWindow.cpp',
+  'gdkcursor-haiku.cpp',
+  'gdkdevice-core-haiku.cpp',
+  'gdkdevicemanager-core-haiku.cpp',
+  'gdkdisplay-haiku.cpp',
+  'gdkdisplaylinksource.cpp',
+  'gdkdisplaymanager-haiku.cpp',
+  'gdkdnd-haiku.cpp',
+  'gdkevents-haiku.cpp',
+  'gdkeventloop-haiku.cpp',
+  'gdkglcontext-haiku.cpp',
+  'gdkglobals-haiku.cpp',
+  'gdkkeys-haiku.cpp',
+  'gdkmonitor-haiku.cpp',
+  'gdkproperty-haiku.cpp',
+  'gdkscreen-haiku.cpp',
+  'gdkselection-haiku.cpp',
+  'gdktestutils-haiku.cpp',
+  'gdkutils-haiku.cpp',
+  'gdkvisual-haiku.cpp',
+  'gdkwindow-haiku.cpp',
 )
 
 gdk_haiku_public_headers = files(
@@ -55,8 +55,11 @@ install_headers('gdkhaiku.h', subdir: 'gtk-3.0/gdk')
 #gdk_haiku_deps = [ core_graphics_dep, appkit_dep, cocoa_dep, carbon_dep, haiku_dep, iosurface_dep ]
 gdk_haiku_deps = []
 
+common_args = ['-DGDK_COMPILATION', '-DG_LOG_DOMAIN="Gdk"']
+
 libgdk_haiku = static_library('gdk-haiku',
   gdk_haiku_sources, gdkconfig, gdkenum_h,
   include_directories: [confinc, gdkinc],
-  c_args: ['-DGDK_COMPILATION', '-DG_LOG_DOMAIN="Gdk"', '-xobjective-c'],
+  c_args: common_args,
+  cpp_args: common_args,
   dependencies: [gdk_deps, gdk_haiku_deps])

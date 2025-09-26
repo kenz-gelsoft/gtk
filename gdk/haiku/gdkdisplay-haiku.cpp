@@ -83,7 +83,7 @@ gdk_haiku_display_get_default_group (GdkDisplay *display)
 GdkDeviceManager *
 _gdk_device_manager_new (GdkDisplay *display)
 {
-  return g_object_new (GDK_TYPE_HAIKU_DEVICE_MANAGER_CORE,
+  return (GdkDeviceManager *)g_object_new (GDK_TYPE_HAIKU_DEVICE_MANAGER_CORE,
                        "display", display,
                        NULL);
 }
@@ -129,7 +129,7 @@ static gboolean
 gdk_haiku_display_frame_cb (gpointer data)
 {
   GdkDisplayLinkSource *source;
-  GdkHaikuDisplay *display_haiku = data;
+  GdkHaikuDisplay *display_haiku = (GdkHaikuDisplay *)data;
   GSList *iter, **last_next = NULL;
   gint64 presentation_time;
 
@@ -148,7 +148,7 @@ gdk_haiku_display_frame_cb (gpointer data)
 
   for (; iter != NULL; iter = iter->next)
     {
-      GdkWindow *window = iter->data;
+      GdkWindow *window = (GdkWindow *)iter->data;
       GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (window->impl);
       GdkFrameClock *frame_clock = gdk_window_get_frame_clock (window);
       GdkFrameTimings *timings;
@@ -561,7 +561,7 @@ gdk_haiku_display_get_monitor (GdkDisplay *display,
   int n_displays = gdk_haiku_display_get_n_monitors (display);
 
   if (monitor_num >= 0 && monitor_num < n_displays)
-    return g_ptr_array_index (haiku_display->monitors, monitor_num);
+    return (GdkMonitor *)g_ptr_array_index (haiku_display->monitors, monitor_num);
 
   return NULL;
 }
@@ -686,7 +686,7 @@ gdk_haiku_display_finalize (GObject *object)
 }
 
 static void
-gdk_haiku_display_class_init (GdkHaikuDisplayClass *class)
+gdk_haiku_display_class_init (GdkHaikuDisplayClass *klass)
 {
 #if 0
   GObjectClass *object_class = G_OBJECT_CLASS (class);

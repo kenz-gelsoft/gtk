@@ -52,9 +52,9 @@ gdk_haiku_display_manager_finalize (GObject *object)
 }
 
 static void
-gdk_haiku_display_manager_class_init (GdkHaikuDisplayManagerClass *class)
+gdk_haiku_display_manager_class_init (GdkHaikuDisplayManagerClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = gdk_haiku_display_manager_finalize;
 }

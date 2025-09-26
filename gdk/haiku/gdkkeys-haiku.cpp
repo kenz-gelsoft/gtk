@@ -79,7 +79,7 @@ GdkKeymap *
 _gdk_haiku_display_get_keymap (GdkDisplay *display)
 {
   if (default_keymap == NULL)
-    default_keymap = g_object_new (gdk_haiku_keymap_get_type (), NULL);
+    default_keymap = (GdkKeymap *)g_object_new (gdk_haiku_keymap_get_type (), NULL);
 
   return default_keymap;
 }
@@ -662,7 +662,7 @@ gdk_haiku_keymap_translate_keyboard_state (GdkKeymap       *keymap,
   if (level)
     *level = 0;
   if (consumed_modifiers)
-    *consumed_modifiers = 0;
+    *consumed_modifiers = GdkModifierType(0);
 
   if (hardware_keycode < 0 || hardware_keycode >= NUM_KEYCODES)
     return FALSE;
@@ -674,15 +674,15 @@ gdk_haiku_keymap_translate_keyboard_state (GdkKeymap       *keymap,
     {
       guint tmp_modifiers = (state & GDK_MODIFIER_MASK);
 
-      for (bit = 1; bit <= tmp_modifiers; bit <<= 1)
+      for (bit = GdkModifierType(1); bit <= tmp_modifiers; bit = GdkModifierType(bit << 1))
         {
           if ((bit & tmp_modifiers) &&
-              translate_keysym (hardware_keycode, group, state & ~bit,
+              translate_keysym (hardware_keycode, group, GdkModifierType(state & ~bit),
                                 NULL, NULL) == tmp_keyval)
             tmp_modifiers &= ~bit;
         }
 
-      *consumed_modifiers = tmp_modifiers;
+      *consumed_modifiers = GdkModifierType(tmp_modifiers);
     }
 
   if (keyval)
@@ -696,7 +696,7 @@ gdk_haiku_keymap_add_virtual_modifiers (GdkKeymap       *keymap,
                                          GdkModifierType *state)
 {
   if (*state & GDK_MOD2_MASK)
-    *state |= GDK_META_MASK;
+    *state = GdkModifierType(*state | GDK_META_MASK);
 }
 
 static gboolean
@@ -704,7 +704,7 @@ gdk_haiku_keymap_map_virtual_modifiers (GdkKeymap       *keymap,
                                          GdkModifierType *state)
 {
   if (*state & GDK_META_MASK)
-    *state |= GDK_MOD2_MASK;
+    *state = GdkModifierType(*state | GDK_MOD2_MASK);
 
   return TRUE;
 }
@@ -728,18 +728,18 @@ gdk_haiku_keymap_get_modifier_mask (GdkKeymap         *keymap,
       return GDK_MOD2_MASK;
 
     case GDK_MODIFIER_INTENT_NO_TEXT_INPUT:
-      return GDK_MOD2_MASK | GDK_CONTROL_MASK;
+      return GdkModifierType(GDK_MOD2_MASK | GDK_CONTROL_MASK);
 
     case GDK_MODIFIER_INTENT_SHIFT_GROUP:
       return GDK_MOD1_MASK;
 
     case GDK_MODIFIER_INTENT_DEFAULT_MOD_MASK:
-      return (GDK_SHIFT_MASK   | GDK_CONTROL_MASK | GDK_MOD1_MASK    |
+      return GdkModifierType(GDK_SHIFT_MASK   | GDK_CONTROL_MASK | GDK_MOD1_MASK    |
 	      GDK_MOD2_MASK    | GDK_SUPER_MASK   | GDK_HYPER_MASK   |
 	      GDK_META_MASK);
 
     default:
-      g_return_val_if_reached (0);
+      g_return_val_if_reached (GdkModifierType(0));
     }
 }
 

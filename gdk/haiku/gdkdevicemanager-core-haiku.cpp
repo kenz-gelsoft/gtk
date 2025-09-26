@@ -20,7 +20,9 @@
 #include <gdk/gdktypes.h>
 #include <gdk/gdkdevicemanager.h>
 #include <gdk/gdkdeviceprivate.h>
+extern "C" {
 #include <gdk/gdkseatdefaultprivate.h>
+}
 #include <gdk/gdkdevicemanagerprivate.h>
 #include <gdk/gdkdisplayprivate.h>
 #include "gdkdevicemanager-core-haiku.h"
@@ -73,7 +75,7 @@ static GdkDevice *
 create_core_pointer (GdkDeviceManager *device_manager,
                      GdkDisplay       *display)
 {
-  return g_object_new (GDK_TYPE_HAIKU_DEVICE_CORE,
+  return (GdkDevice *)g_object_new (GDK_TYPE_HAIKU_DEVICE_CORE,
                        "name", "Core Pointer",
                        "type", GDK_DEVICE_TYPE_MASTER,
                        "input-source", GDK_SOURCE_MOUSE,
@@ -88,7 +90,7 @@ static GdkDevice *
 create_core_keyboard (GdkDeviceManager *device_manager,
                       GdkDisplay       *display)
 {
-  return g_object_new (GDK_TYPE_HAIKU_DEVICE_CORE,
+  return (GdkDevice *)g_object_new (GDK_TYPE_HAIKU_DEVICE_CORE,
                        "name", "Core Keyboard",
                        "type", GDK_DEVICE_TYPE_MASTER,
                        "input-source", GDK_SOURCE_KEYBOARD,
@@ -182,7 +184,7 @@ create_core_device (GdkDeviceManager *device_manager,
                     GdkInputSource    source)
 {
   GdkDisplay *display = gdk_device_manager_get_display (device_manager);
-  GdkDevice *device = g_object_new (GDK_TYPE_HAIKU_DEVICE_CORE,
+  GdkDevice *device = (GdkDevice *)g_object_new (GDK_TYPE_HAIKU_DEVICE_CORE,
                                     "name", device_name,
                                     "type", GDK_DEVICE_TYPE_SLAVE,
                                     "input-source", source,

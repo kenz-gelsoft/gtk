@@ -71,8 +71,8 @@ gdk_haiku_monitor_init (GdkHaikuMonitor *monitor)
 }
 
 static void
-gdk_haiku_monitor_class_init (GdkHaikuMonitorClass *class)
+gdk_haiku_monitor_class_init (GdkHaikuMonitorClass *klass)
 {
-  GDK_MONITOR_CLASS (class)->get_workarea = gdk_haiku_monitor_get_workarea;
+  GDK_MONITOR_CLASS (klass)->get_workarea = gdk_haiku_monitor_get_workarea;
 }
 

@@ -20,7 +20,7 @@
 #define __GDK_HAIKU_COCOA_ACCESS_H__
 
 #ifndef __OBJC__
-#error "This header declares Cocoa types and can be included only from source files compiled with Objective-C."
+//#error "This header declares Cocoa types and can be included only from source files compiled with Objective-C."
 #endif
 
 //#include <AppKit/AppKit.h>
