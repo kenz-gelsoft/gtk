@@ -21,6 +21,7 @@
 #include <glib.h>
 #include <gdk.h>
 
+#if 0
 @interface GdkHaikuNSWindow : NSWindow {
   BOOL    inMove;
   BOOL    inShowOrHide;
@@ -56,7 +57,7 @@
 - (NSPoint)convertPointToScreen:(NSPoint)point;
 - (NSPoint)convertPointFromScreen:(NSPoint)point;
 @end
-
+#endif
 
 
 

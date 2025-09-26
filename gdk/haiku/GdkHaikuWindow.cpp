@@ -17,13 +17,14 @@
  */
 
 #include "config.h"
-#import "GdkHaikuNSWindow.h"
+#include "GdkHaikuNSWindow.h"
 #include "gdkhaikuwindow.h"
 #include "gdkdnd-haiku.h"
 #include "gdkprivate-haiku.h"
 #include "gdkinternal-haiku.h"
 #include "gdkhaikudnd.h"
 
+#if 0
 @implementation GdkHaikuNSWindow
 
 - (void)windowWillClose:(NSNotification*)notification
@@ -911,3 +912,4 @@ typedef enum
 }
 
 @end
+#endif

@@ -17,17 +17,18 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <AvailabilityMacros.h>
+//#include <AvailabilityMacros.h>
 #include "config.h"
-#import "GdkHaikuView.h"
+#include "GdkHaikuView.h"
 #include "gdkhaikuwindow.h"
 #include "gdkprivate-haiku.h"
 #include "gdkhaiku.h"
 #include "gdkinternal-haiku.h"
-#include <cairo/cairo-haiku.h>
-#import <AppKit/AppKit.h>
-#import <IOSurface/IOSurface.h>
+//#include <cairo/cairo-haiku.h>
+//#import <AppKit/AppKit.h>
+//#import <IOSurface/IOSurface.h>
 
+#if 0
 @implementation GdkHaikuView
 
 
@@ -578,3 +579,4 @@ copy_rectangle_argb32 (cairo_surface_t *dest, cairo_surface_t *source,
 }
 
 @end
+#endif

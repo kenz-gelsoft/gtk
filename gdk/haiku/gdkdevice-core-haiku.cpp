@@ -21,7 +21,7 @@
 #include <gdk/gdkdeviceprivate.h>
 #include <gdk/gdkdisplayprivate.h>
 
-#import "GdkHaikuView.h"
+#include "GdkHaikuView.h"
 #include "gdkhaikuwindow.h"
 #include "gdkhaikucursor.h"
 #include "gdkprivate-haiku.h"
