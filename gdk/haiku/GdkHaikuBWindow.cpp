@@ -17,7 +17,7 @@
  */
 
 #include "config.h"
-#include "GdkHaikuNSWindow.h"
+#include "GdkHaikuBWindow.h"
 #include "gdkhaikuwindow.h"
 #include "gdkdnd-haiku.h"
 #include "gdkprivate-haiku.h"

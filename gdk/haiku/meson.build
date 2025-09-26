@@ -3,7 +3,7 @@ add_languages(['cpp'])
 
 gdk_haiku_sources = files(
   'GdkHaikuView.cpp',
-  'GdkHaikuNSWindow.cpp',
+  'GdkHaikuBWindow.cpp',
   'gdkcursor-haiku.cpp',
   'gdkdevice-core-haiku.cpp',
   'gdkdevicemanager-core-haiku.cpp',
