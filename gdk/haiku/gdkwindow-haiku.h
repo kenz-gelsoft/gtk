@@ -91,33 +91,6 @@ void         gdk_haiku_window_release_context (GdkWindowImplHaiku *window,
                                                 CGContextRef         context);
 #endif
 
-/* Root window implementation for Quartz
- */
-
-typedef struct _GdkRootWindowImplHaiku GdkRootWindowImplHaiku;
-typedef struct _GdkRootWindowImplHaikuClass GdkRootWindowImplHaikuClass;
-
-#define GDK_TYPE_ROOT_WINDOW_IMPL_HAIKU              (_gdk_root_window_impl_haiku_get_type ())
-#define GDK_ROOT_WINDOW_IMPL_HAIKU(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_ROOT_WINDOW_IMPL_HAIKU, GdkRootWindowImplHaiku))
-#define GDK_ROOT_WINDOW_IMPL_HAIKU_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_ROOT_WINDOW_IMPL_HAIKU, GdkRootWindowImplHaikuClass))
-#define GDK_IS_ROOT_WINDOW_IMPL_HAIKU(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_ROOT_WINDOW_IMPL_HAIKU))
-#define GDK_IS_ROOT_WINDOW_IMPL_HAIKU_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_ROOT_WINDOW_IMPL_HAIKU))
-#define GDK_ROOT_WINDOW_IMPL_HAIKU_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_ROOT_WINDOW_IMPL_HAIKU, GdkRootWindowImplHaikuClass))
-
-struct _GdkRootWindowImplHaiku
-{
-  GdkWindowImplHaiku parent_instance;
-//  CGContextRef cg_context;
-  GList* cg_layers;
-};
- 
-struct _GdkRootWindowImplHaikuClass 
-{
-  GdkWindowImplHaikuClass parent_class;
-};
-
-GType _gdk_root_window_impl_haiku_get_type (void);
-
 G_END_DECLS
 
 #endif /* __GDK_WINDOW_HAIKU_H__ */

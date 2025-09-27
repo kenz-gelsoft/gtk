@@ -1122,7 +1122,7 @@ _gdk_haiku_window_init_windowing (GdkDisplay *display,
 
   _gdk_root = _gdk_display_create_window (display);
 
-  _gdk_root->impl = (GdkWindowImpl *)g_object_new (_gdk_root_window_impl_haiku_get_type (), NULL);
+  _gdk_root->impl = (GdkWindowImpl *)g_object_new (_gdk_window_impl_haiku_get_type (), NULL);
   _gdk_root->impl_window = _gdk_root;
   _gdk_root->visual = gdk_screen_get_system_visual (screen);
 
@@ -3509,110 +3509,6 @@ gdk_haiku_window_release_context (GdkWindowImplHaiku  *window,
 
   g_return_if_fail (cg_context);
   GDK_WINDOW_IMPL_HAIKU_GET_CLASS (window)->release_context (window, cg_context);
-}
-
-/* macOS doesn't define a root window, but Gdk needs one for two
- * purposes: To be a parent reference for some toplevels and to be a
- * fallback window when gdk_window_create_image_surface is called with
- * a NULL GdkWindow.
- *
- */
-
-static CGContextRef gdk_root_window_impl_haiku_get_context (GdkWindowImplHaiku *window, gboolean antialias);
-static void gdk_root_window_impl_haiku_release_context (GdkWindowImplHaiku *window, CGContextRef cg_context);
-#endif
-
-static void
-gdk_root_window_impl_haiku_class_init (GdkRootWindowImplHaikuClass *klass)
-{
-  abort();
-#if 0
-  GdkWindowImplHaikuClass *window_haiku_class = GDK_WINDOW_IMPL_HAIKU_CLASS (klass);
-
-  root_window_parent_class = g_type_class_peek_parent (klass);
-
-  window_haiku_class->get_context = gdk_root_window_impl_haiku_get_context;
-  window_haiku_class->release_context = gdk_root_window_impl_haiku_release_context;
-#endif
-}
-
-static void
-gdk_root_window_impl_haiku_init (GdkRootWindowImplHaiku *impl)
-{
-  abort();
-#if 0
-  CGColorSpaceRef colorspace =  CGColorSpaceCreateDeviceRGB ();
-  /* Alpha channel Info: Cairo, CGImage, and CVPixelBuffer all use
-   * kCGImageAlphaPremultipliedFirst, CALayer.contents wants
-   * kCGImageAlphaPremultipliedLast.
-   */
-  CGBitmapInfo info = (CGBitmapInfo)kCGImageAlphaPremultipliedLast;
-  impl->cg_context = CGBitmapContextCreate (NULL, 1, 1, 8, 4,
-                                            colorspace, info);
-  CGColorSpaceRelease (colorspace);
-  impl->cg_layers = NULL;
-#endif
-}
-
-static void
-gdk_root_window_impl_haiku_dispose (GdkRootWindowImplHaiku *impl)
-{
-//  g_list_free_full (impl->cg_layers, (GDestroyNotify)CGLayerRelease);
-}
-
-GType
-_gdk_root_window_impl_haiku_get_type (void)
-{
-  static GType object_type = 0;
-
-  if (!object_type)
-    {
-      const GTypeInfo object_info =
-        {
-          sizeof (GdkRootWindowImplHaikuClass),
-          (GBaseInitFunc) NULL,
-          (GBaseFinalizeFunc) NULL,
-          (GClassInitFunc) gdk_root_window_impl_haiku_class_init,
-          NULL,           /* class_finalize */
-          NULL,           /* class_data */
-          sizeof (GdkRootWindowImplHaiku),
-          0,              /* n_preallocs */
-          (GInstanceInitFunc) gdk_root_window_impl_haiku_init,
-        };
-
-      object_type = g_type_register_static (GDK_TYPE_WINDOW_IMPL_HAIKU,
-                                            "GdkRootWindowQuartz",
-                                            &object_info, GTypeFlags(0));
-    }
-
-  return object_type;
-}
-
-
-#if 0
-static CGContextRef
-gdk_root_window_impl_haiku_get_context (GdkWindowImplHaiku *window_impl,
-                                         gboolean             antialias)
-{
-   GdkRootWindowImplHaiku *impl = GDK_ROOT_WINDOW_IMPL_HAIKU (window_impl);
-   CGSize size;
-   CGLayerRef layer;
-
-  if (!window_impl || GDK_WINDOW_DESTROYED (window_impl->wrapper))
-    return NULL;
-
-  size.width = gdk_window_get_width (window_impl->wrapper);
-  size.height = gdk_window_get_height (window_impl->wrapper);
-  layer = CGLayerCreateWithContext(impl->cg_context, size, NULL);
-  impl->cg_layers = g_list_prepend(impl->cg_layers, CGLayerRetain (layer));
-  return CGContextRetain (CGLayerGetContext (layer));
-}
-
-static void
-gdk_root_window_impl_haiku_release_context (GdkWindowImplHaiku *window,
-                                             CGContextRef         cg_context)
-{
-  CGContextRelease (cg_context);
 }
 #endif
 
