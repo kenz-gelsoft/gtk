@@ -185,6 +185,11 @@ gtk_application_impl_new (GtkApplication *application,
     impl_type = gtk_application_impl_quartz_get_type ();
 #endif
 
+#ifdef GDK_WINDOWING_HAIKU
+  if (GDK_IS_HAIKU_DISPLAY (display))
+    impl_type = gtk_application_impl_haiku_get_type ();
+#endif
+
   impl = g_object_new (impl_type, NULL);
   impl->application = application;
   impl->display = display;

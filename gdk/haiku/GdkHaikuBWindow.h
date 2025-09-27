@@ -18,9 +18,12 @@
 
 //#import <AppKit/AppKit.h>
 //#import <Foundation/Foundation.h>
+#include <Window.h>
 #include <glib.h>
 #include <gdk.h>
 
+class GdkHaikuBWindow : BWindow
+{};
 #if 0
 @interface GdkHaikuNSWindow : NSWindow {
   BOOL    inMove;

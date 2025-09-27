@@ -30,11 +30,19 @@
 /* Cairo surface widths must be 4-pixel byte aligned so that the image will transfer to the CPU. */
 #define GDK_WINDOW_HAIKU_ALIGNMENT 16
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 /* Display */
 
 GdkDisplay *    _gdk_haiku_display_open (const gchar *name);
 
 /* Window Impl */
 void _gdk_haiku_unref_cairo_surface (GdkWindow *window);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif /* __GDK_PRIVATE_HAIKU_H__ */

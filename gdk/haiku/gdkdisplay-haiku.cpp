@@ -200,14 +200,13 @@ gdk_haiku_display_init_display_link (GdkDisplay *display)
 GdkDisplay *
 _gdk_haiku_display_open (const gchar *display_name)
 {
-#if 0
   if (_gdk_display != NULL)
     return NULL;
 
-  _gdk_display = g_object_new (gdk_haiku_display_get_type (), NULL);
+  _gdk_display = (GdkDisplay *)g_object_new (gdk_haiku_display_get_type (), NULL);
   _gdk_display->device_manager = _gdk_device_manager_new (_gdk_display);
 
-  _gdk_screen = g_object_new (gdk_haiku_screen_get_type (), NULL);
+  _gdk_screen = (GdkScreen *)g_object_new (gdk_haiku_screen_get_type (), NULL);
   _gdk_haiku_screen_init_visuals (_gdk_screen);
 
   _gdk_haiku_window_init_windowing (_gdk_display, _gdk_screen);
@@ -215,7 +214,7 @@ _gdk_haiku_display_open (const gchar *display_name)
   _gdk_haiku_events_init ();
 
   /* Initialize application */
-  [NSApplication sharedApplication];
+  //[NSApplication sharedApplication];
   gdk_haiku_display_init_display_link (_gdk_display);
 
 #if 0
@@ -226,8 +225,6 @@ _gdk_haiku_display_open (const gchar *display_name)
   g_signal_emit_by_name (_gdk_display, "opened");
 
   return _gdk_display;
-#endif
-  return 0;
 }
 
 static const gchar *

@@ -276,6 +276,9 @@ static GdkBackend gdk_backends[] = {
 #ifdef GDK_WINDOWING_BROADWAY
   { "broadway", _gdk_broadway_display_open },
 #endif
+#ifdef GDK_WINDOWING_HAIKU
+  { "haiku",   _gdk_haiku_display_open },
+#endif
   /* NULL-terminating this array so we can use commas above */
   { NULL, NULL }
 };
