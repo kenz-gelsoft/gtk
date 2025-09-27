@@ -61,7 +61,6 @@ G_END_DECLS
 #include <gdk/haiku/gdkhaikudisplay.h>
 #include <gdk/haiku/gdkhaikudisplaymanager.h>
 #include <gdk/haiku/gdkhaikukeys.h>
-#include <gdk/haiku/gdkhaikumonitor.h>
 #include <gdk/haiku/gdkhaikuscreen.h>
 #include <gdk/haiku/gdkhaikuutils.h>
 #include <gdk/haiku/gdkhaikuvisual.h>

@@ -24,7 +24,6 @@
 
 #include "gdkprivate-haiku.h"
 #include "gdkdisplay-haiku.h"
-#include "gdkmonitor-haiku.h"
 #include "gdkinternal-haiku.h"
 
 /* A couple of notes about this file are in order.  In GDK, a

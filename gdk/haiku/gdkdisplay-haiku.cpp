@@ -32,7 +32,6 @@
 #include "gdkmonitorprivate.h"
 #include "gdkeventsource.h"
 #include "gdkdisplay-haiku.h"
-#include "gdkmonitor-haiku.h"
 #include "gdkglcontext-haiku.h"
 #include "gdkinternal-haiku.h"
 #include "gdkwindow.h"
@@ -404,7 +403,7 @@ configure_monitor (GdkMonitor       *monitor,
 {
   abort();
 #if 0
-  GdkHaikuMonitor *haiku_monitor = GDK_HAIKU_MONITOR (monitor);
+  GdkMonitor *haiku_monitor = GDK_MONITOR (monitor);
   CGSize disp_size = CGDisplayScreenSize (haiku_monitor->id);
   gint width = (int)trunc (disp_size.width);
   gint height = (int)trunc (disp_size.height);
@@ -479,7 +478,7 @@ same_monitor (gconstpointer a, gconstpointer b)
 {
   abort();
 #if 0
-  GdkHaikuMonitor *mon_a = GDK_HAIKU_MONITOR (a);
+  GdkMonitor *mon_a = GDK_MONITOR (a);
   CGDirectDisplayID disp_id = (CGDirectDisplayID)GPOINTER_TO_INT (b);
   if (!mon_a)
     return FALSE;
@@ -503,7 +502,7 @@ display_reconfiguration_callback (CGDirectDisplayID            cg_display,
                kCGDisplaySetMainFlag | kCGDisplayMirrorFlag |
                kCGDisplayUnMirrorFlag))
     {
-      GdkHaikuMonitor *monitor = NULL;
+      GdkMonitor *monitor = NULL;
       guint index;
 
       if (!g_ptr_array_find_with_equal_func (display->monitors,
@@ -511,7 +510,7 @@ display_reconfiguration_callback (CGDirectDisplayID            cg_display,
                                              same_monitor,
                                              &index))
         {
-          monitor = g_object_new (GDK_TYPE_HAIKU_MONITOR,
+          monitor = g_object_new (GDK_TYPE_MONITOR,
                                   "display", display, NULL);
           monitor->id = cg_display;
           g_ptr_array_add (display->monitors, monitor);
@@ -536,7 +535,7 @@ display_reconfiguration_callback (CGDirectDisplayID            cg_display,
                                             same_monitor,
                                             &index))
         {
-          GdkHaikuMonitor *monitor = g_ptr_array_index (display->monitors,
+          GdkMonitor *monitor = g_ptr_array_index (display->monitors,
                                                          index);
           gdk_display_monitor_removed (GDK_DISPLAY (display),
                                        GDK_MONITOR (monitor));
@@ -657,7 +656,7 @@ gdk_haiku_display_init (GdkHaikuDisplay *display)
   display->monitors = g_ptr_array_new_full (n_displays, g_object_unref);
   for (disp = 0; disp < n_displays; ++disp)
     {
-      GdkHaikuMonitor *monitor = g_object_new (GDK_TYPE_HAIKU_MONITOR,
+      GdkMonitor *monitor = g_object_new (GDK_TYPE_MONITOR,
                                                        "display", display, NULL);
       monitor->id = displays[disp];
       g_ptr_array_add (display->monitors, monitor);
