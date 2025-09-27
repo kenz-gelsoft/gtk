@@ -821,7 +821,7 @@ input_sources_changed_notification (CFNotificationCenterRef  center,
 static void
 gdk_haiku_keymap_init (GdkHaikuKeymap *keymap)
 {
-  abort();
+  // TODO
 #if 0
   CFNotificationCenterAddObserver (CFNotificationCenterGetDistributedCenter (),
                                    keymap,

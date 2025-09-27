@@ -102,7 +102,7 @@ gdk_haiku_ns_notification_callback (CFNotificationCenterRef  center,
 static void
 gdk_haiku_events_init_notifications (void)
 {
-  abort();
+  // TODO
 #if 0
   static gboolean notifications_initialized = FALSE;
 
@@ -1875,7 +1875,6 @@ _gdk_haiku_screen_get_setting (GdkScreen   *screen,
                                 const gchar *name,
                                 GValue      *value)
 {
-  abort();
 #if 0
   if (strcmp (name, "gtk-double-click-time") == 0)
     {

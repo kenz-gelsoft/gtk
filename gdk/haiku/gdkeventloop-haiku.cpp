@@ -1081,7 +1081,7 @@ run_loop_observer_callback (CFRunLoopObserverRef observer,
 void
 _gdk_haiku_event_loop_init (void)
 {
-  abort();
+  // TODO
 #if 0
   GSource *source;
   CFRunLoopObserverRef observer;

@@ -169,16 +169,15 @@ gdk_haiku_event_source_frame_cb (CVDisplayLinkRef   display_link,
 GSource *
 gdk_haiku_event_source_new (void)
 {
-  abort();
-#if 0
   GdkHaikuEventSource *impl;
   GSource *source;
-  CVReturn ret;
+//  CVReturn ret;
   double period;
 
   source = g_source_new (&gdk_haiku_event_source_funcs, sizeof *impl);
   impl = (GdkHaikuEventSource *)source;
 
+#if 0
   /*
    * Create our link based on currently connected displays.
    * If there are multiple displays, this will be something that tries
@@ -206,12 +205,11 @@ gdk_haiku_event_source_new (void)
   CVDisplayLinkSetOutputCallback (impl->display_link,
                                   gdk_haiku_event_source_frame_cb,
                                   source);
+#endif
 
   g_source_set_name (source, "[gdk] quartz frame clock");
 
   return source;
-#endif
-  return NULL;
 }
 
 static gint64
