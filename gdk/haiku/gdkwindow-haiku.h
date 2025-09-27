@@ -19,8 +19,8 @@
 #ifndef __GDK_WINDOW_HAIKU_H__
 #define __GDK_WINDOW_HAIKU_H__
 
-//#import <gdk/haiku/GdkHaikuView.h>
-//#import <gdk/haiku/GdkHaikuNSWindow.h>
+#include <gdk/haiku/GdkHaikuView.h>
+#include <gdk/haiku/GdkHaikuBWindow.h>
 #include "gdk/gdkwindowimpl.h"
 
 G_BEGIN_DECLS
@@ -44,9 +44,9 @@ struct _GdkWindowImplHaiku
 
   GdkWindow *wrapper;
 
-//  NSWindow *toplevel;
+  BWindow *toplevel;
 //  NSTrackingRectTag tracking_rect;
-//  GdkHaikuView *view;
+  GdkHaikuView *view;
 
   GdkWindowTypeHint type_hint;
 

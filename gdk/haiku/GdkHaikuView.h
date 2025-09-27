@@ -16,8 +16,12 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __GDK_HAIKU_VIEW_H__
+#define __GDK_HAIKU_VIEW_H__
+
 //#import <AppKit/AppKit.h>
 //#import <CoreVideo/CoreVideo.h>
+#include <View.h>
 #include "gdk/gdk.h"
 
 /* Text Input Client */
@@ -34,6 +38,8 @@
 #define GIC_FILTER_PASSTHRU	0
 #define GIC_FILTER_FILTERED	1
 
+class GdkHaikuView : public BView
+{};
 #if 0
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101400
 @interface GdkHaikuView : NSView <NSTextInputClient>
@@ -59,3 +65,5 @@
 
 @end
 #endif
+
+#endif /* __GDK_HAIKU_VIEW_H__ */

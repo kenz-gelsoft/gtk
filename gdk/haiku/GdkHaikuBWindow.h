@@ -16,6 +16,9 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __GDK_HAIKU_BWINDOW_H__
+#define __GDK_HAIKU_BWINDOW_H__
+
 //#import <AppKit/AppKit.h>
 //#import <Foundation/Foundation.h>
 #include <Window.h>
@@ -62,5 +65,4 @@ class GdkHaikuBWindow : BWindow
 @end
 #endif
 
-
-
+#endif /* __GDK_HAIKU_BWINDOW_H__ */
