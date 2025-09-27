@@ -22,7 +22,7 @@
 
 #include "gtkapplicationprivate.h"
 #include "gtkbuilder.h"
-#import <Cocoa/Cocoa.h>
+//#import <Cocoa/Cocoa.h>
 
 typedef struct
 {
@@ -52,10 +52,12 @@ typedef struct
   GSList *inhibitors;
   gint quit_inhibit;
   guint next_cookie;
-  NSObject *delegate;
+//  NSObject *delegate;
 } GtkApplicationImplHaiku;
 
 G_DEFINE_TYPE (GtkApplicationImplHaiku, gtk_application_impl_haiku, GTK_TYPE_APPLICATION_IMPL)
+
+#if 0
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= 1060
 @interface GtkApplicationHaikuDelegate : NSObject <NSApplicationDelegate>
 #else
@@ -130,6 +132,7 @@ G_DEFINE_TYPE (GtkApplicationImplHaiku, gtk_application_impl_haiku, GTK_TYPE_APP
   return YES;
 }
 @end
+#endif
 
 /* these exist only for accel handling */
 static void
@@ -137,7 +140,9 @@ gtk_application_impl_haiku_hide (GSimpleAction *action,
                                   GVariant      *parameter,
                                   gpointer       user_data)
 {
+#if 0
   [NSApp hide:NSApp];
+#endif
 }
 
 static void
@@ -145,7 +150,9 @@ gtk_application_impl_haiku_hide_others (GSimpleAction *action,
                                          GVariant      *parameter,
                                          gpointer       user_data)
 {
+#if 0
   [NSApp hideOtherApplications:NSApp];
+#endif
 }
 
 static void
@@ -153,7 +160,9 @@ gtk_application_impl_haiku_show_all (GSimpleAction *action,
                                       GVariant      *parameter,
                                       gpointer       user_data)
 {
+#if 0
   [NSApp unhideAllApplications:NSApp];
+#endif
 }
 
 static GActionEntry gtk_application_impl_haiku_actions[] = {
@@ -166,6 +175,7 @@ static void
 gtk_application_impl_haiku_startup (GtkApplicationImpl *impl,
                                      gboolean            register_session)
 {
+#if 0
   GtkApplicationImplHaiku *haiku = (GtkApplicationImplHaiku *) impl;
   GSimpleActionGroup *gtkinternal;
   GMenuModel *app_menu;
@@ -221,11 +231,13 @@ gtk_application_impl_haiku_startup (GtkApplicationImpl *impl,
   gtk_application_impl_haiku_setup_menu (G_MENU_MODEL (haiku->combined), haiku->muxer);
 
   [NSApp finishLaunching];
+#endif
 }
 
 static void
 gtk_application_impl_haiku_shutdown (GtkApplicationImpl *impl)
 {
+#if 0
   GtkApplicationImplHaiku *haiku = (GtkApplicationImplHaiku *) impl;
 
   /* destroy our custom menubar */
@@ -239,6 +251,7 @@ gtk_application_impl_haiku_shutdown (GtkApplicationImpl *impl)
 
   g_slist_free_full (haiku->inhibitors, (GDestroyNotify) gtk_application_haiku_inhibitor_free);
   haiku->inhibitors = NULL;
+#endif
 }
 
 static void
@@ -352,6 +365,7 @@ gtk_application_impl_haiku_is_inhibited (GtkApplicationImpl         *impl,
 static void
 gtk_application_impl_haiku_init (GtkApplicationImplHaiku *haiku)
 {
+#if 0
   /* This is required so that Cocoa is not going to parse the
      command line arguments by itself and generate OpenFile events.
      We already parse the command line ourselves, so this is needed
@@ -360,6 +374,7 @@ gtk_application_impl_haiku_init (GtkApplicationImplHaiku *haiku)
                                             forKey:@"NSTreatUnknownArgumentsAsOpen"];
 
   haiku->combined = g_menu_new ();
+#endif
 }
 
 static void

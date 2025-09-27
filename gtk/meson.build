@@ -751,6 +751,10 @@ gtk_use_quartz_sources = files(
   'gtkquartz.c',
 )
 
+gtk_use_haiku_sources = files(
+  'gtkapplication-haiku.c',
+)
+
 gtk_stub_sources = files('gtkmountoperation-stub.c')
 
 gtk_dbus_src = gnome.gdbus_codegen('gtkdbusgenerated', 'gtkdbusinterfaces.xml',
@@ -908,6 +912,10 @@ endif
 if quartz_enabled
   gtk_sources += gtk_use_quartz_sources
   gtk_cargs += ['-xobjective-c']
+endif
+
+if haiku_enabled
+  gtk_sources += gtk_use_haiku_sources
 endif
 
 # So we don't add these twice

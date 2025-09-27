@@ -33,6 +33,10 @@
 #include <gdk/quartz/gdkquartz.h>
 #endif
 
+#ifdef GDK_WINDOWING_HAIKU
+#include <gdk/haiku/gdkhaiku.h>
+#endif
+
 G_DEFINE_TYPE (GtkApplicationImpl, gtk_application_impl, G_TYPE_OBJECT)
 
 static void
