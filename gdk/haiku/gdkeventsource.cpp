@@ -35,10 +35,10 @@
 static gint64 host_to_frame_clock_time (gint64 host_time);
 
 static gboolean
-gdk_display_link_source_prepare (GSource *source,
+gdk_haiku_event_source_prepare (GSource *source,
                                  gint    *timeout_)
 {
-  GdkDisplayLinkSource *impl = (GdkDisplayLinkSource *)source;
+  GdkHaikuEventSource *impl = (GdkHaikuEventSource *)source;
   gint64 now;
 
   now = g_source_get_time (source);
@@ -52,18 +52,18 @@ gdk_display_link_source_prepare (GSource *source,
 }
 
 static gboolean
-gdk_display_link_source_check (GSource *source)
+gdk_haiku_event_source_check (GSource *source)
 {
-  GdkDisplayLinkSource *impl = (GdkDisplayLinkSource *)source;
+  GdkHaikuEventSource *impl = (GdkHaikuEventSource *)source;
   return impl->needs_dispatch;
 }
 
 static gboolean
-gdk_display_link_source_dispatch (GSource     *source,
+gdk_haiku_event_source_dispatch (GSource     *source,
                                   GSourceFunc  callback,
                                   gpointer     user_data)
 {
-  GdkDisplayLinkSource *impl = (GdkDisplayLinkSource *)source;
+  GdkHaikuEventSource *impl = (GdkHaikuEventSource *)source;
   gboolean ret = G_SOURCE_CONTINUE;
 
   impl->needs_dispatch = FALSE;
@@ -75,45 +75,45 @@ gdk_display_link_source_dispatch (GSource     *source,
 }
 
 static void
-gdk_display_link_source_finalize (GSource *source)
+gdk_haiku_event_source_finalize (GSource *source)
 {
 #if 0
-  GdkDisplayLinkSource *impl = (GdkDisplayLinkSource *)source;
+  GdkHaikuEventSource *impl = (GdkHaikuEventSource *)source;
 
   CVDisplayLinkStop (impl->display_link);
   CVDisplayLinkRelease (impl->display_link);
 #endif
 }
 
-static GSourceFuncs gdk_display_link_source_funcs = {
-  gdk_display_link_source_prepare,
-  gdk_display_link_source_check,
-  gdk_display_link_source_dispatch,
-  gdk_display_link_source_finalize
+static GSourceFuncs gdk_haiku_event_source_funcs = {
+  gdk_haiku_event_source_prepare,
+  gdk_haiku_event_source_check,
+  gdk_haiku_event_source_dispatch,
+  gdk_haiku_event_source_finalize
 };
 
 void
-gdk_display_link_source_pause (GdkDisplayLinkSource *source)
+gdk_haiku_event_source_pause (GdkHaikuEventSource *source)
 {
 //  CVDisplayLinkStop (source->display_link);
 }
 
 void
-gdk_display_link_source_unpause (GdkDisplayLinkSource *source)
+gdk_haiku_event_source_unpause (GdkHaikuEventSource *source)
 {
 //  CVDisplayLinkStart (source->display_link);
 }
 
 #if 0
 static CVReturn
-gdk_display_link_source_frame_cb (CVDisplayLinkRef   display_link,
+gdk_haiku_event_source_frame_cb (CVDisplayLinkRef   display_link,
                                   const CVTimeStamp *inNow,
                                   const CVTimeStamp *inOutputTime,
                                   CVOptionFlags      flagsIn,
                                   CVOptionFlags     *flagsOut,
                                   void              *user_data)
 {
-  GdkDisplayLinkSource *impl = user_data;
+  GdkHaikuEventSource *impl = user_data;
   gint64 presentation_time;
   gboolean needs_wakeup;
 
@@ -153,7 +153,7 @@ gdk_display_link_source_frame_cb (CVDisplayLinkRef   display_link,
 #endif
 
 /**
- * gdk_display_link_source_new:
+ * gdk_haiku_event_source_new:
  *
  * Creates a new #GSource that will activate the dispatch function upon
  * notification from a CVDisplayLink that a new frame should be drawn.
@@ -166,16 +166,16 @@ gdk_display_link_source_frame_cb (CVDisplayLinkRef   display_link,
  * Returns: (transfer full): A newly created #GSource.
  */
 GSource *
-gdk_display_link_source_new (void)
+gdk_haiku_event_source_new (void)
 {
 #if 0
-  GdkDisplayLinkSource *impl;
+  GdkHaikuEventSource *impl;
   GSource *source;
   CVReturn ret;
   double period;
 
-  source = g_source_new (&gdk_display_link_source_funcs, sizeof *impl);
-  impl = (GdkDisplayLinkSource *)source;
+  source = g_source_new (&gdk_haiku_event_source_funcs, sizeof *impl);
+  impl = (GdkHaikuEventSource *)source;
 
   /*
    * Create our link based on currently connected displays.
@@ -202,7 +202,7 @@ gdk_display_link_source_new (void)
    * Wire up our callback to be executed within the high-priority thread.
    */
   CVDisplayLinkSetOutputCallback (impl->display_link,
-                                  gdk_display_link_source_frame_cb,
+                                  gdk_haiku_event_source_frame_cb,
                                   source);
 
   g_source_set_name (source, "[gdk] quartz frame clock");

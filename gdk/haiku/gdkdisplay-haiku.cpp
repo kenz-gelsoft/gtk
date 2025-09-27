@@ -103,7 +103,7 @@ _gdk_haiku_display_add_frame_callback (GdkDisplay             *display,
   display_haiku->windows_awaiting_frame = &impl->frame_link;
 
   if (impl->frame_link.next == NULL)
-    gdk_display_link_source_unpause ((GdkDisplayLinkSource *)display_haiku->frame_source);
+    gdk_haiku_event_source_unpause ((GdkHaikuEventSource *)display_haiku->frame_source);
 }
 
 void
@@ -122,25 +122,25 @@ _gdk_haiku_display_remove_frame_callback (GdkDisplay             *display,
     }
 
   if (display_haiku->windows_awaiting_frame == NULL)
-    gdk_display_link_source_pause ((GdkDisplayLinkSource *)display_haiku->frame_source);
+    gdk_haiku_event_source_pause ((GdkHaikuEventSource *)display_haiku->frame_source);
 }
 
 static gboolean
 gdk_haiku_display_frame_cb (gpointer data)
 {
-  GdkDisplayLinkSource *source;
+  GdkHaikuEventSource *source;
   GdkHaikuDisplay *display_haiku = (GdkHaikuDisplay *)data;
   GSList *iter, **last_next = NULL;
   gint64 presentation_time;
 
-  source = (GdkDisplayLinkSource *)display_haiku->frame_source;
+  source = (GdkHaikuEventSource *)display_haiku->frame_source;
 
   iter = display_haiku->windows_awaiting_frame;
   display_haiku->windows_awaiting_frame = NULL;
 
   if (iter == NULL)
     {
-      gdk_display_link_source_pause (source);
+      gdk_haiku_event_source_pause (source);
       return G_SOURCE_CONTINUE;
     }
 
@@ -189,7 +189,7 @@ gdk_haiku_display_init_display_link (GdkDisplay *display)
 {
   GdkHaikuDisplay *display_haiku = GDK_HAIKU_DISPLAY (display);
 
-  display_haiku->frame_source = gdk_display_link_source_new ();
+  display_haiku->frame_source = gdk_haiku_event_source_new ();
   g_source_set_callback (display_haiku->frame_source,
                          gdk_haiku_display_frame_cb,
                          display,

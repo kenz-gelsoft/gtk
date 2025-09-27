@@ -37,11 +37,11 @@ typedef struct
 
   volatile gint64  presentation_time;
   volatile guint   needs_dispatch;
-} GdkDisplayLinkSource;
+} GdkHaikuEventSource;
 
-GSource *gdk_display_link_source_new     (void);
-void     gdk_display_link_source_pause   (GdkDisplayLinkSource *source);
-void     gdk_display_link_source_unpause (GdkDisplayLinkSource *source);
+GSource *gdk_haiku_event_source_new     (void);
+void     gdk_haiku_event_source_pause   (GdkHaikuEventSource *source);
+void     gdk_haiku_event_source_unpause (GdkHaikuEventSource *source);
 
 G_END_DECLS
 
