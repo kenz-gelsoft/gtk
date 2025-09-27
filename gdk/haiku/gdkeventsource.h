@@ -1,4 +1,4 @@
-/* gdkdisplaylinksource.h
+/* gdkeventsource.h
  *
  * Copyright (C) 2015 Christian Hergert <christian@hergert.me>
  *

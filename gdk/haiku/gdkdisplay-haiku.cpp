@@ -30,7 +30,7 @@
 #include "gdkhaikudevicemanager-core.h"
 #include "gdkscreen.h"
 #include "gdkmonitorprivate.h"
-#include "gdkdisplaylinksource.h"
+#include "gdkeventsource.h"
 #include "gdkdisplay-haiku.h"
 #include "gdkmonitor-haiku.h"
 #include "gdkglcontext-haiku.h"

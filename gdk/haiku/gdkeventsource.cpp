@@ -24,7 +24,7 @@
 //#include <mach/mach_time.h>
 
 #include "gdkinternal-haiku.h"
-#include "gdkdisplaylinksource.h"
+#include "gdkeventsource.h"
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 101200
 #define GDK_HAIKU_APPLICATION_DEFINED NSApplicationDefined
