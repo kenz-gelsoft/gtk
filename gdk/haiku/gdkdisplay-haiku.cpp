@@ -18,6 +18,8 @@
 
 #include "config.h"
 
+#include <Screen.h>
+
 #include <gdk/gdk.h>
 #include <gdk/gdkdisplayprivate.h>
 #include <gdk/gdkmonitorprivate.h>
@@ -401,37 +403,10 @@ static void
 configure_monitor (GdkMonitor       *monitor,
                    GdkHaikuDisplay *display)
 {
-  abort();
-#if 0
-  GdkMonitor *haiku_monitor = GDK_MONITOR (monitor);
-  CGSize disp_size = CGDisplayScreenSize (haiku_monitor->id);
-  gint width = (int)trunc (disp_size.width);
-  gint height = (int)trunc (disp_size.height);
-  CGRect disp_bounds = CGDisplayBounds (haiku_monitor->id);
-  CGRect main_bounds = CGDisplayBounds (CGMainDisplayID());
-  /* Change origin to Gdk coordinates. */
-  disp_bounds.origin.x = disp_bounds.origin.x + display->geometry.origin.x;
-  disp_bounds.origin.y =
-    display->geometry.origin.y - main_bounds.size.height + disp_bounds.origin.y;
-  GdkRectangle disp_geometry = cgrect_to_gdkrect (disp_bounds);
-  CGDisplayModeRef mode = CGDisplayCopyDisplayMode (haiku_monitor->id);
-  gint refresh_rate = (int)trunc (CGDisplayModeGetRefreshRate (mode));
-
-  monitor->width_mm = width;
-  monitor->height_mm = height;
-  monitor->geometry = disp_geometry;
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1080
-  if (mode && gdk_haiku_osx_version () >= GDK_OSX_MOUNTAIN_LION)
-  {
-    monitor->scale_factor = CGDisplayModeGetPixelWidth (mode) / CGDisplayModeGetWidth (mode);
-    CGDisplayModeRelease (mode);
-  }
-  else
-#endif
-    monitor->scale_factor = 1;
-  monitor->refresh_rate = refresh_rate;
-  monitor->subpixel_layout = GDK_SUBPIXEL_LAYOUT_UNKNOWN;
-#endif
+  BScreen screen;
+  BSize size = screen.Frame().Size();
+  gdk_monitor_set_size (monitor, size.width, size.height);
+  gdk_monitor_set_physical_size (monitor, size.width * 25.4 / 96, size.height * 25.4 / 96);
 }
 
 static void
@@ -551,94 +526,31 @@ display_reconfiguration_callback (CGDirectDisplayID            cg_display,
 static int
 gdk_haiku_display_get_n_monitors (GdkDisplay *display)
 {
+  return 1;
+}
+
+static GdkMonitor *
+gdk_haiku_display_get_primary_monitor (GdkDisplay *display)
+{
   GdkHaikuDisplay *haiku_display = GDK_HAIKU_DISPLAY (display);
-  return haiku_display->monitors->len;
+  return haiku_display->monitor;
 }
 
 static GdkMonitor *
 gdk_haiku_display_get_monitor (GdkDisplay *display,
                                 int         monitor_num)
 {
-  GdkHaikuDisplay *haiku_display = GDK_HAIKU_DISPLAY (display);
-  int n_displays = gdk_haiku_display_get_n_monitors (display);
-
-  if (monitor_num >= 0 && monitor_num < n_displays)
-    return (GdkMonitor *)g_ptr_array_index (haiku_display->monitors, monitor_num);
+  if (monitor_num == 0)
+    return gdk_haiku_display_get_primary_monitor(display);
 
   return NULL;
-}
-
-static GdkMonitor *
-gdk_haiku_display_get_primary_monitor (GdkDisplay *display)
-{
-  abort();
-#if 0
-  GdkHaikuDisplay *haiku_display = GDK_HAIKU_DISPLAY (display);
-  CGDirectDisplayID primary_id = CGMainDisplayID ();
-  GdkMonitor *monitor = NULL;
-  guint index;
-
-  if (g_ptr_array_find_with_equal_func (haiku_display->monitors,
-                                        GINT_TO_POINTER (primary_id),
-                                        same_monitor, &index))
-    monitor = g_ptr_array_index (haiku_display->monitors, index);
-
-  return monitor;
-#endif
-  return 0;
 }
 
 static GdkMonitor *
 gdk_haiku_display_get_monitor_at_window (GdkDisplay *display,
                                           GdkWindow *window)
 {
-  abort();
-#if 0
-  GdkWindowImplHaiku *impl = NULL;
-  NSWindow *nswindow = NULL;
-  NSScreen *screen = NULL;
-  GdkMonitor *monitor = NULL;
-  GdkWindow *onscreen_window = window;
-
-  /*
-   * This stops crashes when there is no NSWindow available on
-   * an offscreen window which occurs for children of children
-   * of an onscreen window (children of an onscreen window do
-   * have NSWindow set)
-   * https://gitlab.gnome.org/GNOME/gimp/-/issues/7608
-   */
-  while (onscreen_window && onscreen_window->window_type == GDK_WINDOW_OFFSCREEN)
-    onscreen_window = onscreen_window->parent;
-
-  if (!onscreen_window)
-    return NULL;
-
-  impl = GDK_WINDOW_IMPL_HAIKU (onscreen_window->impl);
-  nswindow = impl->toplevel;
-  screen = [nswindow screen];
-
-  if (screen)
-  {
-    GdkHaikuDisplay *haiku_display = GDK_HAIKU_DISPLAY (display);
-    guint index;
-    CGDirectDisplayID disp_id =
-      [[[screen deviceDescription]
-        objectForKey: @"NSScreenNumber"] unsignedIntValue];
-    if (g_ptr_array_find_with_equal_func (haiku_display->monitors,
-                                          GINT_TO_POINTER (disp_id),
-                                          same_monitor, &index))
-      monitor = g_ptr_array_index (haiku_display->monitors, index);
-  }
-  if (!monitor)
-    {
-      GdkRectangle rect = cgrect_to_gdkrect (NSRectToCGRect ([nswindow frame]));
-      monitor = gdk_display_get_monitor_at_point (display,
-                                                 rect.x + rect.width/2,
-                                                 rect.y + rect.height /2);
-    }
-  return monitor;
-#endif
-  return 0;
+  return gdk_haiku_display_get_primary_monitor (display);
 }
 
 G_DEFINE_TYPE (GdkHaikuDisplay, gdk_haiku_display, GDK_TYPE_DISPLAY)
@@ -647,6 +559,12 @@ static void
 gdk_haiku_display_init (GdkHaikuDisplay *display)
 {
   // TODO
+  if (!display->monitor)
+    {
+      display->monitor = (GdkMonitor *)g_object_new (GDK_TYPE_MONITOR,
+                                                       "display", display, NULL);
+      configure_monitor (GDK_MONITOR (display->monitor), display);
+    }
 #if 0
   uint32_t n_displays = 0, disp;
   CGDirectDisplayID *displays;
@@ -665,9 +583,9 @@ gdk_haiku_display_init (GdkHaikuDisplay *display)
   g_free (displays);
   CGDisplayRegisterReconfigurationCallback (display_reconfiguration_callback,
                                             display);
+#endif
   /* So that monitors changed will keep display->geometry syncronized. */
   g_signal_emit (display, MONITORS_CHANGED, 0);
-#endif
 }
 
 static void

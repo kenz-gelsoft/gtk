@@ -40,7 +40,7 @@ struct _GdkHaikuDisplay
   BSize size;
 //  NSRect geometry; /* In AppKit coordinates. */
 //  NSSize size; /* Aggregate size of displays in millimeters. */
-  GPtrArray *monitors;
+  GdkMonitor *monitor;
   /* This structure is not allocated. It points to an embedded
    * GList in the GdkWindow. */
   GSList   *windows_awaiting_frame;
