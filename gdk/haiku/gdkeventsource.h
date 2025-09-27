@@ -19,8 +19,8 @@
  *   Christian Hergert <christian@hergert.me>
  */
 
-#ifndef GDK_DISPLAY_LINK_SOURCE_H
-#define GDK_DISPLAY_LINK_SOURCE_H
+#ifndef GDK_HAIKU_EVENT_SOURCE_H
+#define GDK_HAIKU_EVENT_SOURCE_H
 
 #include <glib.h>
 
@@ -45,4 +45,4 @@ void     gdk_haiku_event_source_unpause (GdkHaikuEventSource *source);
 
 G_END_DECLS
 
-#endif /* GDK_DISPLAY_LINK_SOURCE_H */
+#endif /* GDK_HAIKU_EVENT_SOURCE_H */
