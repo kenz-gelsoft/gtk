@@ -21,6 +21,8 @@
 #define __GDK_HAIKU_DISPLAY__
 
 //#include <AppKit/AppKit.h>
+#include <Rect.h>
+#include <Size.h>
 
 #include "gdkdisplayprivate.h"
 #include "gdkkeys.h"
@@ -34,6 +36,8 @@ G_BEGIN_DECLS
 struct _GdkHaikuDisplay
 {
   GdkDisplay parent_instance;
+  BRect geometry;
+  BSize size;
 //  NSRect geometry; /* In AppKit coordinates. */
 //  NSSize size; /* Aggregate size of displays in millimeters. */
   GPtrArray *monitors;

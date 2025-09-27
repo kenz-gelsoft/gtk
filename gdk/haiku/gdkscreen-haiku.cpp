@@ -124,19 +124,16 @@ static void
 gdk_haiku_screen_calculate_layout (GdkHaikuScreen *screen,
                                     GdkHaikuDisplay *display)
 {
-  abort();
-#if 0
   if (!display)
     display = GDK_HAIKU_DISPLAY (gdk_screen_get_display (GDK_SCREEN (screen)));
 
 /* Display geometry is the origin and size in AppKit coordinates. AppKit computes */
-  screen->width = (int)trunc (display->geometry.size.width);
-  screen->height = (int)trunc (display->geometry.size.height);
-  screen->orig_x = -(int)trunc (display->geometry.origin.x);
-  screen->orig_y = (int)trunc (display->geometry.origin.y);
+  screen->width = (int)trunc (display->geometry.Width());
+  screen->height = (int)trunc (display->geometry.Height());
+  screen->orig_x = -(int)trunc (display->geometry.left);
+  screen->orig_y = (int)trunc (display->geometry.top);
   screen->mm_width = (int)trunc (display->size.width);
   screen->mm_height = (int)trunc (display->size.height);
-#endif
  }
 
 void
