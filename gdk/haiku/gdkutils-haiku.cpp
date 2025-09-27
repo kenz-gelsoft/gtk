@@ -108,6 +108,7 @@ gdk_haiku_event_get_nsevent (GdkEvent *event)
 gunichar
 gdk_haiku_get_key_equivalent (guint key)
 {
+  abort();
 #if 0
   if (key >= GDK_KEY_A && key <= GDK_KEY_Z)
     return key + (GDK_KEY_a - GDK_KEY_A);

@@ -230,6 +230,7 @@ const static struct {
 static void
 update_keymap (void)
 {
+  abort();
 #if 0
   const void *chr_data = NULL;
   guint *p;
@@ -820,6 +821,7 @@ input_sources_changed_notification (CFNotificationCenterRef  center,
 static void
 gdk_haiku_keymap_init (GdkHaikuKeymap *keymap)
 {
+  abort();
 #if 0
   CFNotificationCenterAddObserver (CFNotificationCenterGetDistributedCenter (),
                                    keymap,
@@ -834,6 +836,7 @@ gdk_haiku_keymap_init (GdkHaikuKeymap *keymap)
 static void
 gdk_haiku_keymap_finalize (GObject *object)
 {
+  abort();
 #if 0
   CFNotificationCenterRemoveObserver (CFNotificationCenterGetDistributedCenter (),
                                       object,

@@ -55,6 +55,10 @@ typedef float CGFloat;
 
 #include <config.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 extern GdkDisplay *_gdk_display;
 extern GdkScreen *_gdk_screen;
 extern GdkWindow *_gdk_root;
@@ -299,5 +303,9 @@ void        _gdk_haiku_display_add_frame_callback    (GdkDisplay             *di
                                                        GdkWindow              *window);
 void        _gdk_haiku_display_remove_frame_callback (GdkDisplay             *display,
                                                        GdkWindow              *window);
+
+#ifdef __cplusplus
+} // extern "C" {
+#endif // __cplusplus
 
 #endif /* __GDK_INTERNAL_HAIKU_H__ */

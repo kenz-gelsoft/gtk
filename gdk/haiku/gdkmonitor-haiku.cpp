@@ -30,6 +30,7 @@ static void
 gdk_haiku_monitor_get_workarea (GdkMonitor   *monitor,
                                  GdkRectangle *dest)
 {
+  abort();
 #if 0
   GDK_HAIKU_ALLOC_POOL;
 

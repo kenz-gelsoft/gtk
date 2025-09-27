@@ -42,9 +42,16 @@ typedef GdkDisplay GdkHaikuDisplay;
 #endif
 typedef struct _GdkHaikuDisplayClass GdkHaikuDisplayClass;
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 
 GDK_AVAILABLE_IN_ALL
 GType gdk_haiku_display_get_type (void);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 G_END_DECLS
 

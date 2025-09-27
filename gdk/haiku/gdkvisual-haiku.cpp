@@ -22,6 +22,7 @@
 #include "gdkhaikuvisual.h"
 #include "gdkprivate-haiku.h"
 
+extern "C" {
 
 struct _GdkHaikuVisual
 {
@@ -214,3 +215,5 @@ _gdk_haiku_screen_list_visuals (GdkScreen *screen)
 
   return visuals;
 }
+
+} // extern "C" {

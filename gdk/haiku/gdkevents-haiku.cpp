@@ -102,6 +102,7 @@ gdk_haiku_ns_notification_callback (CFNotificationCenterRef  center,
 static void
 gdk_haiku_events_init_notifications (void)
 {
+  abort();
 #if 0
   static gboolean notifications_initialized = FALSE;
 
@@ -536,6 +537,7 @@ create_focus_event (GdkWindow *window,
 static void
 generate_motion_event (GdkWindow *window)
 {
+  abort();
 #if 0
   NSPoint screen_point;
   GdkEvent *event;
@@ -618,6 +620,7 @@ _gdk_haiku_events_update_focus_window (GdkWindow *window,
 void
 _gdk_haiku_events_send_map_event (GdkWindow *window)
 {
+  abort();
 #if 0
   GdkWindowImplHaiku *impl = GDK_WINDOW_IMPL_HAIKU (window->impl);
 
@@ -1391,6 +1394,7 @@ _gdk_haiku_synthesize_null_key_event (GdkWindow *window)
 GdkModifierType
 _gdk_haiku_events_get_current_keyboard_modifiers (void)
 {
+  abort();
 #if 0
   if (gdk_haiku_osx_version () >= GDK_OSX_SNOW_LEOPARD)
     {
@@ -1421,6 +1425,7 @@ _gdk_haiku_events_get_current_keyboard_modifiers (void)
 GdkModifierType
 _gdk_haiku_events_get_current_mouse_modifiers (void)
 {
+  abort();
 #if 0
   NSUInteger buttons = 0;
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1060
@@ -1818,6 +1823,7 @@ gdk_event_translate (GdkEvent *event,
 void
 _gdk_haiku_display_queue_events (GdkDisplay *display)
 {
+  abort();
 #if 0 
   NSEvent *nsevent;
 
@@ -1869,6 +1875,7 @@ _gdk_haiku_screen_get_setting (GdkScreen   *screen,
                                 const gchar *name,
                                 GValue      *value)
 {
+  abort();
 #if 0
   if (strcmp (name, "gtk-double-click-time") == 0)
     {
@@ -1954,6 +1961,7 @@ _gdk_haiku_display_event_data_copy (GdkDisplay     *display,
                                      const GdkEvent *src,
                                      GdkEvent       *dst)
 {
+  abort();
 #if 0
   GdkEventPrivate *priv_src = (GdkEventPrivate *) src;
   GdkEventPrivate *priv_dst = (GdkEventPrivate *) dst;
@@ -1970,6 +1978,7 @@ void
 _gdk_haiku_display_event_data_free (GdkDisplay *display,
                                      GdkEvent   *event)
 {
+  abort();
 #if 0
   GdkEventPrivate *priv = (GdkEventPrivate *) event;
 

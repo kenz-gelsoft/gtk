@@ -63,6 +63,7 @@ gdk_haiku_cursor_new_from_nscursor (NSCursor      *nscursor,
 static GdkCursor *
 create_blank_cursor (void)
 {
+  abort();
 #if 0
   NSCursor *nscursor;
   NSImage *nsimage;
@@ -100,6 +101,7 @@ get_bit (const guchar *data,
 static GdkCursor *
 create_builtin_cursor (GdkCursorType cursor_type)
 {
+  abort();
 #if 0
   GdkCursor *cursor;
   NSBitmapImageRep *bitmap_rep;
@@ -199,6 +201,7 @@ GdkCursor*
 _gdk_haiku_display_get_cursor_for_type (GdkDisplay    *display,
                                          GdkCursorType  cursor_type)
 {
+  abort();
 #if 0
   NSCursor *nscursor;
 
@@ -268,6 +271,7 @@ _gdk_haiku_display_get_cursor_for_surface (GdkDisplay      *display,
 					    gdouble          x,
 					    gdouble          y)
 {
+  abort();
 #if 0
   NSImage *image;
   NSCursor *nscursor;
@@ -415,6 +419,7 @@ GdkCursor*
 _gdk_haiku_display_get_cursor_for_name (GdkDisplay  *display,
                                          const gchar *name)
 {
+  abort();
 #if 0
   NSCursor *nscursor;
   const struct CursorsByName *test;
@@ -448,6 +453,7 @@ static cairo_surface_t *gdk_haiku_cursor_get_surface (GdkCursor *cursor,
 static void
 gdk_haiku_cursor_finalize (GObject *object)
 {
+  abort();
 #if 0
   GdkHaikuCursor *private = GDK_HAIKU_CURSOR (object);
 

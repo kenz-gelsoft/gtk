@@ -20,6 +20,8 @@
 
 #include "gdkproperty.h"
 
+extern "C" {
+
 static GHashTable *names_to_atoms;
 static GPtrArray *atoms_to_names;
 
@@ -162,3 +164,5 @@ _gdk_haiku_window_change_property (GdkWindow   *window,
 {
   /* FIXME: Implement */
 }
+
+} // extern "C" {

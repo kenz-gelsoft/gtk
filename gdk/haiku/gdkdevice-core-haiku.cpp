@@ -174,6 +174,7 @@ gdk_haiku_device_core_set_window_cursor (GdkDevice *device,
                                           GdkWindow *window,
                                           GdkCursor *cursor)
 {
+  abort();
 #if 0
   NSCursor *nscursor;
 
@@ -202,6 +203,7 @@ gdk_haiku_device_core_query_state_helper (GdkWindow       *window,
                                            gdouble         *y,
                                            GdkModifierType *mask)
 {
+  abort();
 #if 0
   GdkWindow *toplevel;
   NSPoint point;
@@ -275,6 +277,7 @@ gdk_haiku_device_core_query_state (GdkDevice        *device,
                                     gdouble          *win_y,
                                     GdkModifierType  *mask)
 {
+  abort();
 #if 0
   GdkWindow *found_window;
   NSPoint point;
@@ -334,6 +337,7 @@ gdk_haiku_device_core_window_at_position (GdkDevice       *device,
                                            GdkModifierType *mask,
                                            gboolean         get_toplevel)
 {
+  abort();
 #if 0
   GdkDisplay *display;
   GdkScreen *screen;

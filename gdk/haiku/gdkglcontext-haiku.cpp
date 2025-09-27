@@ -70,6 +70,7 @@ gdk_haiku_gl_context_end_frame (GdkGLContext *context,
                                  cairo_region_t *painted,
                                  cairo_region_t *damage)
 {
+  abort();
 #if 0
   GdkHaikuGLContext *context_haiku = GDK_HAIKU_GL_CONTEXT (context);
 
@@ -105,6 +106,7 @@ gdk_haiku_window_create_gl_context (GdkWindow     *window,
                                      GdkGLContext  *share,
                                      GError       **error)
 {
+  abort();
 #if 0
   GdkDisplay *display = gdk_window_get_display (window);
   GdkHaikuGLContext *context;
@@ -172,6 +174,7 @@ gdk_haiku_window_create_gl_context (GdkWindow     *window,
 static void
 gdk_haiku_gl_context_dispose (GObject *gobject)
 {
+  abort();
 #if 0
   GdkHaikuGLContext *context_haiku = GDK_HAIKU_GL_CONTEXT (gobject);
 
@@ -190,6 +193,7 @@ gboolean
 gdk_haiku_display_is_gl_context_current (GdkDisplay   *display,
                                           GdkGLContext *context)
 {
+  abort();
 #if 0
   GdkHaikuGLContext *context_haiku = GDK_HAIKU_GL_CONTEXT (context);
 
@@ -202,6 +206,7 @@ gboolean
 gdk_haiku_display_make_gl_context_current (GdkDisplay   *display,
                                             GdkGLContext *context)
 {
+  abort();
 #if 0
   GdkHaikuGLContext *context_haiku;
 

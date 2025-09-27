@@ -124,6 +124,7 @@ static void
 gdk_haiku_screen_calculate_layout (GdkHaikuScreen *screen,
                                     GdkHaikuDisplay *display)
 {
+  abort();
 #if 0
   if (!display)
     display = GDK_HAIKU_DISPLAY (gdk_screen_get_display (GDK_SCREEN (screen)));

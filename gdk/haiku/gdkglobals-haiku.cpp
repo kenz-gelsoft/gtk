@@ -29,6 +29,7 @@ GdkWindow *_gdk_root = NULL;
 GdkOSXVersion
 gdk_haiku_osx_version (void)
 {
+  abort();
 #if 0
   static gint32 vkey = GDK_OSX_UNSUPPORTED;
 

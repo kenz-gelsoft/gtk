@@ -20,6 +20,8 @@
 #include <gdk/gdkkeysyms.h>
 #include <gdk/gdkinternals.h>
 
+extern "C" {
+
 void
 _gdk_haiku_window_sync_rendering (GdkWindow *window)
 {
@@ -63,3 +65,5 @@ _gdk_haiku_window_simulate_button (GdkWindow      *window,
 
   return FALSE;
 }
+
+} // extern "C" {

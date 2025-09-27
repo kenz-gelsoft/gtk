@@ -215,6 +215,7 @@ select_thread_set_state (SelectThreadState new_state)
 static void
 signal_main_thread (void)
 {
+  abort();
 #if 0
   GDK_NOTE (EVENTLOOP, g_message ("EventLoop: Waking up main thread"));
 
@@ -320,6 +321,7 @@ select_thread_func (void *arg)
 static void 
 got_fd_activity (void *info)
 {
+  abort();
 #if 0
   NSEvent *event;
 
@@ -341,6 +343,7 @@ got_fd_activity (void *info)
 static void
 select_thread_start (void)
 {
+  abort();
 #if 0
   g_return_if_fail (select_thread_state == BEFORE_START);
   
@@ -649,6 +652,7 @@ static gboolean
 gdk_event_prepare (GSource *source,
 		   gint    *timeout)
 {
+  abort();
 #if 0
   gboolean retval;
 
@@ -761,6 +765,7 @@ poll_func (GPollFD *ufds,
 	   guint    nfds,
 	   gint     timeout_)
 {
+  abort();
 #if 0
   NSEvent *event;
   NSDate *limit_date;
@@ -932,6 +937,7 @@ dummy_timer_callback (CFRunLoopTimerRef  timer,
 static void
 run_loop_before_waiting (void)
 {
+  abort();
 #if 0
   GMainContext *context = g_main_context_default ();
   gint timeout;
@@ -981,6 +987,7 @@ run_loop_before_waiting (void)
 static void
 run_loop_after_waiting (void)
 {
+  abort();
 #if 0
   GMainContext *context = g_main_context_default ();
 
@@ -1074,6 +1081,7 @@ run_loop_observer_callback (CFRunLoopObserverRef observer,
 void
 _gdk_haiku_event_loop_init (void)
 {
+  abort();
 #if 0
   GSource *source;
   CFRunLoopObserverRef observer;

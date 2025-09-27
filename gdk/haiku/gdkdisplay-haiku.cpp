@@ -217,6 +217,7 @@ _gdk_haiku_display_open (const gchar *display_name)
   //[NSApplication sharedApplication];
   gdk_haiku_display_init_display_link (_gdk_display);
 
+  abort();
 #if 0
   /* FIXME: Remove the #if 0 when we have these functions */
   _gdk_haiku_dnd_init ();
@@ -232,6 +233,7 @@ gdk_haiku_display_get_name (GdkDisplay *display)
 {
   static gchar *display_name = NULL;
 
+  abort();
 #if 0
   if (!display_name)
     {
@@ -253,6 +255,7 @@ gdk_haiku_display_get_default_screen (GdkDisplay *display)
 static void
 gdk_haiku_display_beep (GdkDisplay *display)
 {
+  abort();
 #if 0
   g_return_if_fail (GDK_IS_DISPLAY (display));
 
@@ -399,6 +402,7 @@ static void
 configure_monitor (GdkMonitor       *monitor,
                    GdkHaikuDisplay *display)
 {
+  abort();
 #if 0
   GdkHaikuMonitor *haiku_monitor = GDK_HAIKU_MONITOR (monitor);
   CGSize disp_size = CGDisplayScreenSize (haiku_monitor->id);
@@ -434,6 +438,7 @@ configure_monitor (GdkMonitor       *monitor,
 static void
 display_rect (GdkHaikuDisplay *display)
 {
+  abort();
 #if 0
   uint32_t disp, n_displays = 0;
   float min_x = 0.0, max_x = 0.0, min_y = 0.0, max_y = 0.0;
@@ -472,6 +477,7 @@ display_rect (GdkHaikuDisplay *display)
 static gboolean
 same_monitor (gconstpointer a, gconstpointer b)
 {
+  abort();
 #if 0
   GdkHaikuMonitor *mon_a = GDK_HAIKU_MONITOR (a);
   CGDirectDisplayID disp_id = (CGDirectDisplayID)GPOINTER_TO_INT (b);
@@ -566,6 +572,7 @@ gdk_haiku_display_get_monitor (GdkDisplay *display,
 static GdkMonitor *
 gdk_haiku_display_get_primary_monitor (GdkDisplay *display)
 {
+  abort();
 #if 0
   GdkHaikuDisplay *haiku_display = GDK_HAIKU_DISPLAY (display);
   CGDirectDisplayID primary_id = CGMainDisplayID ();
@@ -586,6 +593,7 @@ static GdkMonitor *
 gdk_haiku_display_get_monitor_at_window (GdkDisplay *display,
                                           GdkWindow *window)
 {
+  abort();
 #if 0
   GdkWindowImplHaiku *impl = NULL;
   NSWindow *nswindow = NULL;
@@ -639,6 +647,7 @@ G_DEFINE_TYPE (GdkHaikuDisplay, gdk_haiku_display, GDK_TYPE_DISPLAY)
 static void
 gdk_haiku_display_init (GdkHaikuDisplay *display)
 {
+  // TODO
 #if 0
   uint32_t n_displays = 0, disp;
   CGDirectDisplayID *displays;
@@ -665,6 +674,7 @@ gdk_haiku_display_init (GdkHaikuDisplay *display)
 static void
 gdk_haiku_display_dispose (GObject *object)
 {
+  abort();
 #if 0
   GdkHaikuDisplay *haiku_display = GDK_HAIKU_DISPLAY (object);
 
@@ -685,9 +695,8 @@ gdk_haiku_display_finalize (GObject *object)
 static void
 gdk_haiku_display_class_init (GdkHaikuDisplayClass *klass)
 {
-#if 0
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
-  GdkDisplayClass *display_class = GDK_DISPLAY_CLASS (class);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GdkDisplayClass *display_class = GDK_DISPLAY_CLASS (klass);
 
   object_class->finalize = gdk_haiku_display_finalize;
   object_class->dispose = gdk_haiku_display_dispose;
@@ -749,6 +758,7 @@ gdk_haiku_display_class_init (GdkHaikuDisplayClass *klass)
   display_class->is_gl_context_current = gdk_haiku_display_is_gl_context_current;
   display_class->make_gl_context_current = gdk_haiku_display_make_gl_context_current;
 
+#if 0
   /**
    * GdkHaikuDisplay::monitors-changed:
    * @display: The object on which the signal is emitted

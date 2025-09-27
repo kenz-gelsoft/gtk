@@ -77,6 +77,7 @@ gdk_haiku_event_source_dispatch (GSource     *source,
 static void
 gdk_haiku_event_source_finalize (GSource *source)
 {
+  abort();
 #if 0
   GdkHaikuEventSource *impl = (GdkHaikuEventSource *)source;
 
@@ -168,6 +169,7 @@ gdk_haiku_event_source_frame_cb (CVDisplayLinkRef   display_link,
 GSource *
 gdk_haiku_event_source_new (void)
 {
+  abort();
 #if 0
   GdkHaikuEventSource *impl;
   GSource *source;
@@ -215,6 +217,7 @@ gdk_haiku_event_source_new (void)
 static gint64
 host_to_frame_clock_time (gint64 host_time)
 {
+  abort();
 #if 0
   static mach_timebase_info_data_t timebase_info;
 
